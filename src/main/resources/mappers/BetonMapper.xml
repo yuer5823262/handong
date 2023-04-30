@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.BetonMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.Beton">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mark_number" jdbcType="VARCHAR" property="markNumber" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="material_no" jdbcType="INTEGER" property="materialNo" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mark_number, `type`, material_no, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from beton
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from beton
+    where id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.Beton">
+    insert into beton (id, mark_number, `type`, 
+      material_no, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{markNumber,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{materialNo,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.Beton">
+    insert into beton
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="markNumber != null">
+        mark_number,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="materialNo != null">
+        material_no,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="markNumber != null">
+        #{markNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="materialNo != null">
+        #{materialNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.Beton">
+    update beton
+    <set>
+      <if test="markNumber != null">
+        mark_number = #{markNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="materialNo != null">
+        material_no = #{materialNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.Beton">
+    update beton
+    set mark_number = #{markNumber,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      material_no = #{materialNo,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from beton
+  </select>
+</mapper>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempGradometerMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempGradometer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tgm_name" jdbcType="VARCHAR" property="tgmName" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="addr1" jdbcType="VARCHAR" property="addr1" />
+    <result column="addr2" jdbcType="VARCHAR" property="addr2" />
+    <result column="addr3" jdbcType="VARCHAR" property="addr3" />
+    <result column="addr4" jdbcType="VARCHAR" property="addr4" />
+    <result column="addr5" jdbcType="VARCHAR" property="addr5" />
+    <result column="addr6" jdbcType="VARCHAR" property="addr6" />
+    <result column="length" jdbcType="DOUBLE" property="length" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tgm_name, channel_no,channel, cu_id,sb_id, addr1, addr2, addr3, addr4, addr5, addr6,length, `position`,
+    create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_gradometer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByUseful" resultMap="BaseResultMap">
+    select
+      its.*
+    from temp_gradometer its
+           left join small_storage_bin ssb on ssb.id=its.sb_id
+    WHERE ssb.is_calculate='1'
+  </select>
+  <select id="selectByCuIdCNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from temp_gradometer
+    where cu_id = #{cuId,jdbcType=INTEGER} and channel_no = #{channelNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from temp_gradometer
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempGradometer">
+    insert into temp_gradometer (id, tgm_name, channel_no, channel,
+                                 cu_id,sb_id, addr1, addr2,
+      addr3, addr4, addr5, 
+      addr6,length, `position`, create_time,
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{tgmName,jdbcType=VARCHAR}, #{channelNo,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR},
+      #{cuId,jdbcType=INTEGER},#{sbId,jdbcType=INTEGER}, #{addr1,jdbcType=VARCHAR}, #{addr2,jdbcType=VARCHAR},
+      #{addr3,jdbcType=VARCHAR}, #{addr4,jdbcType=VARCHAR}, #{addr5,jdbcType=VARCHAR}, 
+      #{addr6,jdbcType=VARCHAR},#{length,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempGradometer">
+    insert into temp_gradometer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tgmName != null">
+        tgm_name,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="addr1 != null">
+        addr1,
+      </if>
+      <if test="addr2 != null">
+        addr2,
+      </if>
+      <if test="addr3 != null">
+        addr3,
+      </if>
+      <if test="addr4 != null">
+        addr4,
+      </if>
+      <if test="addr5 != null">
+        addr5,
+      </if>
+      <if test="addr6 != null">
+        addr6,
+      </if>
+      <if test="length != null">
+        length,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tgmName != null">
+        #{tgmName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="addr1 != null">
+        #{addr1,jdbcType=VARCHAR},
+      </if>
+      <if test="addr2 != null">
+        #{addr2,jdbcType=VARCHAR},
+      </if>
+      <if test="addr3 != null">
+        #{addr3,jdbcType=VARCHAR},
+      </if>
+      <if test="addr4 != null">
+        #{addr4,jdbcType=VARCHAR},
+      </if>
+      <if test="addr5 != null">
+        #{addr5,jdbcType=VARCHAR},
+      </if>
+      <if test="addr6 != null">
+        #{addr6,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null">
+        #{length,jdbcType=DOUBLE},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempGradometer">
+    update temp_gradometer
+    <set>
+      <if test="tgmName != null">
+        tgm_name = #{tgmName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="addr1 != null">
+        addr1 = #{addr1,jdbcType=VARCHAR},
+      </if>
+      <if test="addr2 != null">
+        addr2 = #{addr2,jdbcType=VARCHAR},
+      </if>
+      <if test="addr3 != null">
+        addr3 = #{addr3,jdbcType=VARCHAR},
+      </if>
+      <if test="addr4 != null">
+        addr4 = #{addr4,jdbcType=VARCHAR},
+      </if>
+      <if test="addr5 != null">
+        addr5 = #{addr5,jdbcType=VARCHAR},
+      </if>
+      <if test="addr6 != null">
+        addr6 = #{addr6,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null">
+        length = #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempGradometer">
+    update temp_gradometer
+    set tgm_name = #{tgmName,jdbcType=VARCHAR},
+      channel_no = #{channelNo,jdbcType=INTEGER},
+        channel = #{channel,jdbcType=VARCHAR},
+      cu_id = #{cuId,jdbcType=INTEGER},
+        sb_id = #{sbId,jdbcType=INTEGER},
+      addr1 = #{addr1,jdbcType=VARCHAR},
+      addr2 = #{addr2,jdbcType=VARCHAR},
+      addr3 = #{addr3,jdbcType=VARCHAR},
+      addr4 = #{addr4,jdbcType=VARCHAR},
+      addr5 = #{addr5,jdbcType=VARCHAR},
+      addr6 = #{addr6,jdbcType=VARCHAR},
+      length = #{length,jdbcType=DOUBLE},
+      `position` = #{position,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByTgmName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from temp_gradometer
+    where tgm_name = #{tgmName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectListByCuId" parameterType="java.lang.Integer" resultType="com.example.dampouring.model.vo.TempGradometerVO">
+    select
+      its.id as id,
+      ssb.small_sb_no as smallNo,
+      its.channel_no as channelNo,
+      its.channel as channel,
+      its.tgm_name as tgmName,
+      ssb.is_alert as cuAddr
+    from temp_gradometer its
+           LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
+    where its.cu_id = #{cuId} and its.channel is not null and its.channel!='' and ssb.is_calculate='1'
+  </select>
+
+
+  <select id="selectList" resultType="com.example.dampouring.model.vo.TempGradometerVO" parameterType="com.example.dampouring.query.TempGradometerQue">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cun.cu_addr as cuAddr,
+      i.channel_no as channelNo,
+    i.channel as channel,
+      i.tgm_name as tgmName,
+      i.addr1 as addr1,
+      i.addr2 as addr2,
+      i.addr3 as addr3,
+      i.addr4 as addr4,
+      i.addr5 as addr5,
+      i.addr6 as addr6,
+      i.length as length,
+      i.position as position,
+      i.create_time as createTime,
+      i.operator as operator
+    from temp_gradometer i
+     left join control_unit cun on i.cu_id=cun.id
+     left join control_box cb on cun.cb_no=cb.id
+     left join sub_control_station scs on cb.scs_id=scs.id
+     left join small_storage_bin ssb on i.sb_id=ssb.id
+    <where>
+      <if test="smallId != null">
+        and ssb.id = #{smallId}
+      </if>
+    </where>
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.TempGradometerVO">
+    select
+    i.id as id,
+    ssb.small_sb_no as smallNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.tgm_name as tgmName,
+    i.addr1 as addr1,
+    i.addr2 as addr2,
+    i.addr3 as addr3,
+    i.addr4 as addr4,
+    i.addr5 as addr5,
+    i.addr6 as addr6,
+    i.length as length,
+    i.position as position,
+    i.create_time as createTime,
+    i.operator as operator
+    from temp_gradometer i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join small_storage_bin ssb on i.sb_id=ssb.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

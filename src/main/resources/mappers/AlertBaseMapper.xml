@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.AlertBaseMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.AlertBase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type_no" jdbcType="INTEGER" property="typeNo" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
+    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
+    <result column="remark3" jdbcType="VARCHAR" property="remark3" />
+    <result column="op_time1" jdbcType="VARCHAR" property="opTime1" />
+    <result column="operator1" jdbcType="VARCHAR" property="operator1" />
+    <result column="op_time2" jdbcType="VARCHAR" property="opTime2" />
+    <result column="operator2" jdbcType="VARCHAR" property="operator2" />
+    <result column="op_time3" jdbcType="VARCHAR" property="opTime3" />
+    <result column="operator3" jdbcType="VARCHAR" property="operator3" />
+    <result column="standby1" jdbcType="VARCHAR" property="standby1" />
+    <result column="standby2" jdbcType="VARCHAR" property="standby2" />
+    <result column="standby3" jdbcType="VARCHAR" property="standby3" />
+    <result column="standby4" jdbcType="VARCHAR" property="standby4" />
+    <result column="standby5" jdbcType="VARCHAR" property="standby5" />
+    <result column="standby6" jdbcType="VARCHAR" property="standby6" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `position`, `type`, type_no, content, `time`, `state`, remark1, remark2, remark3, 
+    op_time1, operator1, op_time2, operator2, op_time3, operator3, standby1, standby2, 
+    standby3, standby4, standby5, standby6
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from alert_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByAlertTypeList" parameterType="com.example.dampouring.query.AlertBaseQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from alert_base
+    <where>
+      <if test="typeNo != null">
+        type_no=#{typeNo}
+      </if>
+      <if test="state != null">
+        state =#{state}
+      </if>
+      <if test="startTime != null">
+        and  time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+      <if test="que != null">
+        and (position like "%"#{que}"%" or content like "%"#{que}"%")
+      </if>
+      <if test="alertTypeList != null">
+        and type_no in
+      <foreach collection="alertTypeList" close=")" item="id" open="(" separator=",">
+        #{id}
+      </foreach>
+      </if>
+    </where>
+    order by time desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from alert_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.AlertBase">
+    insert into alert_base (id, `position`, `type`, 
+      type_no, content, `time`, 
+      `state`, remark1, remark2, 
+      remark3, op_time1, operator1, 
+      op_time2, operator2, op_time3, 
+      operator3, standby1, standby2, 
+      standby3, standby4, standby5, 
+      standby6)
+    values (#{id,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{typeNo,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, 
+      #{remark3,jdbcType=VARCHAR}, #{opTime1,jdbcType=VARCHAR}, #{operator1,jdbcType=VARCHAR}, 
+      #{opTime2,jdbcType=VARCHAR}, #{operator2,jdbcType=VARCHAR}, #{opTime3,jdbcType=VARCHAR}, 
+      #{operator3,jdbcType=VARCHAR}, #{standby1,jdbcType=VARCHAR}, #{standby2,jdbcType=VARCHAR}, 
+      #{standby3,jdbcType=VARCHAR}, #{standby4,jdbcType=VARCHAR}, #{standby5,jdbcType=VARCHAR}, 
+      #{standby6,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.AlertBase">
+    insert into alert_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="typeNo != null">
+        type_no,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="state != null">
+        `state`,
+      </if>
+      <if test="remark1 != null">
+        remark1,
+      </if>
+      <if test="remark2 != null">
+        remark2,
+      </if>
+      <if test="remark3 != null">
+        remark3,
+      </if>
+      <if test="opTime1 != null">
+        op_time1,
+      </if>
+      <if test="operator1 != null">
+        operator1,
+      </if>
+      <if test="opTime2 != null">
+        op_time2,
+      </if>
+      <if test="operator2 != null">
+        operator2,
+      </if>
+      <if test="opTime3 != null">
+        op_time3,
+      </if>
+      <if test="operator3 != null">
+        operator3,
+      </if>
+      <if test="standby1 != null">
+        standby1,
+      </if>
+      <if test="standby2 != null">
+        standby2,
+      </if>
+      <if test="standby3 != null">
+        standby3,
+      </if>
+      <if test="standby4 != null">
+        standby4,
+      </if>
+      <if test="standby5 != null">
+        standby5,
+      </if>
+      <if test="standby6 != null">
+        standby6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeNo != null">
+        #{typeNo,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="remark1 != null">
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime1 != null">
+        #{opTime1,jdbcType=VARCHAR},
+      </if>
+      <if test="operator1 != null">
+        #{operator1,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime2 != null">
+        #{opTime2,jdbcType=VARCHAR},
+      </if>
+      <if test="operator2 != null">
+        #{operator2,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime3 != null">
+        #{opTime3,jdbcType=VARCHAR},
+      </if>
+      <if test="operator3 != null">
+        #{operator3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby1 != null">
+        #{standby1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby2 != null">
+        #{standby2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby3 != null">
+        #{standby3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby4 != null">
+        #{standby4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby5 != null">
+        #{standby5,jdbcType=VARCHAR},
+      </if>
+      <if test="standby6 != null">
+        #{standby6,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.AlertBase">
+    update alert_base
+    <set>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeNo != null">
+        type_no = #{typeNo,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="remark1 != null">
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null">
+        remark3 = #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime1 != null">
+        op_time1 = #{opTime1,jdbcType=VARCHAR},
+      </if>
+      <if test="operator1 != null">
+        operator1 = #{operator1,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime2 != null">
+        op_time2 = #{opTime2,jdbcType=VARCHAR},
+      </if>
+      <if test="operator2 != null">
+        operator2 = #{operator2,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime3 != null">
+        op_time3 = #{opTime3,jdbcType=VARCHAR},
+      </if>
+      <if test="operator3 != null">
+        operator3 = #{operator3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby1 != null">
+        standby1 = #{standby1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby2 != null">
+        standby2 = #{standby2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby3 != null">
+        standby3 = #{standby3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby4 != null">
+        standby4 = #{standby4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby5 != null">
+        standby5 = #{standby5,jdbcType=VARCHAR},
+      </if>
+      <if test="standby6 != null">
+        standby6 = #{standby6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.AlertBase">
+    update alert_base
+    set `position` = #{position,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      type_no = #{typeNo,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=VARCHAR},
+      `state` = #{state,jdbcType=INTEGER},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR},
+      remark3 = #{remark3,jdbcType=VARCHAR},
+      op_time1 = #{opTime1,jdbcType=VARCHAR},
+      operator1 = #{operator1,jdbcType=VARCHAR},
+      op_time2 = #{opTime2,jdbcType=VARCHAR},
+      operator2 = #{operator2,jdbcType=VARCHAR},
+      op_time3 = #{opTime3,jdbcType=VARCHAR},
+      operator3 = #{operator3,jdbcType=VARCHAR},
+      standby1 = #{standby1,jdbcType=VARCHAR},
+      standby2 = #{standby2,jdbcType=VARCHAR},
+      standby3 = #{standby3,jdbcType=VARCHAR},
+      standby4 = #{standby4,jdbcType=VARCHAR},
+      standby5 = #{standby5,jdbcType=VARCHAR},
+      standby6 = #{standby6,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="todayDataCount"  resultType="com.example.dampouring.model.vo.DataCountVO">
+    SELECT
+      tb.*,tb1.countInbound, tb2.countExport,
+      tb3.countPouring,
+      tb4.innerCount,
+      tb5.gradCount,
+      tb6.waterCount,
+      tb7.tmCount,
+      tb8.sunCount
+    FROM
+      (
+        SELECT
+          ssb.id AS sbId,
+          ssb.small_sb_no AS sbNo,
+          pb.open_time as openTime,
+          pb.close_time as closeTime
+        FROM
+          small_storage_bin ssb
+            LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+      ) tb
+        LEFT JOIN
+      (
+        SELECT
+          ssb.id AS sbId,
+          ssb.small_sb_no AS sbNo,
+          count(iti.temperature) AS countInbound
+        FROM
+          small_storage_bin ssb
+            LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+            LEFT JOIN inbound_temp_info iti ON iti.pouring_base_id = pb.id
+            AND LEFT (iti.time, 10) = LEFT (now(), 10)
+    WHERE
+      ssb.is_calculate = '1'
+    GROUP BY
+      ssb.id
+      ) tb1 on tb.sbId = tb1.sbId
+      LEFT JOIN (
+      SELECT
+      ssb.id AS sbId,
+      ssb.small_sb_no,
+      count(iti.temperature) AS countExport
+      FROM
+      small_storage_bin ssb
+      LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+      LEFT JOIN export_machine_temp_info iti ON iti.pouring_base_id = pb.id
+      AND LEFT (iti.time, 10) = LEFT (now(), 10)
+      WHERE
+      ssb.is_calculate = '1'
+      GROUP BY
+      ssb.id
+      ) tb2 ON tb1.sbId = tb2.sbId
+      LEFT JOIN (
+      SELECT
+      ssb.id AS sbId,
+      ssb.small_sb_no,
+      count(iti.temperature) AS countPouring
+      FROM
+      small_storage_bin ssb
+      LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+      LEFT JOIN pouring_temp_info iti ON iti.pouring_base_id = pb.id
+      AND LEFT (iti.time, 10) = LEFT (now(), 10)
+      WHERE
+      ssb.is_calculate = '1'
+      GROUP BY
+      ssb.id
+      ) tb3 ON tb1.sbId = tb3.sbId
+      LEFT JOIN (
+      SELECT
+      ssb.id AS sbId,
+      ssb.small_sb_no,
+      tb1.innerCount AS innerCount
+      FROM
+      small_storage_bin ssb
+      LEFT JOIN (
+      SELECT
+      its.sb_id AS sbId,
+      count(itsi.id) AS innerCount
+      FROM
+      inner_temp_sensor_info itsi
+      LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
+      WHERE
+      LEFT (itsi.time, 10) = LEFT (now(), 10)
+      GROUP BY
+      its.sb_id
+      ) tb1 ON tb1.sbId = ssb.id
+      ) tb4 ON tb1.sbId = tb4.sbId
+      LEFT JOIN (
+      SELECT
+      ssb.id AS sbId,
+      ssb.small_sb_no,
+      tb1.gradCount AS gradCount
+      FROM
+      small_storage_bin ssb
+      LEFT JOIN (
+      SELECT
+      its.sb_id AS sbId,
+      count(itsi.id) AS gradCount
+      FROM
+      temp_gradometer_info itsi
+      LEFT JOIN temp_gradometer its ON itsi.temp_gradometer_id = its.id
+      WHERE
+      LEFT (itsi.time, 10) = LEFT (now(), 10)
+      GROUP BY
+      its.sb_id
+      ) tb1 ON tb1.sbId = ssb.id
+      ) tb5 ON tb1.sbId = tb5.sbId
+      LEFT JOIN (
+      SELECT
+      ssb.id AS sbId,
+      ssb.small_sb_no,
+      tb1.waterCount AS waterCount
+      FROM
+      small_storage_bin ssb
+      LEFT JOIN (
+      SELECT
+      its.sb_id AS sbId,
+      count(itsi.id) AS waterCount
+      FROM
+      water_pipe_flow_info itsi
+      LEFT JOIN water_pipe its ON itsi.water_pipe_id = its.id
+      WHERE
+      LEFT (itsi.time, 10) = LEFT (now(), 10)
+      GROUP BY
+      its.sb_id
+      ) tb1 ON tb1.sbId = ssb.id
+      ) tb6 ON tb1.sbId = tb6.sbId
+      LEFT JOIN (
+      SELECT
+      count(*) AS tmCount
+      FROM
+      temp_measurements
+      WHERE
+      LEFT (date, 10) = LEFT (now(), 10)
+      ) tb7 ON 1
+      LEFT JOIN (
+      SELECT
+      count(*) AS sunCount
+      FROM
+      solar_radiant_heat_info
+      WHERE
+      LEFT (date, 10) = LEFT (now(), 10)
+      ) tb8 ON 1
+  </select>
+  <select id="selectDataMissAlert" parameterType="com.example.dampouring.query.DataMissAlertQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from alert_base
+    <where>
+      <if test="sbNo != null">
+        and position=#{sbNo}
+      </if>
+      <if test="type != null">
+        and type=#{type}
+      </if>
+      and state&lt;3
+    </where>
+  </select>
+
+</mapper>

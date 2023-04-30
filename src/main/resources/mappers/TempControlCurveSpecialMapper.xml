@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempControlCurveSpecialMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempControlCurveSpecial">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="winter_cooling_start_time" jdbcType="VARCHAR" property="winterCoolingStartTime" />
+    <result column="winter_cooling_days" jdbcType="INTEGER" property="winterCoolingDays" />
+    <result column="winter_cooling_target_temp" jdbcType="DOUBLE" property="winterCoolingTargetTemp" />
+    <result column="overflowing_start_time" jdbcType="VARCHAR" property="overflowingStartTime" />
+    <result column="overflowing_days" jdbcType="INTEGER" property="overflowingDays" />
+    <result column="overflowing_target_temp" jdbcType="DOUBLE" property="overflowingTargetTemp" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, winter_cooling_start_time, winter_cooling_days, winter_cooling_target_temp, overflowing_start_time, 
+    overflowing_days, overflowing_target_temp, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_control_curve_special
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from temp_control_curve_special
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempControlCurveSpecial">
+    insert into temp_control_curve_special (id, winter_cooling_start_time, winter_cooling_days, 
+      winter_cooling_target_temp, overflowing_start_time, 
+      overflowing_days, overflowing_target_temp, 
+      create_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{winterCoolingStartTime,jdbcType=VARCHAR}, #{winterCoolingDays,jdbcType=INTEGER}, 
+      #{winterCoolingTargetTemp,jdbcType=DOUBLE}, #{overflowingStartTime,jdbcType=VARCHAR}, 
+      #{overflowingDays,jdbcType=INTEGER}, #{overflowingTargetTemp,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempControlCurveSpecial">
+    insert into temp_control_curve_special
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="winterCoolingStartTime != null">
+        winter_cooling_start_time,
+      </if>
+      <if test="winterCoolingDays != null">
+        winter_cooling_days,
+      </if>
+      <if test="winterCoolingTargetTemp != null">
+        winter_cooling_target_temp,
+      </if>
+      <if test="overflowingStartTime != null">
+        overflowing_start_time,
+      </if>
+      <if test="overflowingDays != null">
+        overflowing_days,
+      </if>
+      <if test="overflowingTargetTemp != null">
+        overflowing_target_temp,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="winterCoolingStartTime != null">
+        #{winterCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="winterCoolingDays != null">
+        #{winterCoolingDays,jdbcType=INTEGER},
+      </if>
+      <if test="winterCoolingTargetTemp != null">
+        #{winterCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="overflowingStartTime != null">
+        #{overflowingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="overflowingDays != null">
+        #{overflowingDays,jdbcType=INTEGER},
+      </if>
+      <if test="overflowingTargetTemp != null">
+        #{overflowingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempControlCurveSpecial">
+    update temp_control_curve_special
+    <set>
+      <if test="winterCoolingStartTime != null">
+        winter_cooling_start_time = #{winterCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="winterCoolingDays != null">
+        winter_cooling_days = #{winterCoolingDays,jdbcType=INTEGER},
+      </if>
+      <if test="winterCoolingTargetTemp != null">
+        winter_cooling_target_temp = #{winterCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="overflowingStartTime != null">
+        overflowing_start_time = #{overflowingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="overflowingDays != null">
+        overflowing_days = #{overflowingDays,jdbcType=INTEGER},
+      </if>
+      <if test="overflowingTargetTemp != null">
+        overflowing_target_temp = #{overflowingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempControlCurveSpecial">
+    update temp_control_curve_special
+    set winter_cooling_start_time = #{winterCoolingStartTime,jdbcType=VARCHAR},
+      winter_cooling_days = #{winterCoolingDays,jdbcType=INTEGER},
+      winter_cooling_target_temp = #{winterCoolingTargetTemp,jdbcType=DOUBLE},
+      overflowing_start_time = #{overflowingStartTime,jdbcType=VARCHAR},
+      overflowing_days = #{overflowingDays,jdbcType=INTEGER},
+      overflowing_target_temp = #{overflowingTargetTemp,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_control_curve_special
+  </select>
+
+  <select id="selectListByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_control_curve_special
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

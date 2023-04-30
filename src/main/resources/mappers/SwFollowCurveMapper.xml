@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SwFollowCurveMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SwFollowCurve">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_no" jdbcType="VARCHAR" property="sbNo" />
+    <result column="air_temp" jdbcType="DOUBLE" property="airTemp" />
+    <result column="sc_temp" jdbcType="DOUBLE" property="scTemp" />
+    <result column="mb_temp" jdbcType="DOUBLE" property="mbTemp" />
+    <result column="water_temp" jdbcType="DOUBLE" property="waterTemp" />
+    <result column="sc_flow" jdbcType="DOUBLE" property="scFlow" />
+    <result column="yc_flow" jdbcType="DOUBLE" property="ycFlow" />
+    <result column="mb_flow" jdbcType="DOUBLE" property="mbFlow" />
+    <result column="yc_temp" jdbcType="DOUBLE" property="ycTemp" />
+    <result column="frxg" jdbcType="DOUBLE" property="frxg" />
+    <result column="cmsr" jdbcType="DOUBLE" property="cmsr" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_no, air_temp, sc_temp, mb_temp, water_temp, sc_flow, yc_flow, mb_flow, yc_temp, 
+    frxg, cmsr, `time`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sw_follow_curve
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTimeSbNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sw_follow_curve
+    where time = #{nextDay,jdbcType=VARCHAR} and sb_no=#{smallNo,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sw_follow_curve
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SwFollowCurve">
+    insert into sw_follow_curve (id, sb_no, air_temp, 
+      sc_temp, mb_temp, water_temp, 
+      sc_flow, yc_flow, mb_flow, 
+      yc_temp, frxg, cmsr, `time`
+      )
+    values (#{id,jdbcType=INTEGER}, #{sbNo,jdbcType=VARCHAR}, #{airTemp,jdbcType=DOUBLE}, 
+      #{scTemp,jdbcType=DOUBLE}, #{mbTemp,jdbcType=DOUBLE}, #{waterTemp,jdbcType=DOUBLE}, 
+      #{scFlow,jdbcType=DOUBLE}, #{ycFlow,jdbcType=DOUBLE}, #{mbFlow,jdbcType=DOUBLE}, 
+      #{ycTemp,jdbcType=DOUBLE}, #{frxg,jdbcType=DOUBLE}, #{cmsr,jdbcType=DOUBLE}, #{time,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SwFollowCurve">
+    insert into sw_follow_curve
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbNo != null">
+        sb_no,
+      </if>
+      <if test="airTemp != null">
+        air_temp,
+      </if>
+      <if test="scTemp != null">
+        sc_temp,
+      </if>
+      <if test="mbTemp != null">
+        mb_temp,
+      </if>
+      <if test="waterTemp != null">
+        water_temp,
+      </if>
+      <if test="scFlow != null">
+        sc_flow,
+      </if>
+      <if test="ycFlow != null">
+        yc_flow,
+      </if>
+      <if test="mbFlow != null">
+        mb_flow,
+      </if>
+      <if test="ycTemp != null">
+        yc_temp,
+      </if>
+      <if test="frxg != null">
+        frxg,
+      </if>
+      <if test="cmsr != null">
+        cmsr,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbNo != null">
+        #{sbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="airTemp != null">
+        #{airTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="scTemp != null">
+        #{scTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="mbTemp != null">
+        #{mbTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="scFlow != null">
+        #{scFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="ycFlow != null">
+        #{ycFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="mbFlow != null">
+        #{mbFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="ycTemp != null">
+        #{ycTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="frxg != null">
+        #{frxg,jdbcType=DOUBLE},
+      </if>
+      <if test="cmsr != null">
+        #{cmsr,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SwFollowCurve">
+    update sw_follow_curve
+    <set>
+      <if test="sbNo != null">
+        sb_no = #{sbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="airTemp != null">
+        air_temp = #{airTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="scTemp != null">
+        sc_temp = #{scTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="mbTemp != null">
+        mb_temp = #{mbTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        water_temp = #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="scFlow != null">
+        sc_flow = #{scFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="ycFlow != null">
+        yc_flow = #{ycFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="mbFlow != null">
+        mb_flow = #{mbFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="ycTemp != null">
+        yc_temp = #{ycTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="frxg != null">
+        frxg = #{frxg,jdbcType=DOUBLE},
+      </if>
+      <if test="cmsr != null">
+        cmsr = #{cmsr,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SwFollowCurve">
+    update sw_follow_curve
+    set sb_no = #{sbNo,jdbcType=VARCHAR},
+      air_temp = #{airTemp,jdbcType=DOUBLE},
+      sc_temp = #{scTemp,jdbcType=DOUBLE},
+      mb_temp = #{mbTemp,jdbcType=DOUBLE},
+      water_temp = #{waterTemp,jdbcType=DOUBLE},
+      sc_flow = #{scFlow,jdbcType=DOUBLE},
+      yc_flow = #{ycFlow,jdbcType=DOUBLE},
+      mb_flow = #{mbFlow,jdbcType=DOUBLE},
+      yc_temp = #{ycTemp,jdbcType=DOUBLE},
+      frxg = #{frxg,jdbcType=DOUBLE},
+      cmsr = #{cmsr,jdbcType=DOUBLE},
+      `time` = #{time,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.example.dampouring.query.SwFollowCurveQue">
+    select
+    sfc.*
+    from sw_follow_curve sfc
+    LEFT JOIN small_storage_bin ssb on sfc.sb_no=ssb.small_sb_no
+    <where>
+      <if test="startTime != null">
+        and  time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+      <if test="sbId != null">
+        and ssb.id = #{sbId}
+      </if>
+      <if test="sbNo != null">
+        and sb_no = #{sbNo}
+      </if>
+    </where>
+    <if test="sortOrder != null">
+      order by time ${sortOrder}
+    </if>
+  </select>
+</mapper>

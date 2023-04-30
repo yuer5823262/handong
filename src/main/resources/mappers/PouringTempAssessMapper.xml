@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.PouringTempAssessMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.PouringTempAssess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pouring_base_id" jdbcType="INTEGER" property="pouringBaseId" />
+    <result column="norm_temp" jdbcType="DOUBLE" property="normTemp" />
+    <result column="avg_temp" jdbcType="DOUBLE" property="avgTemp" />
+    <result column="bottom_temp" jdbcType="DOUBLE" property="bottomTemp" />
+    <result column="top_temp" jdbcType="DOUBLE" property="topTemp" />
+    <result column="record_count" jdbcType="INTEGER" property="recordCount" />
+    <result column="excessive_count" jdbcType="INTEGER" property="excessiveCount" />
+    <result column="excessive_persent" jdbcType="INTEGER" property="excessivePersent" />
+    <result column="top_excessive" jdbcType="DOUBLE" property="topExcessive" />
+    <result column="top_excessive_persent" jdbcType="INTEGER" property="topExcessivePersent" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pouring_base_id, norm_temp, avg_temp, bottom_temp, top_temp, record_count, excessive_count, 
+    excessive_persent, top_excessive, top_excessive_persent, `month`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pouring_temp_assess
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pouring_temp_assess
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteAll">
+    delete from pouring_temp_assess
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.PouringTempAssess">
+    insert into pouring_temp_assess (id, pouring_base_id, norm_temp, 
+      avg_temp, bottom_temp, top_temp, 
+      record_count, excessive_count, excessive_persent, 
+      top_excessive, top_excessive_persent, `month`
+      )
+    values (#{id,jdbcType=INTEGER}, #{pouringBaseId,jdbcType=INTEGER}, #{normTemp,jdbcType=DOUBLE}, 
+      #{avgTemp,jdbcType=DOUBLE}, #{bottomTemp,jdbcType=DOUBLE}, #{topTemp,jdbcType=DOUBLE}, 
+      #{recordCount,jdbcType=INTEGER}, #{excessiveCount,jdbcType=INTEGER}, #{excessivePersent,jdbcType=INTEGER}, 
+      #{topExcessive,jdbcType=DOUBLE}, #{topExcessivePersent,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.PouringTempAssess">
+    insert into pouring_temp_assess
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pouringBaseId != null">
+        pouring_base_id,
+      </if>
+      <if test="normTemp != null">
+        norm_temp,
+      </if>
+      <if test="avgTemp != null">
+        avg_temp,
+      </if>
+      <if test="bottomTemp != null">
+        bottom_temp,
+      </if>
+      <if test="topTemp != null">
+        top_temp,
+      </if>
+      <if test="recordCount != null">
+        record_count,
+      </if>
+      <if test="excessiveCount != null">
+        excessive_count,
+      </if>
+      <if test="excessivePersent != null">
+        excessive_persent,
+      </if>
+      <if test="topExcessive != null">
+        top_excessive,
+      </if>
+      <if test="topExcessivePersent != null">
+        top_excessive_persent,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pouringBaseId != null">
+        #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="normTemp != null">
+        #{normTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="bottomTemp != null">
+        #{bottomTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topTemp != null">
+        #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="recordCount != null">
+        #{recordCount,jdbcType=INTEGER},
+      </if>
+      <if test="excessiveCount != null">
+        #{excessiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="excessivePersent != null">
+        #{excessivePersent,jdbcType=INTEGER},
+      </if>
+      <if test="topExcessive != null">
+        #{topExcessive,jdbcType=DOUBLE},
+      </if>
+      <if test="topExcessivePersent != null">
+        #{topExcessivePersent,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.PouringTempAssess">
+    update pouring_temp_assess
+    <set>
+      <if test="pouringBaseId != null">
+        pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="normTemp != null">
+        norm_temp = #{normTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="bottomTemp != null">
+        bottom_temp = #{bottomTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topTemp != null">
+        top_temp = #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="recordCount != null">
+        record_count = #{recordCount,jdbcType=INTEGER},
+      </if>
+      <if test="excessiveCount != null">
+        excessive_count = #{excessiveCount,jdbcType=INTEGER},
+      </if>
+      <if test="excessivePersent != null">
+        excessive_persent = #{excessivePersent,jdbcType=INTEGER},
+      </if>
+      <if test="topExcessive != null">
+        top_excessive = #{topExcessive,jdbcType=DOUBLE},
+      </if>
+      <if test="topExcessivePersent != null">
+        top_excessive_persent = #{topExcessivePersent,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.PouringTempAssess">
+    update pouring_temp_assess
+    set pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      norm_temp = #{normTemp,jdbcType=DOUBLE},
+      avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      bottom_temp = #{bottomTemp,jdbcType=DOUBLE},
+      top_temp = #{topTemp,jdbcType=DOUBLE},
+      record_count = #{recordCount,jdbcType=INTEGER},
+      excessive_count = #{excessiveCount,jdbcType=INTEGER},
+      excessive_persent = #{excessivePersent,jdbcType=INTEGER},
+      top_excessive = #{topExcessive,jdbcType=DOUBLE},
+      top_excessive_persent = #{topExcessivePersent,jdbcType=INTEGER},
+      `month` = #{month,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultType="com.example.dampouring.model.vo.PouringTempAssessVO">
+    select
+      pta.id as id,
+      s.small_sb_no as smallNo,
+      pta.norm_temp as normTemp,
+      pta.avg_temp as avgTemp,
+      pta.top_temp as topTemp,
+      pta.bottom_temp as bottomTemp,
+      pta.record_count as recordCount,
+      pta.excessive_count as excessiveCount,
+      pta.excessive_persent as excessivePersent,
+      pta.top_excessive as topExcessive,
+      pta.top_excessive_persent as topExcessivePersent,
+      pta.month as month
+    from pouring_temp_assess pta
+      left join pouring_base p on pta.pouring_base_id=p.id
+      left join small_storage_bin s on p.small_sb_id = s.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.PouringTempAssessQue" resultType="com.example.dampouring.model.vo.PouringTempAssessVO">
+    select
+    pta.id as id,
+    s.small_sb_no as smallNo,
+    pta.norm_temp as normTemp,
+    pta.avg_temp as avgTemp,
+    pta.top_temp as topTemp,
+    pta.bottom_temp as bottomTemp,
+    pta.record_count as recordCount,
+    pta.excessive_count as excessiveCount,
+    pta.excessive_persent as excessivePersent,
+    pta.top_excessive as topExcessive,
+    pta.top_excessive_persent as topExcessivePersent,
+    pta.month as month
+    from pouring_temp_assess pta
+    left join pouring_base p on pta.pouring_base_id=p.id
+    left join small_storage_bin s on p.small_sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id = #{sbId}
+      </if>
+      <if test="pbId != null">
+        and p.id = #{pbId}
+      </if>
+    </where>
+    order by s.small_sb_no desc
+  </select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.InsulationSensorInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.InsulationSensorInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sensor_id" jdbcType="INTEGER" property="sensorId" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="bl" jdbcType="TINYINT" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sensor_id, `temp`, `time`, bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insulation_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from insulation_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.InsulationSensorInfo">
+    insert into insulation_sensor_info (id, sensor_id, `temp`, 
+      `time`, bl)
+    values (#{id,jdbcType=INTEGER}, #{sensorId,jdbcType=INTEGER}, #{temp,jdbcType=DOUBLE}, 
+      #{time,jdbcType=VARCHAR}, #{bl,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.InsulationSensorInfo">
+    insert into insulation_sensor_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sensorId != null">
+        sensor_id,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sensorId != null">
+        #{sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.InsulationSensorInfo">
+    update insulation_sensor_info
+    <set>
+      <if test="sensorId != null">
+        sensor_id = #{sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="bl != null">
+        bl = #{bl,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.InsulationSensorInfo">
+    update insulation_sensor_info
+    set sensor_id = #{sensorId,jdbcType=INTEGER},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      `time` = #{time,jdbcType=VARCHAR},
+      bl = #{bl,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="List" resultType="com.example.dampouring.model.vo.InsulationSensorInfoVO">
+    select
+      itf.id as id,
+      itf.time as time,
+    itf.temp as temp,
+    it.temp_no as tempNo,
+    it.position as position,
+    it.ds_no as dsNo,
+    itf.bl as bl
+    from insulation_sensor_info itf
+      left join insulation_sensor it on itf.sensor_id= it.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.InsulationSensorInfoQue" resultType="com.example.dampouring.model.vo.InsulationSensorInfoVO">
+    select
+    itf.id as id,
+    itf.time as time,
+    itf.temp as temp,
+    it.temp_no as tempNo,
+    it.position as position,
+    it.ds_no as dsNo,
+    itf.bl as bl
+    from insulation_sensor_info itf
+    left join insulation_sensor it on itf.sensor_id= it.id
+    <where>
+      <if test="startTime != null">
+        and  itf.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and itf.time &lt;= #{endTime}
+      </if>
+      <if test="position != null">
+        and it.position = #{position}
+      </if>
+      <if test="dsNo != null">
+        and  it.ds_no =#{dsNo}
+      </if>
+      <if test="tempId != null">
+        and itf.sensor_id = #{tempId}
+      </if>
+    </where>
+    order by itf.time desc
+  </select>
+
+</mapper>

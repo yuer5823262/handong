@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SbTempNormMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SbTempNorm">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="pouring_temp" jdbcType="DOUBLE" property="pouringTemp" />
+    <result column="port_temp" jdbcType="DOUBLE" property="portTemp" />
+    <result column="entry_temp" jdbcType="DOUBLE" property="entryTemp" />
+    <result column="min_temp" jdbcType="DOUBLE" property="minTemp" />
+    <result column="max_temp" jdbcType="DOUBLE" property="maxTemp" />
+    <result column="flow_temp_min" jdbcType="DOUBLE" property="flowTempMin" />
+    <result column="flow_temp" jdbcType="DOUBLE" property="flowTemp" />
+    <result column="grad_temp" jdbcType="DOUBLE" property="gradTemp" />
+    <result column="base_temp_diff" jdbcType="DOUBLE" property="baseTempDiff" />
+    <result column="upper_low_tenp_diff" jdbcType="DOUBLE" property="upperLowTenpDiff" />
+    <result column="in_out_temp_diff" jdbcType="DOUBLE" property="inOutTempDiff" />
+    <result column="Intervals" jdbcType="VARCHAR" property="intervals" />
+    <result column="surface_warm" jdbcType="VARCHAR" property="surfaceWarm" />
+    <result column="one_cold_before" jdbcType="DOUBLE" property="oneColdBefore" />
+    <result column="one_cold_after" jdbcType="DOUBLE" property="oneColdAfter" />
+    <result column="middle_clod" jdbcType="DOUBLE" property="middleClod" />
+    <result column="adjacent_block" jdbcType="DOUBLE" property="adjacentBlock" />
+    <result column="between_block" jdbcType="DOUBLE" property="betweenBlock" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, pouring_temp, port_temp, entry_temp, min_temp, max_temp, flow_temp_min, 
+    flow_temp, grad_temp, base_temp_diff, upper_low_tenp_diff, in_out_temp_diff, Intervals, 
+    surface_warm, one_cold_before, one_cold_after, middle_clod, adjacent_block, between_block
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sb_temp_norm
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="List" parameterType="com.example.dampouring.query.SbTempNormQue" resultType="com.example.dampouring.model.vo.SbTempNormVO">
+    select
+    stn.id as id,
+    ssb.small_sb_no as sbNo,
+    stn.port_temp as portTemp,
+    stn.entry_temp as entryTemp,
+    stn.max_temp as maxTemp,
+    stn.min_temp as minTemp,
+    stn.flow_temp_min as flowTempMin,
+    stn.pouring_temp as pouringTemp,
+    stn.flow_temp as flowTemp,
+    stn.grad_temp as gradTemp,
+    stn.base_temp_diff as baseTempDiff,
+    stn.upper_low_tenp_diff as upperLowTenpDiff,
+    stn.in_out_temp_diff as inOutTempDiff,
+    stn.intervals as intervals,
+    stn.surface_warm as surfaceWarm,
+    stn.one_cold_before as oneColdBefore,
+    stn.one_cold_after as oneColdAfter,
+    stn.middle_clod as middleClod,
+    stn.adjacent_block as adjacentBlock,
+    stn.between_block as betweenBlock
+    from sb_temp_norm stn
+    left join small_storage_bin  ssb on ssb.id=stn.sb_id
+    <where>
+      <if test="sbId != null">
+        and stn.sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectNorm" parameterType="com.example.dampouring.query.SelectNormQue" resultType="com.example.dampouring.model.vo.SbTempNormVO">
+    select
+    stn.id as id,
+    ssb.small_sb_no as sbNo,
+    ssb.id as sbId,
+    stn.port_temp as portTemp,
+    stn.entry_temp as entryTemp,
+    stn.max_temp as maxTemp,
+    stn.min_temp as minTemp,
+    stn.flow_temp_min as flowTempMin,
+    stn.pouring_temp as pouringTemp,
+    stn.flow_temp as flowTemp,
+    stn.grad_temp as gradTemp,
+    stn.base_temp_diff as baseTempDiff,
+    stn.upper_low_tenp_diff as upperLowTenpDiff,
+    stn.in_out_temp_diff as inOutTempDiff,
+    stn.intervals as intervals,
+    stn.surface_warm as surfaceWarm,
+    stn.one_cold_before as oneColdBefore,
+    stn.one_cold_after as oneColdAfter,
+    stn.middle_clod as middleClod,
+    stn.adjacent_block as adjacentBlock,
+    stn.between_block as betweenBlock
+    from sb_temp_norm stn
+    left join small_storage_bin  ssb on ssb.id=stn.sb_id
+    LEFT JOIN pouring_base pb on pb.small_sb_id=stn.sb_id
+
+    <where>
+      <if test="sbId != null">
+        and stn.sb_id =#{sbId}
+      </if>
+      <if test="pbId != null">
+        and pb.id =#{pbId}
+      </if>
+    </where>
+  </select>
+
+
+
+  <select id="listByIds" resultType="com.example.dampouring.model.vo.SbTempNormVO">
+    select
+    stn.id as id,
+    ssb.small_sb_no as sbNo,
+    stn.port_temp as portTemp,
+    stn.entry_temp as entryTemp,
+    stn.max_temp as maxTemp,
+    stn.min_temp as minTemp,
+    stn.flow_temp_min as flowTempMin,
+    stn.pouring_temp as pouringTemp,
+    stn.flow_temp as flowTemp,
+    stn.grad_temp as gradTemp,
+    stn.base_temp_diff as baseTempDiff,
+    stn.upper_low_tenp_diff as upperLowTenpDiff,
+    stn.in_out_temp_diff as inOutTempDiff,
+    stn.intervals as intervals,
+    stn.surface_warm as surfaceWarm,
+    stn.one_cold_before as oneColdBefore,
+    stn.one_cold_after as oneColdAfter,
+    stn.middle_clod as middleClod,
+    stn.adjacent_block as adjacentBlock,
+    stn.between_block as betweenBlock
+    from sb_temp_norm stn
+    left join small_storage_bin  ssb on ssb.id=stn.sb_id
+    where stn.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from sb_temp_norm
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SbTempNorm">
+    insert into sb_temp_norm (id, sb_id, pouring_temp, 
+      port_temp, entry_temp, min_temp, 
+      max_temp, flow_temp_min, flow_temp, 
+      grad_temp, base_temp_diff, upper_low_tenp_diff, 
+      in_out_temp_diff, Intervals, surface_warm, 
+      one_cold_before, one_cold_after, middle_clod, 
+      adjacent_block, between_block)
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{pouringTemp,jdbcType=DOUBLE}, 
+      #{portTemp,jdbcType=DOUBLE}, #{entryTemp,jdbcType=DOUBLE}, #{minTemp,jdbcType=DOUBLE}, 
+      #{maxTemp,jdbcType=DOUBLE}, #{flowTempMin,jdbcType=DOUBLE}, #{flowTemp,jdbcType=DOUBLE}, 
+      #{gradTemp,jdbcType=DOUBLE}, #{baseTempDiff,jdbcType=DOUBLE}, #{upperLowTenpDiff,jdbcType=DOUBLE}, 
+      #{inOutTempDiff,jdbcType=DOUBLE}, #{intervals,jdbcType=VARCHAR}, #{surfaceWarm,jdbcType=VARCHAR}, 
+      #{oneColdBefore,jdbcType=DOUBLE}, #{oneColdAfter,jdbcType=DOUBLE}, #{middleClod,jdbcType=DOUBLE}, 
+      #{adjacentBlock,jdbcType=DOUBLE}, #{betweenBlock,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SbTempNorm">
+    insert into sb_temp_norm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="pouringTemp != null">
+        pouring_temp,
+      </if>
+      <if test="portTemp != null">
+        port_temp,
+      </if>
+      <if test="entryTemp != null">
+        entry_temp,
+      </if>
+      <if test="minTemp != null">
+        min_temp,
+      </if>
+      <if test="maxTemp != null">
+        max_temp,
+      </if>
+      <if test="flowTempMin != null">
+        flow_temp_min,
+      </if>
+      <if test="flowTemp != null">
+        flow_temp,
+      </if>
+      <if test="gradTemp != null">
+        grad_temp,
+      </if>
+      <if test="baseTempDiff != null">
+        base_temp_diff,
+      </if>
+      <if test="upperLowTenpDiff != null">
+        upper_low_tenp_diff,
+      </if>
+      <if test="inOutTempDiff != null">
+        in_out_temp_diff,
+      </if>
+      <if test="intervals != null">
+        Intervals,
+      </if>
+      <if test="surfaceWarm != null">
+        surface_warm,
+      </if>
+      <if test="oneColdBefore != null">
+        one_cold_before,
+      </if>
+      <if test="oneColdAfter != null">
+        one_cold_after,
+      </if>
+      <if test="middleClod != null">
+        middle_clod,
+      </if>
+      <if test="adjacentBlock != null">
+        adjacent_block,
+      </if>
+      <if test="betweenBlock != null">
+        between_block,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="pouringTemp != null">
+        #{pouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="portTemp != null">
+        #{portTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="entryTemp != null">
+        #{entryTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="minTemp != null">
+        #{minTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="maxTemp != null">
+        #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTempMin != null">
+        #{flowTempMin,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTemp != null">
+        #{flowTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="gradTemp != null">
+        #{gradTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="baseTempDiff != null">
+        #{baseTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="upperLowTenpDiff != null">
+        #{upperLowTenpDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="inOutTempDiff != null">
+        #{inOutTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="intervals != null">
+        #{intervals,jdbcType=VARCHAR},
+      </if>
+      <if test="surfaceWarm != null">
+        #{surfaceWarm,jdbcType=VARCHAR},
+      </if>
+      <if test="oneColdBefore != null">
+        #{oneColdBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdAfter != null">
+        #{oneColdAfter,jdbcType=DOUBLE},
+      </if>
+      <if test="middleClod != null">
+        #{middleClod,jdbcType=DOUBLE},
+      </if>
+      <if test="adjacentBlock != null">
+        #{adjacentBlock,jdbcType=DOUBLE},
+      </if>
+      <if test="betweenBlock != null">
+        #{betweenBlock,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SbTempNorm">
+    update sb_temp_norm
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="pouringTemp != null">
+        pouring_temp = #{pouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="portTemp != null">
+        port_temp = #{portTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="entryTemp != null">
+        entry_temp = #{entryTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="minTemp != null">
+        min_temp = #{minTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="maxTemp != null">
+        max_temp = #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTempMin != null">
+        flow_temp_min = #{flowTempMin,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTemp != null">
+        flow_temp = #{flowTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="gradTemp != null">
+        grad_temp = #{gradTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="baseTempDiff != null">
+        base_temp_diff = #{baseTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="upperLowTenpDiff != null">
+        upper_low_tenp_diff = #{upperLowTenpDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="inOutTempDiff != null">
+        in_out_temp_diff = #{inOutTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="intervals != null">
+        Intervals = #{intervals,jdbcType=VARCHAR},
+      </if>
+      <if test="surfaceWarm != null">
+        surface_warm = #{surfaceWarm,jdbcType=VARCHAR},
+      </if>
+      <if test="oneColdBefore != null">
+        one_cold_before = #{oneColdBefore,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdAfter != null">
+        one_cold_after = #{oneColdAfter,jdbcType=DOUBLE},
+      </if>
+      <if test="middleClod != null">
+        middle_clod = #{middleClod,jdbcType=DOUBLE},
+      </if>
+      <if test="adjacentBlock != null">
+        adjacent_block = #{adjacentBlock,jdbcType=DOUBLE},
+      </if>
+      <if test="betweenBlock != null">
+        between_block = #{betweenBlock,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SbTempNorm">
+    update sb_temp_norm
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      pouring_temp = #{pouringTemp,jdbcType=DOUBLE},
+      port_temp = #{portTemp,jdbcType=DOUBLE},
+      entry_temp = #{entryTemp,jdbcType=DOUBLE},
+      min_temp = #{minTemp,jdbcType=DOUBLE},
+      max_temp = #{maxTemp,jdbcType=DOUBLE},
+      flow_temp_min = #{flowTempMin,jdbcType=DOUBLE},
+      flow_temp = #{flowTemp,jdbcType=DOUBLE},
+      grad_temp = #{gradTemp,jdbcType=DOUBLE},
+      base_temp_diff = #{baseTempDiff,jdbcType=DOUBLE},
+      upper_low_tenp_diff = #{upperLowTenpDiff,jdbcType=DOUBLE},
+      in_out_temp_diff = #{inOutTempDiff,jdbcType=DOUBLE},
+      Intervals = #{intervals,jdbcType=VARCHAR},
+      surface_warm = #{surfaceWarm,jdbcType=VARCHAR},
+      one_cold_before = #{oneColdBefore,jdbcType=DOUBLE},
+      one_cold_after = #{oneColdAfter,jdbcType=DOUBLE},
+      middle_clod = #{middleClod,jdbcType=DOUBLE},
+      adjacent_block = #{adjacentBlock,jdbcType=DOUBLE},
+      between_block = #{betweenBlock,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.WaterTempSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.WaterTempSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="enter_addr" jdbcType="VARCHAR" property="enterAddr" />
+    <result column="enter_channel_no" jdbcType="INTEGER" property="enterChannelNo" />
+    <result column="exit_addr" jdbcType="VARCHAR" property="exitAddr" />
+    <result column="exit_channel_no" jdbcType="INTEGER" property="exitChannelNo" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="enter_channel" jdbcType="INTEGER" property="enterChannel" />
+    <result column="exit_channel" jdbcType="INTEGER" property="exitChannel" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, enter_addr, enter_channel_no, exit_addr, exit_channel_no, cu_id,sb_id,enter_channel,exit_channel create_time,
+    `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from water_temp_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByUseful" resultMap="BaseResultMap">
+    select
+      its.*
+    from water_temp_sensor its
+           left join small_storage_bin ssb on ssb.id=its.sb_id
+    WHERE ssb.is_calculate='1'
+  </select>
+  <select id="selectByCuIdCNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from water_temp_sensor
+    where cu_id=#{cuId}
+  </select>
+
+  <select id="selectListByCuId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    wts.*
+    from water_temp_sensor wts
+    LEFT JOIN small_storage_bin ssb on wts.sb_id=ssb.id
+    where cu_id = #{cuId} and ssb.is_get_water='1' and  enter_channel is not null and exit_channel is not null
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from water_temp_sensor
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.WaterTempSensor">
+    insert into water_temp_sensor (id, enter_addr, enter_channel_no, 
+      exit_addr, exit_channel_no, cu_id,sb_id,enter_channel,exit_channel,
+      create_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{enterAddr,jdbcType=VARCHAR}, #{enterChannelNo,jdbcType=INTEGER}, 
+      #{exitAddr,jdbcType=VARCHAR}, #{exitChannelNo,jdbcType=INTEGER}, #{cuId,jdbcType=INTEGER},
+            #{sbId,jdbcType=INTEGER},#{enterChannel,jdbcType=INTEGER},#{exitChannel,jdbcType=INTEGER},
+      #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.WaterTempSensor">
+    insert into water_temp_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="enterAddr != null">
+        enter_addr,
+      </if>
+      <if test="enterChannelNo != null">
+        enter_channel_no,
+      </if>
+      <if test="exitAddr != null">
+        exit_addr,
+      </if>
+      <if test="exitChannelNo != null">
+        exit_channel_no,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="enterChannel != null">
+        enter_channel,
+      </if>
+      <if test="exitChannel != null">
+        exit_channel,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="enterAddr != null">
+        #{enterAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="enterChannelNo != null">
+        #{enterChannelNo,jdbcType=INTEGER},
+      </if>
+      <if test="exitAddr != null">
+        #{exitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="exitChannelNo != null">
+        #{exitChannelNo,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="enterChannel != null">
+        #{enterChannel,jdbcType=INTEGER},
+      </if>
+      <if test="exitChannel != null">
+        #{exitChannel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.WaterTempSensor">
+    update water_temp_sensor
+    <set>
+      <if test="enterAddr != null">
+        enter_addr = #{enterAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="enterChannelNo != null">
+        enter_channel_no = #{enterChannelNo,jdbcType=INTEGER},
+      </if>
+      <if test="exitAddr != null">
+        exit_addr = #{exitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="exitChannelNo != null">
+        exit_channel_no = #{exitChannelNo,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="enterChannel != null">
+        enter_channel = #{enterChannel,jdbcType=INTEGER},
+      </if>
+      <if test="exitChannel != null">
+        exit_channel = #{exitChannel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.WaterTempSensor">
+    update water_temp_sensor
+    set enter_addr = #{enterAddr,jdbcType=VARCHAR},
+      enter_channel_no = #{enterChannelNo,jdbcType=INTEGER},
+      exit_addr = #{exitAddr,jdbcType=VARCHAR},
+      exit_channel_no = #{exitChannelNo,jdbcType=INTEGER},
+      cu_id = #{cuId,jdbcType=INTEGER},
+        sb_id = #{sbId,jdbcType=INTEGER},
+        enter_channel = #{enterChannel,jdbcType=INTEGER},
+        exit_channel = #{exitChannel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.WaterTempSensorVO">
+    select
+      w.id as id,
+      s.small_sb_no as smallNo,
+      c.cu_addr as cuAddr,
+      w.enter_Addr as enterAddr,
+      w.enter_channel_no as enterChannelNo,
+      w.enter_channel as enterChannel,
+      w.enter_Addr as enterAddr,
+      w.exit_addr as exitAddr,
+      w.exit_channel_no as exitChannelNo,
+      w.exit_channel as exitChannel,
+      w.create_time as createTime,
+      w.operator as operator
+    from water_temp_sensor w
+           left join control_unit c on w.cu_id=c.id
+           left join small_storage_bin s on w.sb_id=s.id
+  </select>
+
+
+  <select id="selectListByQue" resultType="com.example.dampouring.model.vo.WaterTempSensorVO" parameterType="com.example.dampouring.query.WaterPressureSensorQue">
+    select
+      w.id as id,
+      s.small_sb_no as smallNo,
+      c.cu_addr as cuAddr,
+      w.enter_Addr as enterAddr,
+      w.enter_channel_no as enterChannelNo,
+      w.enter_channel as enterChannel,
+      w.enter_Addr as enterAddr,
+      w.exit_addr as exitAddr,
+      w.exit_channel_no as exitChannelNo,
+      w.exit_channel as exitChannel,
+      w.create_time as createTime,
+      w.operator as operator
+    from water_temp_sensor w
+           left join control_unit c on w.cu_id=c.id
+           left join small_storage_bin s on w.sb_id=s.id
+    <where>
+      <if test="sbId != null">
+        and  w.sb_id=#{sbId}
+      </if>
+    </where>
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.WaterTempSensorVO">
+    select
+    w.id as id,
+    s.small_sb_no as smallNo,
+    c.cu_addr as cuAddr,
+    w.enter_Addr as enterAddr,
+    w.enter_channel_no as enterChannelNo,
+    w.enter_channel as enterChannel,
+    w.enter_Addr as enterAddr,
+    w.exit_addr as exitAddr,
+    w.exit_channel_no as exitChannelNo,
+    w.exit_channel as exitChannel,
+    w.create_time as createTime,
+    w.operator as operator
+    from water_temp_sensor w
+    left join control_unit c on w.cu_id=c.id
+    left join small_storage_bin s on w.sb_id=s.id
+    where w.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

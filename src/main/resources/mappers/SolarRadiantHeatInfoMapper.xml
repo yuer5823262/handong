@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SolarRadiantHeatInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="moment_val" jdbcType="DOUBLE" property="momentVal" />
+    <result column="aggregate_val" jdbcType="DOUBLE" property="aggregateVal" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, moment_val, aggregate_val, `date`,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from solar_radiant_heat_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from solar_radiant_heat_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
+    insert into solar_radiant_heat_info (id, moment_val, aggregate_val, 
+      `date`,bl)
+    values (#{id,jdbcType=INTEGER}, #{momentVal,jdbcType=DOUBLE}, #{aggregateVal,jdbcType=DOUBLE}, 
+      #{date,jdbcType=VARCHAR},#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
+    insert into solar_radiant_heat_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="momentVal != null">
+        moment_val,
+      </if>
+      <if test="aggregateVal != null">
+        aggregate_val,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="momentVal != null">
+        #{momentVal,jdbcType=DOUBLE},
+      </if>
+      <if test="aggregateVal != null">
+        #{aggregateVal,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
+    update solar_radiant_heat_info
+    <set>
+      <if test="momentVal != null">
+        moment_val = #{momentVal,jdbcType=DOUBLE},
+      </if>
+      <if test="aggregateVal != null">
+        aggregate_val = #{aggregateVal,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
+    update solar_radiant_heat_info
+    set moment_val = #{momentVal,jdbcType=DOUBLE},
+      aggregate_val = #{aggregateVal,jdbcType=DOUBLE},
+      `date` = #{date,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from solar_radiant_heat_info
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.WeatherForecastQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from solar_radiant_heat_info
+    <where>
+    <if test="startTime != null">
+      date &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+    and date &lt;= #{endTime}
+    </if>
+    </where>
+    order by date desc
+  </select>
+</mapper>

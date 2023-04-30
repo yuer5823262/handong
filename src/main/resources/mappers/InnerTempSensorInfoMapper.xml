@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.InnerTempSensorInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.InnerTempSensorInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="inner_temp_sensor_id" jdbcType="INTEGER" property="innerTempSensorId" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="avgtemp" jdbcType="DOUBLE" property="avgTemp" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="norm" jdbcType="DOUBLE" property="norm" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inner_temp_sensor_id, `time`, avgtemp,`temp`,norm,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from inner_temp_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from inner_temp_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.InnerTempSensorInfo">
+    insert into inner_temp_sensor_info (id, inner_temp_sensor_id, `time`,
+                                        avgtemp,`temp`,norm,bl)
+    values (#{id,jdbcType=INTEGER}, #{innerTempSensorId,jdbcType=INTEGER}, #{time,jdbcType=CHAR},
+            #{avgTemp,jdbcType=DOUBLE},#{temp,jdbcType=DOUBLE},#{norm,jdbcType=DOUBLE},#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.InnerTempSensorInfo">
+    insert into inner_temp_sensor_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="innerTempSensorId != null">
+        inner_temp_sensor_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="avgTemp != null">
+        avgtemp,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="innerTempSensorId != null">
+        #{innerTempSensorId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="avgTemp != null">
+        #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.InnerTempSensorInfo">
+    update inner_temp_sensor_info
+    <set>
+      <if test="innerTempSensorId != null">
+        inner_temp_sensor_id = #{innerTempSensorId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="avgTemp != null">
+        avgtemp = #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.InnerTempSensorInfo">
+    update inner_temp_sensor_info
+    set inner_temp_sensor_id = #{innerTempSensorId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=CHAR},
+       avgtemp = #{avgTemp,jdbcType=DOUBLE},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      `norm` = #{norm,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="List" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+      itf.id as id,
+      itf.time as time,
+      itf.avgtemp as avgTemp,
+      itf.temp as temp,
+      itf.norm as norm,
+      it.temp_no as tempSensorNo,
+      s.small_sb_no as smallNo,
+      b.mark_number as betonNo,
+      itf.bl as bl
+    from inner_temp_sensor_info itf
+      left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      left join small_storage_bin s on it.sb_id = s.id
+      left join pouring_base p on s.id=p.small_sb_id
+      left join beton b on p.beton_id = b.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.InnerTempSensorInfoQue" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+    itf.id as id,
+    itf.time as time,
+    itf.norm as norm,
+    itf.avgtemp as avgTemp,
+    itf.temp as temp,
+    it.temp_no as tempSensorNo,
+    s.small_sb_no as smallNo,
+    b.mark_number as betonNo,
+    itf.bl as bl
+    from inner_temp_sensor_info itf
+    left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+    left join small_storage_bin s on it.sb_id = s.id
+    left join pouring_base p on s.id=p.small_sb_id
+    left join beton b on p.beton_id = b.id
+    <where>
+    <if test="startTime != null">
+      and  itf.time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and itf.time &lt;= #{endTime}
+    </if>
+    <if test="smallId != null">
+      and  s.id =#{smallId}
+    </if>
+    <if test="innerTempId != null">
+      and itf.inner_temp_sensor_id = #{innerTempId}
+    </if>
+    </where>
+    order by itf.time desc
+  </select>
+
+  <select id="timeAvgTemp" parameterType="java.lang.String" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+      itf.id as id,
+      itf.time as time,
+    itf.temp as temp,
+    it.temp_no as tempSensorNo,
+    it.stake_mark_up as zhs,
+    it.stake_mark_down as zhx,
+    it.stake_mark_left as zhz,
+    it.stake_mark_right as zhy,
+    it.create_time as mssj,
+    s.small_sb_no as smallNo,
+    b.mark_number as betonNo,
+    itf.bl as bl,
+		aaa.avgTemp as avgTemp
+    from inner_temp_sensor_info itf
+      left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      left join small_storage_bin s on it.sb_id = s.id
+      left join pouring_base p on s.id=p.small_sb_id
+      left join beton b on p.beton_id = b.id
+      LEFT JOIN
+      (
+      select it.sb_id,itf.time,avg(itf.temp) as avgTemp
+      from inner_temp_sensor_info itf
+      left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      where itf.time=#{time} and TRIM(itf.temp)!=''
+      GROUP BY it.sb_id,itf.time
+      ) aaa on aaa.sb_id=s.id and itf.time = aaa.time
+    where itf.time=#{time} and TRIM(itf.temp)!=''
+  </select>
+<!--  <select id="coolingRate" parameterType="com.example.dampouring.query.InnerTempSensorInfoQue" resultType="com.example.dampouring.model.vo.CoolingRateVo">-->
+<!--    select-->
+<!--    LEFT(itf.time,10) as time,-->
+<!--    avg(itf.temp) as temp-->
+<!--    from inner_temp_sensor_info itf-->
+<!--    left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id-->
+<!--    left join small_storage_bin s on it.sb_id = s.id-->
+<!--    <where>-->
+<!--      <if test="startTime != null">-->
+<!--        and  itf.time &gt;=#{startTime}-->
+<!--      </if>-->
+<!--      <if test="endTime != null">-->
+<!--        and itf.time &lt;= #{endTime}-->
+<!--      </if>-->
+<!--      <if test="smallId != null">-->
+<!--        and  s.id =#{smallId}-->
+<!--      </if>-->
+<!--      <if test="innerTempId != null">-->
+<!--        and itf.inner_temp_sensor_id = #{innerTempId}-->
+<!--      </if>-->
+<!--    </where>-->
+<!--    group by LEFT(itf.time,10)-->
+<!--    ORDER BY LEFT(itf.time,10)-->
+<!--  </select>-->
+
+  <select id="coolingRate" parameterType="com.example.dampouring.query.InnerTempSensorInfoQue" resultType="com.example.dampouring.model.vo.CoolingRateVo">
+    SELECT DISTINCT
+      LEFT (itf.time, 10) time,
+      itf.avgtemp as temp
+    FROM
+      inner_temp_sensor_info itf
+      LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+    WHERE
+      it.sb_id = #{smallId}
+    <if test="startTime != null">
+      and  itf.time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and itf.time &lt;= #{endTime}
+    </if>
+    <if test="innerTempId != null">
+      and itf.inner_temp_sensor_id = #{innerTempId}
+    </if>
+      AND itf.time IN (
+      SELECT
+      max(itf.time) AS time
+      FROM
+      inner_temp_sensor_info itf
+      LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+      WHERE
+      it.sb_id = #{smallId}
+    <if test="startTime != null">
+      and  itf.time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and itf.time &lt;= #{endTime}
+    </if>
+    <if test="innerTempId != null">
+      and itf.inner_temp_sensor_id = #{innerTempId}
+    </if>
+      GROUP BY
+      LEFT (itf.time, 10)
+      )
+    <if test="sortOrder != null">
+      ORDER BY
+      time ${sortOrder}
+    </if>
+
+  </select>
+
+  <select id="maxTemp" parameterType="com.example.dampouring.query.TopTempAssessQue" resultType="com.example.dampouring.model.vo.TopTempAssessVO">
+    select topTemp,smallNo,topTempTime from
+    (select
+    max(itf.temp) as topTemp,
+    s.small_sb_no as smallNo
+    from inner_temp_sensor_info itf
+    left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+    left join small_storage_bin s on it.sb_id = s.id
+    group by smallNo) linshi,
+    (select itf.time as topTempTime,itf.temp as temp,s.small_sb_no as smallNo1,s.id as smallId
+    from inner_temp_sensor_info itf
+    left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+    left join small_storage_bin s on it.sb_id = s.id
+    ) linshi2
+    WHERE linshi.smallNo=linshi2.smallNo1 and linshi.topTemp=linshi2.temp
+      <if test="sbId != null">
+        and  linshi2.smallId =#{sbId}
+      </if>
+  </select>
+
+  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.TopTempAssess">
+    SELECT
+      itsId,
+      topTemp,
+      topAvgTemp,
+      pouringBaseId,
+      topTempTime,
+      normTemp,
+
+      IF (
+              topAvgTemp >= normTemp,
+              "是",
+              "否"
+        ) AS isExcessive,
+
+      IF (
+              topAvgTemp >= normTemp,
+              topAvgTemp - normTemp,
+              0
+        ) AS excessive
+    FROM
+      (
+        SELECT
+          max(itf.temp) AS topTemp,
+          max(itf.avgtemp) AS topAvgTemp,
+          p.id AS pouringBaseId
+        FROM
+          inner_temp_sensor_info itf
+            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+            LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+            LEFT JOIN pouring_base p ON p.small_sb_id = s.id
+        WHERE
+            itf.inner_temp_sensor_id IN (
+            SELECT DISTINCT
+              inner_temp_sensor_id
+            FROM
+              inner_temp_sensor_info
+            WHERE
+          LEFT (time, 10) = LEFT (now(), 10)
+      )
+    GROUP BY
+      pouringBaseId
+      ) linshi,
+	(
+		SELECT
+			itf.inner_temp_sensor_id AS itsId,
+			itf.time AS topTempTime,
+			itf.avgtemp AS avgtemp,
+			itf.temp AS temp,
+			p.id AS pouringBaseId1,
+			itf.norm AS normTemp
+		FROM
+			inner_temp_sensor_info itf
+		LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+		LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+		LEFT JOIN pouring_base p ON p.small_sb_id = s.id
+		WHERE
+			itf.inner_temp_sensor_id IN (
+				SELECT DISTINCT
+					inner_temp_sensor_id
+				FROM
+					inner_temp_sensor_info
+				WHERE
+					LEFT (time, 10) = LEFT (now(), 10)
+			)
+	) linshi2
+    WHERE
+      linshi.pouringBaseId = linshi2.pouringBaseId1
+      AND linshi.topAvgTemp = linshi2.avgtemp
+      AND linshi.topTemp = linshi2.temp
+  </select>
+
+  <select id="damTemp" parameterType="com.example.dampouring.query.DamTempQue" resultType="com.example.dampouring.model.vo.DamTempVO">
+
+    SELECT
+    sb.small_sb_no as sbNo,
+    sb.elevation_start as elevationStart,
+    sb.elevation_end as elevationEnd,
+    linshi.aaa as time,
+    linshi.avgTemp as avgTemp
+    from small_storage_bin sb
+    RIGHT JOIN
+    (select
+    LEFT(itf.time,10) as aaa,
+    avg(itf.temp) as avgTemp,
+    s.small_sb_no as sbNo
+    from inner_temp_sensor_info itf
+    left join inner_temp_sensor it on itf.inner_temp_sensor_id= it.id
+    left join small_storage_bin s on it.sb_id = s.id
+    <where>
+      <if test="damNo != null">
+        and  s.ds_start &lt;=#{damNo} and s.ds_end &gt;=#{damNo}
+      </if>
+      <if test="times != null">
+        and LEFT(itf.time,10) in
+        <foreach close=")" collection="times" item="time" open="(" separator=",">
+          #{time}
+        </foreach>
+      </if>
+    </where>
+    GROUP BY sbNo,aaa) linshi on linshi.sbNo = sb.small_sb_no
+  </select>
+  <select id="tempMonitor" resultType="com.example.dampouring.model.vo.InnerTempMonitorVO">
+    SELECT * from
+               (SELECT
+                  sbNo,
+                  max(time) AS time,
+	avg(temp) AS temp,
+	max(norm) AS norm,
+	max(age) AS age,
+IF (
+	avg(temp) &gt;= max(norm),
+	"是",
+	"否"
+) AS isCb
+                FROM
+                  (
+                  SELECT
+                  t1.*
+                  FROM
+                  (
+                  SELECT
+                  itf.time AS time,
+                  itf.temp AS temp,
+                  itf.norm AS norm,
+                  s.small_sb_no AS sbNo,
+                  TIMESTAMPDIFF(DAY, p.close_time, now()) AS age
+                  FROM
+                  inner_temp_sensor_info itf
+                  LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                  LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                  LEFT JOIN pouring_base p ON s.id = p.small_sb_id
+                  ) t1
+                  RIGHT JOIN (
+                  SELECT
+                  max(time) AS time,
+                  s.small_sb_no AS smallNo,
+                  s.id AS sbId
+                  FROM
+                  inner_temp_sensor_info itf
+                  LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                  LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                  WHERE left(itf.time,10)=left(now(),10)
+                  GROUP BY
+                  s.id
+                  ) t2 ON t1.sbNo = t2.smallNo
+                  AND t1.time = t2.time
+                  ) tb1
+                GROUP BY
+                  tb1.sbNo
+               )zwtb1,
+               (
+                 SELECT
+                   tb1.sbId,
+                   tb1.sbNo,
+                   tb2.avgTemp - tb1.avgTemp AS tempDiff
+                 FROM
+                   (
+                     SELECT
+                       s.id AS sbId,
+                       s.small_sb_no as sbNo,
+                       avg(temp) AS avgTemp
+                     FROM
+                       inner_temp_sensor_info itf
+                         LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                         LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                     WHERE
+                       TO_DAYS(time) = TO_DAYS(NOW())
+                     GROUP BY
+                       s.id
+                   ) tb1
+                     LEFT JOIN (
+                     SELECT
+                       s.id AS sbId,
+                       avg(temp) AS avgTemp
+                     FROM
+                       inner_temp_sensor_info itf
+                         LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                         LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                     WHERE
+                       TO_DAYS(NOW()) - TO_DAYS(time) = 1
+                     GROUP BY
+                       s.id) tb2 ON tb1.sbId = tb2.sbId
+               )zwtb2
+    WHERE zwtb1.sbNo=zwtb2.sbNo
+  </select>
+  <select id="selectBySIdAndTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from inner_temp_sensor_info
+    where inner_temp_sensor_id = #{sId,jdbcType=INTEGER} and time = #{time,jdbcType=VARCHAR}
+  </select>
+</mapper>

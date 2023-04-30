@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.DailyInnerTempMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.DailyInnerTemp">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="top_temp" jdbcType="DOUBLE" property="topTemp" />
+    <result column="top_norm" jdbcType="DOUBLE" property="topNorm" />
+    <result column="is_fz" jdbcType="VARCHAR" property="isFz" />
+    <result column="is_fg" jdbcType="VARCHAR" property="isFg" />
+    <result column="inner_temp" jdbcType="DOUBLE" property="innerTemp" />
+    <result column="is_cl" jdbcType="VARCHAR" property="isCl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `time`, sb_id, age, top_temp, top_norm, is_fz, is_fg, inner_temp, is_cl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from daily_inner_temp
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_inner_temp
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.DailyInnerTemp">
+    insert into daily_inner_temp (id, `time`, sb_id, 
+      age, top_temp, top_norm, 
+      is_fz, is_fg, inner_temp, 
+      is_cl)
+    values (#{id,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{sbId,jdbcType=INTEGER}, 
+      #{age,jdbcType=INTEGER}, #{topTemp,jdbcType=DOUBLE}, #{topNorm,jdbcType=DOUBLE}, 
+      #{isFz,jdbcType=VARCHAR}, #{isFg,jdbcType=VARCHAR}, #{innerTemp,jdbcType=DOUBLE}, 
+      #{isCl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.DailyInnerTemp">
+    insert into daily_inner_temp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="topTemp != null">
+        top_temp,
+      </if>
+      <if test="topNorm != null">
+        top_norm,
+      </if>
+      <if test="isFz != null">
+        is_fz,
+      </if>
+      <if test="isFg != null">
+        is_fg,
+      </if>
+      <if test="innerTemp != null">
+        inner_temp,
+      </if>
+      <if test="isCl != null">
+        is_cl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="topTemp != null">
+        #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topNorm != null">
+        #{topNorm,jdbcType=DOUBLE},
+      </if>
+      <if test="isFz != null">
+        #{isFz,jdbcType=VARCHAR},
+      </if>
+      <if test="isFg != null">
+        #{isFg,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTemp != null">
+        #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="isCl != null">
+        #{isCl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.DailyInnerTemp">
+    update daily_inner_temp
+    <set>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="topTemp != null">
+        top_temp = #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topNorm != null">
+        top_norm = #{topNorm,jdbcType=DOUBLE},
+      </if>
+      <if test="isFz != null">
+        is_fz = #{isFz,jdbcType=VARCHAR},
+      </if>
+      <if test="isFg != null">
+        is_fg = #{isFg,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTemp != null">
+        inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="isCl != null">
+        is_cl = #{isCl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.DailyInnerTemp">
+    update daily_inner_temp
+    set `time` = #{time,jdbcType=VARCHAR},
+      sb_id = #{sbId,jdbcType=INTEGER},
+      age = #{age,jdbcType=INTEGER},
+      top_temp = #{topTemp,jdbcType=DOUBLE},
+      top_norm = #{topNorm,jdbcType=DOUBLE},
+      is_fz = #{isFz,jdbcType=VARCHAR},
+      is_fg = #{isFg,jdbcType=VARCHAR},
+      inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      is_cl = #{isCl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.DailyPourTempQue" resultType="com.example.dampouring.model.vo.DailyInnerTempVO">
+    select
+    d.id as  id,
+
+    d.time as  time,
+
+    s.id as  sbId,
+    s.small_sb_no as  sbNo,
+    d.age as  age,
+
+    d.top_temp as  topTemp,
+
+    d.top_norm as  topNorm,
+
+    d.is_fz as  isFz,
+
+    d.is_fg as  isFg,
+
+    d.inner_temp as  innerTemp,
+
+    d.is_cl as  isCl
+    from daily_inner_temp d
+    left join small_storage_bin s on d.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id =#{sbId}
+      </if>
+      <if test="startTime != null">
+        and  d.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and d.time &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="dailyInnerTemp" resultType="com.example.dampouring.model.pojo.DailyInnerTemp">
+    SELECT
+    now() as time,
+    sb.sbId as sbId,
+    sb.age as age,
+    tta.top_avg_temp as topTemp,
+    tta.norm_temp as topNorm,
+    nit.innerTemp as innerTemp,
+    if(nit.innerTemp>=tta.top_avg_temp,"是","否") as isFz,
+    if(NOW()>=sb.fgsj,"是","否") as isFg,
+    if(nit.innerTemp&lt;stn.min_temp,"是","否") as isCl
+    from
+    (
+    SELECT
+    ssb.id AS sbId,
+    TIMESTAMPDIFF(DAY, pb.close_time, now()) AS age,
+    pb.id as pId,
+    pb.closure_grout_time as fgsj
+    FROM
+    small_storage_bin ssb
+    LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+    WHERE
+    NOW() >= pb.close_time
+    AND ssb.ds_start &lt;= 27
+    ) sb
+    LEFT JOIN top_temp_assess as tta on tta.pouring_base_id =  sb.pId
+    LEFT JOIN newest_inner_temp nit on nit.sbId = sb.sbId
+    LEFT JOIN sb_temp_norm stn on stn.sb_id = sb.sbId
+  </select>
+</mapper>

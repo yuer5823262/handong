@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.FaceTempSensorInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.FaceTempSensorInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="inner_temp_sensor_id" jdbcType="INTEGER" property="innerTempSensorId" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="avgtemp" jdbcType="DOUBLE" property="avgtemp" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="norm" jdbcType="DOUBLE" property="norm" />
+    <result column="bl" jdbcType="TINYINT" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inner_temp_sensor_id, `time`, avgtemp, `temp`, norm, bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from face_temp_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from face_temp_sensor_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.FaceTempSensorInfo">
+    insert into face_temp_sensor_info (id, inner_temp_sensor_id, `time`, 
+      avgtemp, `temp`, norm, bl
+      )
+    values (#{id,jdbcType=INTEGER}, #{innerTempSensorId,jdbcType=INTEGER}, #{time,jdbcType=CHAR}, 
+      #{avgtemp,jdbcType=DOUBLE}, #{temp,jdbcType=DOUBLE}, #{norm,jdbcType=DOUBLE}, #{bl,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.FaceTempSensorInfo">
+    insert into face_temp_sensor_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="innerTempSensorId != null">
+        inner_temp_sensor_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="avgtemp != null">
+        avgtemp,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="innerTempSensorId != null">
+        #{innerTempSensorId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="avgtemp != null">
+        #{avgtemp,jdbcType=DOUBLE},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.FaceTempSensorInfo">
+    update face_temp_sensor_info
+    <set>
+      <if test="innerTempSensorId != null">
+        inner_temp_sensor_id = #{innerTempSensorId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="avgtemp != null">
+        avgtemp = #{avgtemp,jdbcType=DOUBLE},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="bl != null">
+        bl = #{bl,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.FaceTempSensorInfo">
+    update face_temp_sensor_info
+    set inner_temp_sensor_id = #{innerTempSensorId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=CHAR},
+      avgtemp = #{avgtemp,jdbcType=DOUBLE},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      norm = #{norm,jdbcType=DOUBLE},
+      bl = #{bl,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySIdAndTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_temp_sensor_info
+    where inner_temp_sensor_id = #{sId,jdbcType=INTEGER} and time = #{time,jdbcType=VARCHAR}
+  </select>
+  <select id="timeAvgTemp" parameterType="java.lang.String" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+      itf.id as id,
+      itf.time as time,
+    itf.temp as temp,
+    it.temp_no as tempSensorNo,
+    it.stake_mark_up as zhs,
+    it.stake_mark_down as zhx,
+    it.stake_mark_left as zhz,
+    it.stake_mark_right as zhy,
+    it.create_time as mssj,
+    s.small_sb_no as smallNo,
+    b.mark_number as betonNo,
+    itf.bl as bl,
+		aaa.avgTemp as avgTemp
+    from face_temp_sensor_info itf
+      left join face_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      left join small_storage_bin s on it.sb_id = s.id
+      left join pouring_base p on s.id=p.small_sb_id
+      left join beton b on p.beton_id = b.id
+      LEFT JOIN
+      (
+      select it.sb_id,itf.time,avg(itf.temp) as avgTemp
+      from face_temp_sensor_info itf
+      left join face_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      where itf.time=#{time} and TRIM(itf.temp)!=''
+      GROUP BY it.sb_id,itf.time
+      ) aaa on aaa.sb_id=s.id and itf.time = aaa.time
+    where itf.time=#{time} and TRIM(itf.temp)!=''
+  </select>
+
+
+
+  <select id="List" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+      itf.id as id,
+      itf.time as time,
+      itf.avgtemp as avgTemp,
+      itf.temp as temp,
+      itf.norm as norm,
+      it.temp_no as tempSensorNo,
+      s.small_sb_no as smallNo,
+      b.mark_number as betonNo,
+      itf.bl as bl
+    from face_temp_sensor_info itf
+      left join face_temp_sensor it on itf.inner_temp_sensor_id= it.id
+      left join small_storage_bin s on it.sb_id = s.id
+      left join pouring_base p on s.id=p.small_sb_id
+      left join beton b on p.beton_id = b.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.InnerTempSensorInfoQue" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+    select
+    itf.id as id,
+    itf.time as time,
+    itf.norm as norm,
+    itf.avgtemp as avgTemp,
+    itf.temp as temp,
+    it.temp_no as tempSensorNo,
+    s.small_sb_no as smallNo,
+    b.mark_number as betonNo,
+    itf.bl as bl
+    from face_temp_sensor_info itf
+    left join face_temp_sensor it on itf.inner_temp_sensor_id= it.id
+    left join small_storage_bin s on it.sb_id = s.id
+    left join pouring_base p on s.id=p.small_sb_id
+    left join beton b on p.beton_id = b.id
+    <where>
+      <if test="startTime != null">
+        and  itf.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and itf.time &lt;= #{endTime}
+      </if>
+      <if test="smallId != null">
+        and  s.id =#{smallId}
+      </if>
+      <if test="innerTempId != null">
+        and itf.inner_temp_sensor_id = #{innerTempId}
+      </if>
+    </where>
+    order by itf.time desc
+  </select>
+</mapper>

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.WaterPipeFlowInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="water_pipe_id" jdbcType="INTEGER" property="waterPipeId" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="enter_temp" jdbcType="DOUBLE" property="enterTemp" />
+    <result column="out_temp" jdbcType="DOUBLE" property="outTemp" />
+    <result column="enter_mpa" jdbcType="DOUBLE" property="enterMpa" />
+    <result column="out_mpa" jdbcType="DOUBLE" property="outMpa" />
+    <result column="flow" jdbcType="DOUBLE" property="flow" />
+    <result column="opening" jdbcType="DOUBLE" property="opening" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+    <result column="qi" jdbcType="CHAR" property="qi" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, water_pipe_id, `time`, enter_temp, out_temp, enter_mpa, out_mpa, flow, opening,bl,qi
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from water_pipe_flow_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTimeAndWpId" parameterType="com.example.dampouring.query.WaterPipeFlowInfoByTimeAndWpIdQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from water_pipe_flow_info
+    where time = #{time} and water_pipe_id = #{wpId}
+    limit 1
+  </select>
+  <delete id="deleteEmpty">
+    delete from water_pipe_flow_info
+    where enter_temp is null and out_temp is null and flow is null
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from water_pipe_flow_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
+    insert into water_pipe_flow_info (id, water_pipe_id, `time`, 
+      enter_temp, out_temp, enter_mpa, 
+      out_mpa, flow, opening,bl,qi)
+    values (#{id,jdbcType=INTEGER}, #{waterPipeId,jdbcType=INTEGER}, #{time,jdbcType=CHAR}, 
+      #{enterTemp,jdbcType=DOUBLE}, #{outTemp,jdbcType=DOUBLE}, #{enterMpa,jdbcType=DOUBLE}, 
+      #{outMpa,jdbcType=DOUBLE}, #{flow,jdbcType=DOUBLE}, #{opening,jdbcType=DOUBLE},#{bl,jdbcType=INTEGER},#{qi,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
+    insert into water_pipe_flow_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waterPipeId != null">
+        water_pipe_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="enterTemp != null">
+        enter_temp,
+      </if>
+      <if test="outTemp != null">
+        out_temp,
+      </if>
+      <if test="enterMpa != null">
+        enter_mpa,
+      </if>
+      <if test="outMpa != null">
+        out_mpa,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="opening != null">
+        opening,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+      <if test="qi != null">
+        qi,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterPipeId != null">
+        #{waterPipeId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="enterTemp != null">
+        #{enterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outTemp != null">
+        #{outTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpa != null">
+        #{enterMpa,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpa != null">
+        #{outMpa,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="opening != null">
+        #{opening,jdbcType=DOUBLE},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+      <if test="qi != null">
+        #{qi,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
+    update water_pipe_flow_info
+    <set>
+      <if test="waterPipeId != null">
+        water_pipe_id = #{waterPipeId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="enterTemp != null">
+        enter_temp = #{enterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outTemp != null">
+        out_temp = #{outTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpa != null">
+        enter_mpa = #{enterMpa,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpa != null">
+        out_mpa = #{outMpa,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="opening != null">
+        opening = #{opening,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
+    update water_pipe_flow_info
+    set water_pipe_id = #{waterPipeId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=CHAR},
+      enter_temp = #{enterTemp,jdbcType=DOUBLE},
+      out_temp = #{outTemp,jdbcType=DOUBLE},
+      enter_mpa = #{enterMpa,jdbcType=DOUBLE},
+      out_mpa = #{outMpa,jdbcType=DOUBLE},
+      flow = #{flow,jdbcType=DOUBLE},
+      opening = #{opening,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="List" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO">
+    select
+      wpi.id as id,
+      s.small_sb_no as smallNo,
+      wpi.time as time,
+      wp.wp_no as waterPipeNo,
+      wpi.enter_temp as enterTemp,
+    wpi.out_temp as outTemp,
+    wpi.enter_mpa as enterMpa,
+    wpi.out_mpa as outMpa,
+    wpi.flow as flow,
+    wpi.opening as opening,
+    wpi.bl as bl,
+    wpi.qi as qi
+    from water_pipe_flow_info wpi
+      left join water_pipe wp on wpi.water_pipe_id= wp.id
+      left join small_storage_bin s on wp.sb_id = s.id
+  </select>
+
+  <select id="selectByTime" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO">
+    select
+      wpi.id as id,
+      s.small_sb_no as smallNo,
+      wpi.time as time,
+      wp.wp_no as waterPipeNo,
+      wpi.enter_temp as enterTemp,
+    wpi.out_temp as outTemp,
+    wpi.enter_mpa as enterMpa,
+    wpi.out_mpa as outMpa,
+    wpi.flow as flow,
+    wpi.opening as opening,
+    wpi.bl as bl,
+    wpi.qi as qi
+    from water_pipe_flow_info wpi
+      left join water_pipe wp on wpi.water_pipe_id= wp.id
+      left join small_storage_bin s on wp.sb_id = s.id
+    where wpi.time=#{time}
+  </select>
+  <select id="waterMonitor" resultType="com.example.dampouring.model.vo.WaterMonitorVO">
+    SELECT
+      t2.*
+    FROM
+      (
+        SELECT
+          wpi.water_pipe_id AS wpId,
+          max(wpi.time) AS time
+        FROM
+          water_pipe_flow_info wpi
+        GROUP BY
+          wpi.water_pipe_id
+      ) t1
+        LEFT JOIN (
+        SELECT
+          s.small_sb_no AS smallNo,
+          wpi.time AS time,
+		wp.id AS wpId,
+		wp.wp_no AS waterPipeNo,
+		wpi.enter_temp AS enterTemp,
+		wpi.out_temp AS outTemp,
+		wpi.enter_mpa AS enterMpa,
+		wpi.out_mpa AS outMpa,
+		wpi.flow AS flow,
+		wpi.opening AS opening,
+		abs(wpi.enter_mpa-wpi.out_mpa) as mpaDiff,
+		if(abs(wpi.enter_mpa-wpi.out_mpa)>0.3,'是','否') as isCb
+        FROM
+          water_pipe_flow_info wpi
+          LEFT JOIN water_pipe wp ON wpi.water_pipe_id = wp.id
+          LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
+      ) t2 ON t1.wpId = t2.wpId
+        AND t1.time = t2.time
+  </select>
+
+
+  <select id="calculating" resultType="com.example.dampouring.model.vo.CalculatingVO" parameterType="com.example.dampouring.query.WaterPipeFlowAssessQue">
+    SELECT
+    tb1.sbNo AS sbNo,
+    tb1.flow AS flow,
+    tb1.out_temp AS outTemp,
+    tb1.enter_temp AS enterTemp,
+    tb1.wpNo AS wpNo,
+    tb2.innerTemp AS temp,
+    tb1.qi AS qi
+    FROM
+    (
+    SELECT
+    wpi.*, s.id AS sbId,
+    s.small_sb_no AS sbNo,
+    wp.wp_no AS wpNo
+    FROM
+    (
+    SELECT
+    wpi.*
+    FROM
+    water_pipe_flow_info wpi,
+    (
+    SELECT
+    water_pipe_id,
+    max(time) AS time
+    FROM
+    water_pipe_flow_info
+    GROUP BY
+    water_pipe_id
+    ) t2
+    WHERE
+    wpi.water_pipe_id = t2.water_pipe_id
+    AND wpi.time = t2.time
+    ) wpi
+    LEFT JOIN water_pipe wp ON wpi.water_pipe_id = wp.id
+    RIGHT JOIN small_storage_bin s ON wp.sb_id = s.id
+    LEFT JOIN pouring_base pb ON pb.small_sb_id = s.id
+    WHERE
+    s.is_get_water = '1'
+    ) tb1
+    LEFT JOIN newest_inner_temp tb2 ON tb1.sbId = tb2.sbId
+    <where>
+      <if test="sbId != null">
+        and  tb1.sbId=#{sbId}
+      </if>
+    </where>
+
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.WaterPipeFlowInfoQue" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO">
+    select
+    wpi.id as id,
+    s.small_sb_no as smallNo,
+    wpi.time as time,
+    wp.wp_no as waterPipeNo,
+    wpi.enter_temp as enterTemp,
+    wpi.out_temp as outTemp,
+    wpi.enter_mpa as enterMpa,
+    wpi.out_mpa as outMpa,
+    wpi.flow as flow,
+    wpi.opening as opening,
+    wpi.bl as bl,
+    wpi.qi as qi
+    from water_pipe_flow_info wpi
+    left join water_pipe wp on wpi.water_pipe_id= wp.id
+    left join small_storage_bin s on wp.sb_id = s.id
+    <where>
+      <if test="startTime != null">
+        and  wpi.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and wpi.time &lt;= #{endTime}
+      </if>
+      <if test="smallId != null">
+        and  s.id=#{smallId}
+      </if>
+      <if test="waterPipeId != null">
+        and wpi.water_pipe_id = #{waterPipeId}
+      </if>
+    </where>
+    order by wpi.time desc
+  </select>
+
+
+  <select id="CombinedCurves" parameterType="com.example.dampouring.query.CombinedCurvesQue" resultType="com.example.dampouring.model.vo.CombinedCurvesVO">
+    SELECT
+    tb1.*, tma.avg_temp as avgTempMeasurements,
+    tb2.avgInnerTemp
+    FROM
+    (
+    SELECT
+    LEFT (wpfi.time, 10) AS time,
+    avg(wpfi.enter_temp) AS avgEnterTemp,
+    AVG(wpfi.out_temp) AS avgOutTemp,
+    AVG(wpfi.flow) AS avgFlow
+    FROM
+    water_pipe_flow_info wpfi
+    LEFT JOIN water_pipe wp ON wpfi.water_pipe_id = wp.id
+    <where>
+      <if test="sbId != null">
+        and  wp.sb_id = #{sbId}
+      </if>
+      <if test="startTime != null">
+        and  time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+    </where>
+
+    GROUP BY
+    LEFT (wpfi.time, 10)
+    ) tb1
+    LEFT JOIN temp_measurements_assess tma ON tma.time = tb1.time
+    LEFT JOIN (
+    SELECT
+    LEFT (itsi.time, 10) AS time,
+    avg(itsi.temp) AS avgInnerTemp
+    FROM
+    inner_temp_sensor_info itsi
+    LEFT JOIN inner_temp_sensor its ON its.id = itsi.inner_temp_sensor_id
+    <where>
+      <if test="sbId != null">
+        and  its.sb_id = #{sbId}
+      </if>
+    </where>
+
+    GROUP BY
+    LEFT (itsi.time, 10)
+    ) tb2 ON tb1.time = tb2.time
+    ORDER BY tb1.time
+
+  </select>
+
+
+
+
+  <select id="assess" parameterType="com.example.dampouring.query.WaterPipeFlowAssessQue" resultType="com.example.dampouring.model.vo.WaterPipeFlowAssessVO">
+    SELECT ls1.*,ls2.branch_num as pipeNum,
+    ls2.small_sb_no as smallNo,
+    ls2.water_begin_time as startTime
+    from
+    (select
+    max(wpi.enter_temp) as enterTempTop,
+    avg(wpi.enter_temp) as enterTempAvg,
+    min(wpi.enter_temp) as enterTempBottom,
+    max(wpi.out_temp) as outTempTop,
+    avg(wpi.out_temp) as outTempAvg,
+    min(wpi.out_temp) as outTempBottom,
+    max(wpi.enter_mpa) as enterMpaTop,
+    avg(wpi.enter_mpa) as enterMpaAvg,
+    min(wpi.enter_mpa) as enterMpaBottom,
+    max(wpi.out_mpa) as outMpaTop,
+    avg(wpi.out_mpa) as outMpaAvg,
+    min(wpi.out_mpa) as outMpaBottom,
+    max(wpi.flow) as flowTop,
+    avg(wpi.flow) as flowAvg,
+    min(wpi.flow) as oflowBottom,
+    wp.wp_no as waterPipeNo
+    from water_pipe_flow_info wpi
+    left join water_pipe wp on wpi.water_pipe_id= wp.id
+    left join small_storage_bin s on wp.sb_id = s.id
+    group by waterPipeNo) ls1
+    LEFT JOIN
+    (SELECT wp.wp_no,wp.branch_num,s.small_sb_no,wp.water_begin_time,s.id as smallId
+    from water_pipe wp
+    left join small_storage_bin s on wp.sb_id = s.id
+    ) ls2
+    on ls1.waterPipeNo = ls2.wp_no
+    <where>
+      <if test="sbId != null">
+        and  ls2.smallId=#{sbId}
+      </if>
+    </where>
+  </select>
+
+
+
+  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    SELECT
+      ls1.*, ls2.branch_num AS pipeNum,
+      ls2.water_begin_time AS startTime
+    FROM
+      (
+        SELECT
+          max(wpi.enter_temp) AS enterTempTop,
+          avg(wpi.enter_temp) AS enterTempAvg,
+          min(wpi.enter_temp) AS enterTempBottom,
+          max(wpi.out_temp) AS outTempTop,
+          avg(wpi.out_temp) AS outTempAvg,
+          min(wpi.out_temp) AS outTempBottom,
+          max(wpi.enter_mpa) AS enterMpaTop,
+          avg(wpi.enter_mpa) AS enterMpaAvg,
+          min(wpi.enter_mpa) AS enterMpaBottom,
+          max(wpi.out_mpa) AS outMpaTop,
+          avg(wpi.out_mpa) AS outMpaAvg,
+          min(wpi.out_mpa) AS outMpaBottom,
+          max(wpi.flow) AS flowTop,
+          avg(wpi.flow) AS flowAvg,
+          min(wpi.flow) AS flowBottom,
+          wp.id AS waterPipeId,
+          wpi.qi AS qi
+        FROM
+          water_pipe_flow_info wpi
+            LEFT JOIN water_pipe wp ON wpi.water_pipe_id = wp.id
+            LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
+        WHERE
+            wpi.water_pipe_id IN (
+            SELECT DISTINCT
+              water_pipe_id
+            FROM
+              water_pipe_flow_info
+            WHERE
+          LEFT (time, 10) = LEFT (now(), 10)
+      )
+    GROUP BY
+      waterPipeId,
+      wpi.qi
+      ) ls1
+LEFT JOIN (
+	SELECT
+		wp.id,
+		wp.branch_num,
+		wp.water_begin_time
+	FROM
+		water_pipe wp
+	LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
+) ls2 ON ls1.waterPipeId = ls2.id
+  </select>
+</mapper>

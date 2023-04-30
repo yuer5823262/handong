@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.AirTempSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.AirTempSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, addr, cu_id, channel_no,channel, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from air_temp_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from air_temp_sensor
+  </select>
+  <select id="selectByCuIdCNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from air_temp_sensor
+    where cu_id = #{cuId,jdbcType=INTEGER} and channel_no = #{channelNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from air_temp_sensor
+    where id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.AirTempSensor">
+    insert into air_temp_sensor (id, addr, cu_id, 
+      channel_no,channel, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{addr,jdbcType=VARCHAR}, #{cuId,jdbcType=INTEGER},
+      #{channelNo,jdbcType=INTEGER},#{channel,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.AirTempSensor">
+    insert into air_temp_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addr != null">
+        addr,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.AirTempSensor">
+    update air_temp_sensor
+    <set>
+      <if test="addr != null">
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=INTEGER},
+      </if>
+
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.AirTempSensor">
+    update air_temp_sensor
+    set addr = #{addr,jdbcType=VARCHAR},
+      cu_id = #{cuId,jdbcType=INTEGER},
+      channel_no = #{channelNo,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.AirTempSensorVO">
+    select
+      i.id as id,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.addr as addr,
+      i.channel_no as channelNo,
+      i.channel as channel,
+      i.create_time as createTime,
+      i.operator as operator
+    from air_temp_sensor i
+           left join control_unit cu on i.cu_id=cu.id
+           left join control_box cb on cu.cb_no=cb.id
+           left join sub_control_station scs on cb.scs_id=scs.id
+
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.AirTempSensorVO">
+    select
+    i.id as id,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.addr as addr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.create_time as createTime,
+    i.operator as operator
+    from air_temp_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectByCuId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from air_temp_sensor
+    where cu_id = #{cuId} and channel is not null and channel!=''
+  </select>
+</mapper>

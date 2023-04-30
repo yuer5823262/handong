@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempControlCurveCommonMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempControlCurveCommon">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ideal_id" jdbcType="INTEGER" property="idealId" />
+    <result column="pouring_temp" jdbcType="DOUBLE" property="pouringTemp" />
+    <result column="one_cold_temp_control_time" jdbcType="INTEGER" property="oneColdTempControlTime" />
+    <result column="max_temp" jdbcType="DOUBLE" property="maxTemp" />
+    <result column="one_cold_cooling_time" jdbcType="INTEGER" property="oneColdCoolingTime" />
+    <result column="one_cold_cooling_target_temp" jdbcType="DOUBLE" property="oneColdCoolingTargetTemp" />
+    <result column="one_cold_after_temp_control_time" jdbcType="INTEGER" property="oneColdAfterTempControlTime" />
+    <result column="one_cold_after_target_temp" jdbcType="DOUBLE" property="oneColdAfterTargetTemp" />
+    <result column="middle_cold_cooling_time" jdbcType="INTEGER" property="middleColdCoolingTime" />
+    <result column="middle_cold_cooling_target_temp" jdbcType="DOUBLE" property="middleColdCoolingTargetTemp" />
+    <result column="middle_cold_temp_control_time" jdbcType="INTEGER" property="middleColdTempControlTime" />
+    <result column="middle_cold_temp_control_target_temp" jdbcType="DOUBLE" property="middleColdTempControlTargetTemp" />
+    <result column="middle_cold_temp_control_target_temp1" jdbcType="DOUBLE" property="middleColdTempControlTargetTemp1" />
+    <result column="two_cold_cooling_target_temp" jdbcType="DOUBLE" property="twoColdCoolingTargetTemp" />
+    <result column="two_cold_cooling_target_temp1" jdbcType="DOUBLE" property="twoColdCoolingTargetTemp1" />
+    <result column="two_cold_temp_control_target_temp" jdbcType="DOUBLE" property="twoColdTempControlTargetTemp" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ideal_id, pouring_temp, one_cold_temp_control_time, max_temp, one_cold_cooling_time, 
+    one_cold_cooling_target_temp, one_cold_after_temp_control_time, one_cold_after_target_temp, 
+    middle_cold_cooling_time, middle_cold_cooling_target_temp, middle_cold_temp_control_time, 
+    middle_cold_temp_control_target_temp, middle_cold_temp_control_target_temp1, two_cold_cooling_target_temp, 
+    two_cold_cooling_target_temp1, two_cold_temp_control_target_temp, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_control_curve_common
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from temp_control_curve_common
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempControlCurveCommon">
+    insert into temp_control_curve_common (id, ideal_id, pouring_temp, 
+      one_cold_temp_control_time, max_temp, one_cold_cooling_time, 
+      one_cold_cooling_target_temp, one_cold_after_temp_control_time, 
+      one_cold_after_target_temp, middle_cold_cooling_time, 
+      middle_cold_cooling_target_temp, middle_cold_temp_control_time, 
+      middle_cold_temp_control_target_temp, middle_cold_temp_control_target_temp1, 
+      two_cold_cooling_target_temp, two_cold_cooling_target_temp1, 
+      two_cold_temp_control_target_temp, create_time, 
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{idealId,jdbcType=INTEGER}, #{pouringTemp,jdbcType=DOUBLE}, 
+      #{oneColdTempControlTime,jdbcType=INTEGER}, #{maxTemp,jdbcType=DOUBLE}, #{oneColdCoolingTime,jdbcType=INTEGER}, 
+      #{oneColdCoolingTargetTemp,jdbcType=DOUBLE}, #{oneColdAfterTempControlTime,jdbcType=INTEGER}, 
+      #{oneColdAfterTargetTemp,jdbcType=DOUBLE}, #{middleColdCoolingTime,jdbcType=INTEGER}, 
+      #{middleColdCoolingTargetTemp,jdbcType=DOUBLE}, #{middleColdTempControlTime,jdbcType=INTEGER}, 
+      #{middleColdTempControlTargetTemp,jdbcType=DOUBLE}, #{middleColdTempControlTargetTemp1,jdbcType=DOUBLE}, 
+      #{twoColdCoolingTargetTemp,jdbcType=DOUBLE}, #{twoColdCoolingTargetTemp1,jdbcType=DOUBLE}, 
+      #{twoColdTempControlTargetTemp,jdbcType=DOUBLE}, #{createTime,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempControlCurveCommon">
+    insert into temp_control_curve_common
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="idealId != null">
+        ideal_id,
+      </if>
+      <if test="pouringTemp != null">
+        pouring_temp,
+      </if>
+      <if test="oneColdTempControlTime != null">
+        one_cold_temp_control_time,
+      </if>
+      <if test="maxTemp != null">
+        max_temp,
+      </if>
+      <if test="oneColdCoolingTime != null">
+        one_cold_cooling_time,
+      </if>
+      <if test="oneColdCoolingTargetTemp != null">
+        one_cold_cooling_target_temp,
+      </if>
+      <if test="oneColdAfterTempControlTime != null">
+        one_cold_after_temp_control_time,
+      </if>
+      <if test="oneColdAfterTargetTemp != null">
+        one_cold_after_target_temp,
+      </if>
+      <if test="middleColdCoolingTime != null">
+        middle_cold_cooling_time,
+      </if>
+      <if test="middleColdCoolingTargetTemp != null">
+        middle_cold_cooling_target_temp,
+      </if>
+      <if test="middleColdTempControlTime != null">
+        middle_cold_temp_control_time,
+      </if>
+      <if test="middleColdTempControlTargetTemp != null">
+        middle_cold_temp_control_target_temp,
+      </if>
+      <if test="middleColdTempControlTargetTemp1 != null">
+        middle_cold_temp_control_target_temp1,
+      </if>
+      <if test="twoColdCoolingTargetTemp != null">
+        two_cold_cooling_target_temp,
+      </if>
+      <if test="twoColdCoolingTargetTemp1 != null">
+        two_cold_cooling_target_temp1,
+      </if>
+      <if test="twoColdTempControlTargetTemp != null">
+        two_cold_temp_control_target_temp,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="idealId != null">
+        #{idealId,jdbcType=INTEGER},
+      </if>
+      <if test="pouringTemp != null">
+        #{pouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdTempControlTime != null">
+        #{oneColdTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="maxTemp != null">
+        #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdCoolingTime != null">
+        #{oneColdCoolingTime,jdbcType=INTEGER},
+      </if>
+      <if test="oneColdCoolingTargetTemp != null">
+        #{oneColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdAfterTempControlTime != null">
+        #{oneColdAfterTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="oneColdAfterTargetTemp != null">
+        #{oneColdAfterTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdCoolingTime != null">
+        #{middleColdCoolingTime,jdbcType=INTEGER},
+      </if>
+      <if test="middleColdCoolingTargetTemp != null">
+        #{middleColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdTempControlTime != null">
+        #{middleColdTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="middleColdTempControlTargetTemp != null">
+        #{middleColdTempControlTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdTempControlTargetTemp1 != null">
+        #{middleColdTempControlTargetTemp1,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdCoolingTargetTemp != null">
+        #{twoColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdCoolingTargetTemp1 != null">
+        #{twoColdCoolingTargetTemp1,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdTempControlTargetTemp != null">
+        #{twoColdTempControlTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempControlCurveCommon">
+    update temp_control_curve_common
+    <set>
+      <if test="idealId != null">
+        ideal_id = #{idealId,jdbcType=INTEGER},
+      </if>
+      <if test="pouringTemp != null">
+        pouring_temp = #{pouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdTempControlTime != null">
+        one_cold_temp_control_time = #{oneColdTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="maxTemp != null">
+        max_temp = #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdCoolingTime != null">
+        one_cold_cooling_time = #{oneColdCoolingTime,jdbcType=INTEGER},
+      </if>
+      <if test="oneColdCoolingTargetTemp != null">
+        one_cold_cooling_target_temp = #{oneColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="oneColdAfterTempControlTime != null">
+        one_cold_after_temp_control_time = #{oneColdAfterTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="oneColdAfterTargetTemp != null">
+        one_cold_after_target_temp = #{oneColdAfterTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdCoolingTime != null">
+        middle_cold_cooling_time = #{middleColdCoolingTime,jdbcType=INTEGER},
+      </if>
+      <if test="middleColdCoolingTargetTemp != null">
+        middle_cold_cooling_target_temp = #{middleColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdTempControlTime != null">
+        middle_cold_temp_control_time = #{middleColdTempControlTime,jdbcType=INTEGER},
+      </if>
+      <if test="middleColdTempControlTargetTemp != null">
+        middle_cold_temp_control_target_temp = #{middleColdTempControlTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="middleColdTempControlTargetTemp1 != null">
+        middle_cold_temp_control_target_temp1 = #{middleColdTempControlTargetTemp1,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdCoolingTargetTemp != null">
+        two_cold_cooling_target_temp = #{twoColdCoolingTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdCoolingTargetTemp1 != null">
+        two_cold_cooling_target_temp1 = #{twoColdCoolingTargetTemp1,jdbcType=DOUBLE},
+      </if>
+      <if test="twoColdTempControlTargetTemp != null">
+        two_cold_temp_control_target_temp = #{twoColdTempControlTargetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempControlCurveCommon">
+    update temp_control_curve_common
+    set ideal_id = #{idealId,jdbcType=INTEGER},
+      pouring_temp = #{pouringTemp,jdbcType=DOUBLE},
+      one_cold_temp_control_time = #{oneColdTempControlTime,jdbcType=INTEGER},
+      max_temp = #{maxTemp,jdbcType=DOUBLE},
+      one_cold_cooling_time = #{oneColdCoolingTime,jdbcType=INTEGER},
+      one_cold_cooling_target_temp = #{oneColdCoolingTargetTemp,jdbcType=DOUBLE},
+      one_cold_after_temp_control_time = #{oneColdAfterTempControlTime,jdbcType=INTEGER},
+      one_cold_after_target_temp = #{oneColdAfterTargetTemp,jdbcType=DOUBLE},
+      middle_cold_cooling_time = #{middleColdCoolingTime,jdbcType=INTEGER},
+      middle_cold_cooling_target_temp = #{middleColdCoolingTargetTemp,jdbcType=DOUBLE},
+      middle_cold_temp_control_time = #{middleColdTempControlTime,jdbcType=INTEGER},
+      middle_cold_temp_control_target_temp = #{middleColdTempControlTargetTemp,jdbcType=DOUBLE},
+      middle_cold_temp_control_target_temp1 = #{middleColdTempControlTargetTemp1,jdbcType=DOUBLE},
+      two_cold_cooling_target_temp = #{twoColdCoolingTargetTemp,jdbcType=DOUBLE},
+      two_cold_cooling_target_temp1 = #{twoColdCoolingTargetTemp1,jdbcType=DOUBLE},
+      two_cold_temp_control_target_temp = #{twoColdTempControlTargetTemp,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_control_curve_common
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectBySbId" resultMap="BaseResultMap">
+    SELECT
+      tccc.*
+    FROM
+      temp_control_curve_common tccc
+        RIGHT JOIN pouring_base pb ON pb.temp_control_id = tccc.ideal_id
+    WHERE pb.small_sb_id = #{sbId,jdbcType=INTEGER}
+
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_control_curve_common
+  </select>
+</mapper>

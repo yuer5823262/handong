@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.MixingEgSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.MixingEgSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="dkNo" jdbcType="INTEGER" property="dkno" />
+    <result column="cNo" jdbcType="INTEGER" property="cno" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="lq_type" jdbcType="VARCHAR" property="lqType" />
+    <result column="gl_type" jdbcType="VARCHAR" property="glType" />
+    <result column="bhId" jdbcType="INTEGER" property="bhid" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ip, dkNo, cNo, remark, `type`,lq_type,gl_type, bhId, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mixing_eg_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByIpCNo" parameterType="com.example.dampouring.query.CheckMixingEgSensorQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_eg_sensor
+    where ip = #{ip} and dkNo=#{dkNo} and cNo = #{channelNo}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from mixing_eg_sensor
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.MixingEgSensor">
+    insert into mixing_eg_sensor (id, ip, dkNo, 
+      cNo, remark, `type`, lq_type,gl_type
+      bhId, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{dkno,jdbcType=INTEGER}, 
+      #{cno,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{lqType,jdbcType=VARCHAR},#{glType,jdbcType=VARCHAR},
+      #{bhid,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.MixingEgSensor">
+    insert into mixing_eg_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="dkno != null">
+        dkNo,
+      </if>
+      <if test="cno != null">
+        cNo,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="lqType != null">
+        lq_type,
+      </if>
+      <if test="glType != null">
+        gl_type,
+      </if>
+      <if test="bhid != null">
+        bhId,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="dkno != null">
+        #{dkno,jdbcType=INTEGER},
+      </if>
+      <if test="cno != null">
+        #{cno,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="lqType != null">
+        #{lqType,jdbcType=VARCHAR},
+      </if>
+      <if test="glType != null">
+        #{glType,jdbcType=VARCHAR},
+      </if>
+      <if test="bhid != null">
+        #{bhid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.MixingEgSensor">
+    update mixing_eg_sensor
+    <set>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="dkno != null">
+        dkNo = #{dkno,jdbcType=INTEGER},
+      </if>
+      <if test="cno != null">
+        cNo = #{cno,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="lqType != null">
+        lq_type = #{lqType,jdbcType=VARCHAR},
+      </if>
+      <if test="glType != null">
+        gl_type = #{glType,jdbcType=VARCHAR},
+      </if>
+      <if test="bhid != null">
+        bhId = #{bhid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.MixingEgSensor">
+    update mixing_eg_sensor
+    set ip = #{ip,jdbcType=VARCHAR},
+      dkNo = #{dkno,jdbcType=INTEGER},
+      cNo = #{cno,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+        lq_type = #{lqType,jdbcType=VARCHAR},
+        gl_type = #{glType,jdbcType=VARCHAR},
+      bhId = #{bhid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.MixingEgSensorVO" parameterType="com.example.dampouring.query.MixingEgSensorQue">
+    select
+    i.id as id,
+    mb.no as bhNo,
+    i.type as type,
+    i.lq_type as lqType,
+    i.gl_type as glType,
+    i.ip as ip,
+    i.dkNo as dkNo,
+    i.remark as remark,
+    i.cNo as cNo,
+    i.create_time as createTime,
+    i.operator as operator
+    from mixing_eg_sensor i
+    left join mixing_building mb on i.bhId=mb.id
+    <where>
+      <if test="bhId != null">
+        and i.bhId = #{bhId}
+      </if>
+      <if test="type != null">
+        and i.type = #{type}
+      </if>
+    </where>
+  </select>
+  <select id="selectByIpDk" resultType="com.example.dampouring.model.pojo.MixingEgSensor">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_eg_sensor
+    where ip=#{serverIP} and dkNo=#{serverPort}
+  </select>
+  <select id="getIpDk" resultType="com.example.dampouring.model.pojo.MixingEgSensor">
+    SELECT ip,dkNo as dkno from mixing_eg_sensor
+    GROUP BY ip,dkNo
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.MixingEgSensorVO">
+    select
+    i.id as id,
+    mb.no as bhNo,
+    i.type as type,
+    i.lq_type as lqType,
+    i.gl_type as glType,
+    i.dkNo as dkNo,
+    i.ip as ip,
+    i.remark as remark,
+    i.cNo as cNo,
+    i.create_time as createTime,
+    i.operator as operator
+    from mixing_eg_sensor i
+    left join mixing_building mb on i.bhId=mb.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

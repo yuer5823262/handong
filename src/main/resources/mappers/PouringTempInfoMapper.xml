@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.PouringTempInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.PouringTempInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pouring_base_id" jdbcType="INTEGER" property="pouringBaseId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="temperature" jdbcType="DOUBLE" property="temperature" />
+    <result column="norm" jdbcType="DOUBLE" property="norm" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pouring_base_id, `time`, temperature,norm, `operator`,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pouring_temp_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAvgTempByPbId" parameterType="java.lang.Integer" resultType="java.lang.Double">
+    SELECT avg(temperature) FROM pouring_temp_info
+    WHERE pouring_base_id = #{id}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pouring_temp_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.PouringTempInfo">
+    insert into pouring_temp_info (id, pouring_base_id, `time`, 
+      temperature,norm, `operator`,bl)
+    values (#{id,jdbcType=INTEGER}, #{pouringBaseId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{temperature,jdbcType=DOUBLE},#{norm,jdbcType=DOUBLE}, #{operator,jdbcType=VARCHAR},#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.PouringTempInfo">
+    insert into pouring_temp_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pouringBaseId != null">
+        pouring_base_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pouringBaseId != null">
+        #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.PouringTempInfo">
+    update pouring_temp_info
+    <set>
+      <if test="pouringBaseId != null">
+        pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        temperature = #{temperature,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.PouringTempInfo">
+    update pouring_temp_info
+    set pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=DOUBLE},
+        norm = #{norm,jdbcType=DOUBLE},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="List" resultType="com.example.dampouring.model.vo.PouringTempInfoVO">
+    select
+      e.id as id,
+      s.small_sb_no as smallNo,
+      b.mark_number as betonNo,
+      e.time as time,
+    e.temperature as temperature,
+    e.norm as norm,
+    e.operator as operator,
+    e.bl as bl
+    from pouring_temp_info e
+      left join pouring_base p on e.pouring_base_id=p.id
+      left join small_storage_bin s on p.small_sb_id = s.id
+      left join beton b on p.beton_id = b.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.PouringTempInfoQue" resultType="com.example.dampouring.model.vo.PouringTempInfoVO">
+    select
+    e.id as id,
+    s.small_sb_no as smallNo,
+    b.mark_number as betonNo,
+    e.time as time,
+    e.temperature as temperature,
+    e.norm as norm,
+    e.operator as operator,
+    e.bl as bl
+    from pouring_temp_info e
+    left join pouring_base p on e.pouring_base_id=p.id
+    left join small_storage_bin s on p.small_sb_id = s.id
+    left join beton b on p.beton_id = b.id
+    <where>
+    <if test="smallId != null">
+      and s.id =#{smallId}
+    </if>
+    <if test="startTime != null">
+      and  e.time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and e.time &lt;= #{endTime}
+    </if>
+    <if test="valStart != null">
+      and  e.temperature &gt;=#{valStart}
+    </if>
+    <if test="valEnd != null">
+      and e.temperature &lt;= #{valEnd}
+    </if>
+    </where>
+    order by e.time desc
+  </select>
+
+
+
+  <select id="assess" parameterType="com.example.dampouring.query.PouringTempAssessQue" resultType="com.example.dampouring.model.vo.PouringTempAssessVO">
+    SELECT
+    s.small_sb_no as smallNo,
+    avg(e.temperature) as avgTemp,
+    max(e.temperature)as topTemp,
+    min(e.temperature)as bottomTemp,
+    max(e.norm) as normTemp,
+    count(e.id) as recordCount,
+    sum(e.temperature>e.norm) as excessiveCount
+    from pouring_temp_info e
+    left join pouring_base p on e.pouring_base_id=p.id
+    left join small_storage_bin s on p.small_sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id = #{sbId}
+      </if>
+    </where>
+    GROUP BY smallNo
+  </select>
+
+
+
+  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.PouringTempAssess">
+    SELECT
+      e.pouring_base_id as pouringBaseId,
+      avg(e.temperature) as avgTemp,
+      max(e.temperature)as topTemp,
+      min(e.temperature)as bottomTemp,
+      max(e.norm) as normTemp,
+      count(e.id) as recordCount,
+      sum(e.temperature>e.norm) as excessiveCount
+    from pouring_temp_info e
+    GROUP BY pouringBaseId
+  </select>
+
+  <select id="tempMonitor" resultType="com.example.dampouring.model.vo.PouringTempMonitorVO">
+    SELECT
+      t2.*,
+      if(t2.temp>=t2.norm,'是','否') as isCb
+    FROM
+      (
+        SELECT
+          s.small_sb_no AS smallNo,
+          max(e.time) AS time
+        FROM
+          pouring_temp_info e
+          LEFT JOIN pouring_base p ON e.pouring_base_id = p.id
+          LEFT JOIN small_storage_bin s ON p.small_sb_id = s.id
+        GROUP BY
+          s.small_sb_no
+      ) t1
+        LEFT JOIN (
+        SELECT
+          s.small_sb_no AS smallNo,
+          e.time AS time,
+		e.temperature AS temp,
+		e.norm AS norm,
+		s.elevation_end-s.elevation_start as pc
+        FROM
+          pouring_temp_info e
+          LEFT JOIN pouring_base p ON e.pouring_base_id = p.id
+          LEFT JOIN small_storage_bin s ON p.small_sb_id = s.id
+      ) t2 ON t1.smallNo = t2.smallNo
+        AND t1.time = t2.time
+  </select>
+</mapper>

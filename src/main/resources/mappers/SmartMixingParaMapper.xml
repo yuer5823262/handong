@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartMixingParaMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartMixingPara">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mbId" jdbcType="INTEGER" property="mbid" />
+    <result column="mbNo" jdbcType="INTEGER" property="mbNo" />
+    <result column="λtds" jdbcType="DOUBLE" property="λtds" />
+    <result column="G1" jdbcType="DOUBLE" property="g1" />
+    <result column="G2" jdbcType="DOUBLE" property="g2" />
+    <result column="G3" jdbcType="DOUBLE" property="g3" />
+    <result column="G4" jdbcType="DOUBLE" property="g4" />
+    <result column="G5" jdbcType="DOUBLE" property="g5" />
+    <result column="G6" jdbcType="DOUBLE" property="g6" />
+    <result column="G7" jdbcType="DOUBLE" property="g7" />
+    <result column="G8" jdbcType="DOUBLE" property="g8" />
+    <result column="G9" jdbcType="DOUBLE" property="g9" />
+    <result column="c1" jdbcType="DOUBLE" property="c1" />
+    <result column="c2" jdbcType="DOUBLE" property="c2" />
+    <result column="c3" jdbcType="DOUBLE" property="c3" />
+    <result column="c4" jdbcType="DOUBLE" property="c4" />
+    <result column="c5" jdbcType="DOUBLE" property="c5" />
+    <result column="c6" jdbcType="DOUBLE" property="c6" />
+    <result column="c7" jdbcType="DOUBLE" property="c7" />
+    <result column="c8" jdbcType="DOUBLE" property="c8" />
+    <result column="c9" jdbcType="DOUBLE" property="c9" />
+    <result column="P" jdbcType="DOUBLE" property="p" />
+    <result column="t" jdbcType="DOUBLE" property="t" />
+    <result column="V" jdbcType="DOUBLE" property="v" />
+    <result column="η" jdbcType="DOUBLE" property="η" />
+    <result column="T01" jdbcType="DOUBLE" property="t01" />
+    <result column="TminS" jdbcType="DOUBLE" property="tmins" />
+    <result column="TmaxS" jdbcType="DOUBLE" property="tmaxs" />
+    <result column="GmaxB" jdbcType="DOUBLE" property="gmaxb" />
+    <result column="qs" jdbcType="DOUBLE" property="qs" />
+    <result column="qtds" jdbcType="DOUBLE" property="qtds" />
+    <result column="qds" jdbcType="DOUBLE" property="qds" />
+    <result column="qzs" jdbcType="DOUBLE" property="qzs" />
+    <result column="qxs" jdbcType="DOUBLE" property="qxs" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mbId, λtds, G1, G2, G3, G4, G5, G6, G7, G8, G9, c1, c2, c3, c4, c5, c6, c7, c8, 
+    c9, P, t, V, η, T01, TminS, TmaxS, GmaxB, qs, qtds, qds, qzs, qxs
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_mixing_para
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMbId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from smart_mixing_para
+    where mbId = #{mbId,jdbcType=INTEGER}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+      smp.*,mb.no as mbNo
+    from smart_mixing_para smp
+     left join mixing_building mb on smp.mbId=mb.id
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from smart_mixing_para
+    where id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartMixingPara">
+    insert into smart_mixing_para (id, mbId, λtds, 
+      G1, G2, G3, G4, 
+      G5, G6, G7, G8, 
+      G9, c1, c2, c3, 
+      c4, c5, c6, c7, 
+      c8, c9, P, t, 
+      V, η, T01, TminS, 
+      TmaxS, GmaxB, qs, qtds, 
+      qds, qzs, qxs)
+    values (#{id,jdbcType=INTEGER}, #{mbid,jdbcType=INTEGER}, #{λtds,jdbcType=DOUBLE}, 
+      #{g1,jdbcType=DOUBLE}, #{g2,jdbcType=DOUBLE}, #{g3,jdbcType=DOUBLE}, #{g4,jdbcType=DOUBLE}, 
+      #{g5,jdbcType=DOUBLE}, #{g6,jdbcType=DOUBLE}, #{g7,jdbcType=DOUBLE}, #{g8,jdbcType=DOUBLE}, 
+      #{g9,jdbcType=DOUBLE}, #{c1,jdbcType=DOUBLE}, #{c2,jdbcType=DOUBLE}, #{c3,jdbcType=DOUBLE}, 
+      #{c4,jdbcType=DOUBLE}, #{c5,jdbcType=DOUBLE}, #{c6,jdbcType=DOUBLE}, #{c7,jdbcType=DOUBLE}, 
+      #{c8,jdbcType=DOUBLE}, #{c9,jdbcType=DOUBLE}, #{p,jdbcType=DOUBLE}, #{t,jdbcType=DOUBLE}, 
+      #{v,jdbcType=DOUBLE}, #{η,jdbcType=DOUBLE}, #{t01,jdbcType=DOUBLE}, #{tmins,jdbcType=DOUBLE}, 
+      #{tmaxs,jdbcType=DOUBLE}, #{gmaxb,jdbcType=DOUBLE}, #{qs,jdbcType=DOUBLE}, #{qtds,jdbcType=DOUBLE}, 
+      #{qds,jdbcType=DOUBLE}, #{qzs,jdbcType=DOUBLE}, #{qxs,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartMixingPara">
+    insert into smart_mixing_para
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mbid != null">
+        mbId,
+      </if>
+      <if test="λtds != null">
+        λtds,
+      </if>
+      <if test="g1 != null">
+        G1,
+      </if>
+      <if test="g2 != null">
+        G2,
+      </if>
+      <if test="g3 != null">
+        G3,
+      </if>
+      <if test="g4 != null">
+        G4,
+      </if>
+      <if test="g5 != null">
+        G5,
+      </if>
+      <if test="g6 != null">
+        G6,
+      </if>
+      <if test="g7 != null">
+        G7,
+      </if>
+      <if test="g8 != null">
+        G8,
+      </if>
+      <if test="g9 != null">
+        G9,
+      </if>
+      <if test="c1 != null">
+        c1,
+      </if>
+      <if test="c2 != null">
+        c2,
+      </if>
+      <if test="c3 != null">
+        c3,
+      </if>
+      <if test="c4 != null">
+        c4,
+      </if>
+      <if test="c5 != null">
+        c5,
+      </if>
+      <if test="c6 != null">
+        c6,
+      </if>
+      <if test="c7 != null">
+        c7,
+      </if>
+      <if test="c8 != null">
+        c8,
+      </if>
+      <if test="c9 != null">
+        c9,
+      </if>
+      <if test="p != null">
+        P,
+      </if>
+      <if test="t != null">
+        t,
+      </if>
+      <if test="v != null">
+        V,
+      </if>
+      <if test="η != null">
+        η,
+      </if>
+      <if test="t01 != null">
+        T01,
+      </if>
+      <if test="tmins != null">
+        TminS,
+      </if>
+      <if test="tmaxs != null">
+        TmaxS,
+      </if>
+      <if test="gmaxb != null">
+        GmaxB,
+      </if>
+      <if test="qs != null">
+        qs,
+      </if>
+      <if test="qtds != null">
+        qtds,
+      </if>
+      <if test="qds != null">
+        qds,
+      </if>
+      <if test="qzs != null">
+        qzs,
+      </if>
+      <if test="qxs != null">
+        qxs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mbid != null">
+        #{mbid,jdbcType=INTEGER},
+      </if>
+      <if test="λtds != null">
+        #{λtds,jdbcType=DOUBLE},
+      </if>
+      <if test="g1 != null">
+        #{g1,jdbcType=DOUBLE},
+      </if>
+      <if test="g2 != null">
+        #{g2,jdbcType=DOUBLE},
+      </if>
+      <if test="g3 != null">
+        #{g3,jdbcType=DOUBLE},
+      </if>
+      <if test="g4 != null">
+        #{g4,jdbcType=DOUBLE},
+      </if>
+      <if test="g5 != null">
+        #{g5,jdbcType=DOUBLE},
+      </if>
+      <if test="g6 != null">
+        #{g6,jdbcType=DOUBLE},
+      </if>
+      <if test="g7 != null">
+        #{g7,jdbcType=DOUBLE},
+      </if>
+      <if test="g8 != null">
+        #{g8,jdbcType=DOUBLE},
+      </if>
+      <if test="g9 != null">
+        #{g9,jdbcType=DOUBLE},
+      </if>
+      <if test="c1 != null">
+        #{c1,jdbcType=DOUBLE},
+      </if>
+      <if test="c2 != null">
+        #{c2,jdbcType=DOUBLE},
+      </if>
+      <if test="c3 != null">
+        #{c3,jdbcType=DOUBLE},
+      </if>
+      <if test="c4 != null">
+        #{c4,jdbcType=DOUBLE},
+      </if>
+      <if test="c5 != null">
+        #{c5,jdbcType=DOUBLE},
+      </if>
+      <if test="c6 != null">
+        #{c6,jdbcType=DOUBLE},
+      </if>
+      <if test="c7 != null">
+        #{c7,jdbcType=DOUBLE},
+      </if>
+      <if test="c8 != null">
+        #{c8,jdbcType=DOUBLE},
+      </if>
+      <if test="c9 != null">
+        #{c9,jdbcType=DOUBLE},
+      </if>
+      <if test="p != null">
+        #{p,jdbcType=DOUBLE},
+      </if>
+      <if test="t != null">
+        #{t,jdbcType=DOUBLE},
+      </if>
+      <if test="v != null">
+        #{v,jdbcType=DOUBLE},
+      </if>
+      <if test="η != null">
+        #{η,jdbcType=DOUBLE},
+      </if>
+      <if test="t01 != null">
+        #{t01,jdbcType=DOUBLE},
+      </if>
+      <if test="tmins != null">
+        #{tmins,jdbcType=DOUBLE},
+      </if>
+      <if test="tmaxs != null">
+        #{tmaxs,jdbcType=DOUBLE},
+      </if>
+      <if test="gmaxb != null">
+        #{gmaxb,jdbcType=DOUBLE},
+      </if>
+      <if test="qs != null">
+        #{qs,jdbcType=DOUBLE},
+      </if>
+      <if test="qtds != null">
+        #{qtds,jdbcType=DOUBLE},
+      </if>
+      <if test="qds != null">
+        #{qds,jdbcType=DOUBLE},
+      </if>
+      <if test="qzs != null">
+        #{qzs,jdbcType=DOUBLE},
+      </if>
+      <if test="qxs != null">
+        #{qxs,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartMixingPara">
+    update smart_mixing_para
+    <set>
+      <if test="mbid != null">
+        mbId = #{mbid,jdbcType=INTEGER},
+      </if>
+      <if test="λtds != null">
+        λtds = #{λtds,jdbcType=DOUBLE},
+      </if>
+      <if test="g1 != null">
+        G1 = #{g1,jdbcType=DOUBLE},
+      </if>
+      <if test="g2 != null">
+        G2 = #{g2,jdbcType=DOUBLE},
+      </if>
+      <if test="g3 != null">
+        G3 = #{g3,jdbcType=DOUBLE},
+      </if>
+      <if test="g4 != null">
+        G4 = #{g4,jdbcType=DOUBLE},
+      </if>
+      <if test="g5 != null">
+        G5 = #{g5,jdbcType=DOUBLE},
+      </if>
+      <if test="g6 != null">
+        G6 = #{g6,jdbcType=DOUBLE},
+      </if>
+      <if test="g7 != null">
+        G7 = #{g7,jdbcType=DOUBLE},
+      </if>
+      <if test="g8 != null">
+        G8 = #{g8,jdbcType=DOUBLE},
+      </if>
+      <if test="g9 != null">
+        G9 = #{g9,jdbcType=DOUBLE},
+      </if>
+      <if test="c1 != null">
+        c1 = #{c1,jdbcType=DOUBLE},
+      </if>
+      <if test="c2 != null">
+        c2 = #{c2,jdbcType=DOUBLE},
+      </if>
+      <if test="c3 != null">
+        c3 = #{c3,jdbcType=DOUBLE},
+      </if>
+      <if test="c4 != null">
+        c4 = #{c4,jdbcType=DOUBLE},
+      </if>
+      <if test="c5 != null">
+        c5 = #{c5,jdbcType=DOUBLE},
+      </if>
+      <if test="c6 != null">
+        c6 = #{c6,jdbcType=DOUBLE},
+      </if>
+      <if test="c7 != null">
+        c7 = #{c7,jdbcType=DOUBLE},
+      </if>
+      <if test="c8 != null">
+        c8 = #{c8,jdbcType=DOUBLE},
+      </if>
+      <if test="c9 != null">
+        c9 = #{c9,jdbcType=DOUBLE},
+      </if>
+      <if test="p != null">
+        P = #{p,jdbcType=DOUBLE},
+      </if>
+      <if test="t != null">
+        t = #{t,jdbcType=DOUBLE},
+      </if>
+      <if test="v != null">
+        V = #{v,jdbcType=DOUBLE},
+      </if>
+      <if test="η != null">
+        η = #{η,jdbcType=DOUBLE},
+      </if>
+      <if test="t01 != null">
+        T01 = #{t01,jdbcType=DOUBLE},
+      </if>
+      <if test="tmins != null">
+        TminS = #{tmins,jdbcType=DOUBLE},
+      </if>
+      <if test="tmaxs != null">
+        TmaxS = #{tmaxs,jdbcType=DOUBLE},
+      </if>
+      <if test="gmaxb != null">
+        GmaxB = #{gmaxb,jdbcType=DOUBLE},
+      </if>
+      <if test="qs != null">
+        qs = #{qs,jdbcType=DOUBLE},
+      </if>
+      <if test="qtds != null">
+        qtds = #{qtds,jdbcType=DOUBLE},
+      </if>
+      <if test="qds != null">
+        qds = #{qds,jdbcType=DOUBLE},
+      </if>
+      <if test="qzs != null">
+        qzs = #{qzs,jdbcType=DOUBLE},
+      </if>
+      <if test="qxs != null">
+        qxs = #{qxs,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartMixingPara">
+    update smart_mixing_para
+    set mbId = #{mbid,jdbcType=INTEGER},
+      λtds = #{λtds,jdbcType=DOUBLE},
+      G1 = #{g1,jdbcType=DOUBLE},
+      G2 = #{g2,jdbcType=DOUBLE},
+      G3 = #{g3,jdbcType=DOUBLE},
+      G4 = #{g4,jdbcType=DOUBLE},
+      G5 = #{g5,jdbcType=DOUBLE},
+      G6 = #{g6,jdbcType=DOUBLE},
+      G7 = #{g7,jdbcType=DOUBLE},
+      G8 = #{g8,jdbcType=DOUBLE},
+      G9 = #{g9,jdbcType=DOUBLE},
+      c1 = #{c1,jdbcType=DOUBLE},
+      c2 = #{c2,jdbcType=DOUBLE},
+      c3 = #{c3,jdbcType=DOUBLE},
+      c4 = #{c4,jdbcType=DOUBLE},
+      c5 = #{c5,jdbcType=DOUBLE},
+      c6 = #{c6,jdbcType=DOUBLE},
+      c7 = #{c7,jdbcType=DOUBLE},
+      c8 = #{c8,jdbcType=DOUBLE},
+      c9 = #{c9,jdbcType=DOUBLE},
+      P = #{p,jdbcType=DOUBLE},
+      t = #{t,jdbcType=DOUBLE},
+      V = #{v,jdbcType=DOUBLE},
+      η = #{η,jdbcType=DOUBLE},
+      T01 = #{t01,jdbcType=DOUBLE},
+      TminS = #{tmins,jdbcType=DOUBLE},
+      TmaxS = #{tmaxs,jdbcType=DOUBLE},
+      GmaxB = #{gmaxb,jdbcType=DOUBLE},
+      qs = #{qs,jdbcType=DOUBLE},
+      qtds = #{qtds,jdbcType=DOUBLE},
+      qds = #{qds,jdbcType=DOUBLE},
+      qzs = #{qzs,jdbcType=DOUBLE},
+      qxs = #{qxs,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.DataMissAlertMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.DataMissAlert">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="miss_type" jdbcType="VARCHAR" property="missType" />
+    <result column="miss_days" jdbcType="INTEGER" property="missDays" />
+    <result column="alert_content" jdbcType="VARCHAR" property="alertContent" />
+    <result column="alert_time" jdbcType="VARCHAR" property="alertTime" />
+    <result column="has_dispose" jdbcType="CHAR" property="hasDispose" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="op_time" jdbcType="VARCHAR" property="opTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, miss_type, miss_days, alert_content, alert_time, has_dispose, sb_id, op_time, 
+    `operator`
+  </sql>
+  <select id="selectAlert" parameterType="com.example.dampouring.query.DataMissAlertQue" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from data_miss_alert
+    <where>
+      <if test="sbId != null">
+        and sb_id=#{sbId}
+      </if>
+      <if test="type != null">
+        and miss_type=#{type}
+      </if>
+      and has_dispose&lt;'3'
+    </where>
+  </select>
+  <select id="todayDataCount"  resultType="com.example.dampouring.model.vo.DataCountVO">
+    SELECT tb1.*,tb2.countExport,tb3.countPouring,tb4.innerCount,tb5.gradCount,
+           tb6.waterCount,tb7.tmCount,tb8.sunCount from
+      (SELECT ssb.id as sbId,ssb.small_sb_no,count(iti.temperature) as countInbound from small_storage_bin ssb
+                                                                                           LEFT JOIN pouring_base pb on pb.small_sb_id = ssb.id
+                                                                                           LEFT JOIN inbound_temp_info iti on iti.pouring_base_id = pb.id and left(iti.time,10)= left(now(),10)
+    WHERE ssb.is_calculate='1'
+    GROUP BY ssb.id) tb1
+      LEFT JOIN
+
+      (SELECT ssb.id as sbId,ssb.small_sb_no,count(iti.temperature) as countExport from small_storage_bin ssb
+      LEFT JOIN pouring_base pb on pb.small_sb_id = ssb.id
+      LEFT JOIN export_machine_temp_info iti on iti.pouring_base_id = pb.id and left(iti.time,10)= left(now(),10)
+    WHERE ssb.is_calculate='1'
+    GROUP BY ssb.id) tb2 on tb1.sbId=tb2.sbId
+      LEFT JOIN
+      (SELECT ssb.id as sbId,ssb.small_sb_no,count(iti.temperature) as countPouring from small_storage_bin ssb
+      LEFT JOIN pouring_base pb on pb.small_sb_id = ssb.id
+      LEFT JOIN pouring_temp_info iti on iti.pouring_base_id = pb.id and left(iti.time,10)= left(now(),10)
+      WHERE ssb.is_calculate='1'
+      GROUP BY ssb.id) tb3 on tb1.sbId=tb3.sbId
+      LEFT JOIN
+      (SELECT ssb.id as sbId,ssb.small_sb_no,tb1.innerCount as innerCount from small_storage_bin ssb
+      LEFT JOIN
+      (SELECT its.sb_id as sbId,count(itsi.id) as innerCount from inner_temp_sensor_info itsi
+      LEFT JOIN inner_temp_sensor its on itsi.inner_temp_sensor_id=its.id
+      WHERE left(itsi.time,10) = left(now(),10)
+      GROUP BY its.sb_id) tb1 on tb1.sbId=ssb.id) tb4 on tb1.sbId=tb4.sbId
+      LEFT JOIN
+      (SELECT ssb.id as sbId,ssb.small_sb_no,tb1.gradCount as gradCount from small_storage_bin ssb
+      LEFT JOIN
+      (SELECT its.sb_id as sbId,count(itsi.id) as gradCount from temp_gradometer_info itsi
+      LEFT JOIN temp_gradometer its on itsi.temp_gradometer_id=its.id
+      WHERE left(itsi.time,10) = left(now(),10)
+      GROUP BY its.sb_id) tb1 on tb1.sbId=ssb.id) tb5 on tb1.sbId=tb5.sbId
+      LEFT JOIN
+      (SELECT ssb.id as sbId,ssb.small_sb_no,tb1.waterCount as waterCount from small_storage_bin ssb
+      LEFT JOIN
+      (SELECT its.sb_id as sbId,count(itsi.id) as waterCount from water_pipe_flow_info itsi
+      LEFT JOIN water_pipe its on itsi.water_pipe_id=its.id
+      WHERE left(itsi.time,10) = left(now(),10)
+      GROUP BY its.sb_id) tb1 on tb1.sbId=ssb.id) tb6 on tb1.sbId=tb6.sbId
+      LEFT JOIN
+      (
+      SELECT count(*) as tmCount from temp_measurements
+      WHERE LEFT(date,10)=LEFT(now(),10)
+      ) tb7 on 1
+      LEFT JOIN
+      (SELECT count(*) as sunCount from solar_radiant_heat_info
+      WHERE LEFT(date,10)=LEFT(now(),10)) tb8 on 1
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from data_miss_alert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from data_miss_alert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.DataMissAlert">
+    insert into data_miss_alert (id, miss_type, miss_days, 
+      alert_content, alert_time, has_dispose, 
+      sb_id, op_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{missType,jdbcType=VARCHAR}, #{missDays,jdbcType=INTEGER}, 
+      #{alertContent,jdbcType=VARCHAR}, #{alertTime,jdbcType=VARCHAR}, #{hasDispose,jdbcType=CHAR}, 
+      #{sbId,jdbcType=INTEGER}, #{opTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.DataMissAlert">
+    insert into data_miss_alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="missType != null">
+        miss_type,
+      </if>
+      <if test="missDays != null">
+        miss_days,
+      </if>
+      <if test="alertContent != null">
+        alert_content,
+      </if>
+      <if test="alertTime != null">
+        alert_time,
+      </if>
+      <if test="hasDispose != null">
+        has_dispose,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="missType != null">
+        #{missType,jdbcType=VARCHAR},
+      </if>
+      <if test="missDays != null">
+        #{missDays,jdbcType=INTEGER},
+      </if>
+      <if test="alertContent != null">
+        #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.DataMissAlert">
+    update data_miss_alert
+    <set>
+      <if test="missType != null">
+        miss_type = #{missType,jdbcType=VARCHAR},
+      </if>
+      <if test="missDays != null">
+        miss_days = #{missDays,jdbcType=INTEGER},
+      </if>
+      <if test="alertContent != null">
+        alert_content = #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        alert_time = #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        has_dispose = #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.DataMissAlert">
+    update data_miss_alert
+    set miss_type = #{missType,jdbcType=VARCHAR},
+      miss_days = #{missDays,jdbcType=INTEGER},
+      alert_content = #{alertContent,jdbcType=VARCHAR},
+      alert_time = #{alertTime,jdbcType=VARCHAR},
+      has_dispose = #{hasDispose,jdbcType=CHAR},
+      sb_id = #{sbId,jdbcType=INTEGER},
+      op_time = #{opTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="processinge">
+    update data_miss_alert
+    set has_dispose = '1'
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.AlertQue" resultType="com.example.dampouring.model.vo.DataMissAlertVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as sbNo,
+    aaa.miss_type as missType,
+    aaa.miss_days as missDays,
+    aaa.alert_content as alertContent,
+    aaa.alert_time as alertTime,
+    aaa.has_dispose as hasDispose,
+    aaa.op_time as opTime,
+    aaa.operator as operator
+    from data_miss_alert aaa
+    left join small_storage_bin s on aaa.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and  aaa.sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="list"  resultType="com.example.dampouring.model.vo.AlertBaseVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as position,
+    aaa.miss_type as type,
+    aaa.alert_content as content,
+    aaa.alert_time as time,
+    aaa.has_dispose as state,
+    aaa.op_time as opTime,
+    aaa.operator as operator,
+    '2' as typeNo
+    from data_miss_alert aaa
+      left join small_storage_bin s on aaa.sb_id = s.id
+    where
+      has_dispose&lt;#{type}
+  </select>
+</mapper>

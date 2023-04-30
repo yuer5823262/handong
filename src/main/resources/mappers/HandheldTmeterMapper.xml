@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.HandheldTmeterMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.HandheldTmeter">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="temp_type" jdbcType="VARCHAR" property="tempType" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, temp_type, `temp`, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from handheld_tmeter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from handheld_tmeter
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.HandheldTmeter">
+    insert into handheld_tmeter (id, sb_id, temp_type, 
+      `temp`, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{tempType,jdbcType=VARCHAR}, 
+      #{temp,jdbcType=DOUBLE}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.HandheldTmeter">
+    insert into handheld_tmeter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="tempType != null">
+        temp_type,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="tempType != null">
+        #{tempType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.HandheldTmeter">
+    update handheld_tmeter
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="tempType != null">
+        temp_type = #{tempType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.HandheldTmeter">
+    update handheld_tmeter
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      temp_type = #{tempType,jdbcType=VARCHAR},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.HandheldTmeterQue" resultType="com.example.dampouring.model.vo.HandheldTmeterVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as sbNo,
+    aaa.temp_type as tempType,
+    aaa.temp as temp,
+    aaa.operator as operator,
+    aaa.create_time as createTime
+    from handheld_tmeter aaa
+    left join small_storage_bin s on aaa.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and  aaa.small_id =#{smallId}
+      </if>
+      <if test="type != null">
+        and  aaa.temp_type =#{type}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.PouringBaseMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.PouringBase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_sb_id" jdbcType="INTEGER" property="smallSbId" />
+    <result column="open_time" jdbcType="VARCHAR" property="openTime" />
+    <result column="close_time" jdbcType="VARCHAR" property="closeTime" />
+    <result column="cover_time" jdbcType="VARCHAR" property="coverTime" />
+    <result column="temp_control_id" jdbcType="INTEGER" property="tempControlId" />
+    <result column="work_amount" jdbcType="DOUBLE" property="workAmount" />
+    <result column="beton_id" jdbcType="INTEGER" property="betonId" />
+    <result column="design_pouring_temp" jdbcType="DOUBLE" property="designPouringTemp" />
+    <result column="inter_cooling_start_time" jdbcType="VARCHAR" property="interCoolingStartTime" />
+    <result column="second_cooling_start_time" jdbcType="VARCHAR" property="secondCoolingStartTime" />
+    <result column="closure_grout_time" jdbcType="VARCHAR" property="closureGroutTime" />
+    <result column="face_keep_warm" jdbcType="VARCHAR" property="faceKeepWarm" />
+    <result column="pouring_time" jdbcType="DOUBLE" property="pouringTime" />
+    <result column="pouring_strength" jdbcType="DOUBLE" property="pouringStrength" />
+    <result column="bata_no" jdbcType="INTEGER" property="bataNo" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_sb_id, open_time, close_time, cover_time, temp_control_id, work_amount, 
+    beton_id, design_pouring_temp, inter_cooling_start_time, second_cooling_start_time, 
+    closure_grout_time, face_keep_warm, pouring_time, pouring_strength, bata_no, create_time, 
+    `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pouring_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUpSbBycheckOpenTime" resultMap="BaseResultMap">
+    SELECT
+    pb.*
+    FROM
+    pouring_base pb
+    LEFT JOIN small_storage_bin ssb ON ssb.id = pb.small_sb_id
+    WHERE
+    ssb.ds_start = (
+    SELECT
+    ds_start
+    FROM
+    small_storage_bin
+    WHERE
+    id = #{sbId}
+    )
+    AND ssb.elevation_end &lt; (
+    SELECT
+    elevation_end
+    FROM
+    small_storage_bin
+    WHERE
+    id = #{sbId}
+    )
+    ORDER BY
+    ssb.elevation_end DESC
+    LIMIT 1
+  </select>
+  <select id="selectBy30Min" resultType="com.example.dampouring.model.vo.PouringBaseVO">
+    select
+      p.id as id,
+      s.small_sb_no as smallSbNo,
+      s.id as smallSbId,
+      p.open_time as openTime,
+      p.close_time as closeTime,
+      p.cover_time as coverTime,
+      p.temp_control_id as tempControlId,
+      p.work_amount as workAmount,
+      b.mark_number as markNumber,
+      b.material_no as materialNo,
+      p.design_pouring_temp as designPouringTemp,
+      p.inter_cooling_start_time as interCoolingStartTime,
+      p.second_cooling_start_time as secondCoolingStartTime,
+      p.closure_grout_time as closureGroutTime,
+      p.face_keep_warm as faceKeepWarm,
+      p.pouring_time as pouringTime,
+      p.pouring_strength as pouringStrength,
+      p.bata_no as bataNo
+    from pouring_base p
+           left join small_storage_bin s on p.small_sb_id = s.id
+           left join beton b on p.beton_id = b.id
+    WHERE TIMESTAMPDIFF(MINUTE, open_time,now())&lt;=30
+  </select>
+  <select id="selectBySbId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pouring_base
+    where small_sb_id = #{sbId}
+  </select>
+
+  <select id="selectByUpSb" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pouring_base pb
+    LEFT JOIN small_storage_bin ssb on ssb.id = pb.small_sb_id
+    WHERE abs(ssb.elevation_end-#{elevationStart,jdbcType=DOUBLE})&lt;=1
+      and ssb.ds_start>=#{dsStart,jdbcType=INTEGER} and ssb.ds_end&lt;=#{dsEnd,jdbcType=INTEGER}
+  </select>
+  <select id="selectBySbNo" parameterType="java.lang.String" resultType="com.example.dampouring.model.vo.PouringBaseVO">
+    select
+      p.id as id,
+      s.small_sb_no as smallSbNo,
+      s.id as smallSbId,
+      p.open_time as openTime,
+      p.close_time as closeTime,
+      p.cover_time as coverTime,
+      p.temp_control_id as tempControlId,
+      p.work_amount as workAmount,
+      b.mark_number as markNumber,
+      b.material_no as materialNo,
+      p.design_pouring_temp as designPouringTemp,
+      p.inter_cooling_start_time as interCoolingStartTime,
+      p.second_cooling_start_time as secondCoolingStartTime,
+      p.closure_grout_time as closureGroutTime,
+      p.face_keep_warm as faceKeepWarm,
+      p.pouring_time as pouringTime,
+      p.pouring_strength as pouringStrength,
+      p.bata_no as bataNo
+    from pouring_base p
+           left join small_storage_bin s on p.small_sb_id = s.id
+           left join beton b on p.beton_id = b.id
+    where s.small_sb_no = #{sbNo}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from pouring_base
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.PouringBase">
+    insert into pouring_base (id, small_sb_id, open_time, 
+      close_time, cover_time, temp_control_id, 
+      work_amount, beton_id, design_pouring_temp, 
+      inter_cooling_start_time, second_cooling_start_time, 
+      closure_grout_time, face_keep_warm, pouring_time, 
+      pouring_strength, bata_no, create_time, 
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{openTime,jdbcType=VARCHAR}, 
+      #{closeTime,jdbcType=VARCHAR}, #{coverTime,jdbcType=VARCHAR}, #{tempControlId,jdbcType=INTEGER}, 
+      #{workAmount,jdbcType=DOUBLE}, #{betonId,jdbcType=INTEGER}, #{designPouringTemp,jdbcType=DOUBLE}, 
+      #{interCoolingStartTime,jdbcType=VARCHAR}, #{secondCoolingStartTime,jdbcType=VARCHAR}, 
+      #{closureGroutTime,jdbcType=VARCHAR}, #{faceKeepWarm,jdbcType=VARCHAR}, #{pouringTime,jdbcType=DOUBLE}, 
+      #{pouringStrength,jdbcType=DOUBLE}, #{bataNo,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.PouringBase">
+    insert into pouring_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallSbId != null">
+        small_sb_id,
+      </if>
+      <if test="openTime != null">
+        open_time,
+      </if>
+      <if test="closeTime != null">
+        close_time,
+      </if>
+      <if test="coverTime != null">
+        cover_time,
+      </if>
+      <if test="tempControlId != null">
+        temp_control_id,
+      </if>
+      <if test="workAmount != null">
+        work_amount,
+      </if>
+      <if test="betonId != null">
+        beton_id,
+      </if>
+      <if test="designPouringTemp != null">
+        design_pouring_temp,
+      </if>
+      <if test="interCoolingStartTime != null">
+        inter_cooling_start_time,
+      </if>
+      <if test="secondCoolingStartTime != null">
+        second_cooling_start_time,
+      </if>
+      <if test="closureGroutTime != null">
+        closure_grout_time,
+      </if>
+      <if test="faceKeepWarm != null">
+        face_keep_warm,
+      </if>
+      <if test="pouringTime != null">
+        pouring_time,
+      </if>
+      <if test="pouringStrength != null">
+        pouring_strength,
+      </if>
+      <if test="bataNo != null">
+        bata_no,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallSbId != null">
+        #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="openTime != null">
+        #{openTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="coverTime != null">
+        #{coverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tempControlId != null">
+        #{tempControlId,jdbcType=INTEGER},
+      </if>
+      <if test="workAmount != null">
+        #{workAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="betonId != null">
+        #{betonId,jdbcType=INTEGER},
+      </if>
+      <if test="designPouringTemp != null">
+        #{designPouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="interCoolingStartTime != null">
+        #{interCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCoolingStartTime != null">
+        #{secondCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closureGroutTime != null">
+        #{closureGroutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="faceKeepWarm != null">
+        #{faceKeepWarm,jdbcType=VARCHAR},
+      </if>
+      <if test="pouringTime != null">
+        #{pouringTime,jdbcType=DOUBLE},
+      </if>
+      <if test="pouringStrength != null">
+        #{pouringStrength,jdbcType=DOUBLE},
+      </if>
+      <if test="bataNo != null">
+        #{bataNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.PouringBase">
+    update pouring_base
+    <set>
+      <if test="smallSbId != null">
+        small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="openTime != null">
+        open_time = #{openTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null">
+        close_time = #{closeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="coverTime != null">
+        cover_time = #{coverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tempControlId != null">
+        temp_control_id = #{tempControlId,jdbcType=INTEGER},
+      </if>
+      <if test="workAmount != null">
+        work_amount = #{workAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="betonId != null">
+        beton_id = #{betonId,jdbcType=INTEGER},
+      </if>
+      <if test="designPouringTemp != null">
+        design_pouring_temp = #{designPouringTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="interCoolingStartTime != null">
+        inter_cooling_start_time = #{interCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCoolingStartTime != null">
+        second_cooling_start_time = #{secondCoolingStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closureGroutTime != null">
+        closure_grout_time = #{closureGroutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="faceKeepWarm != null">
+        face_keep_warm = #{faceKeepWarm,jdbcType=VARCHAR},
+      </if>
+      <if test="pouringTime != null">
+        pouring_time = #{pouringTime,jdbcType=DOUBLE},
+      </if>
+      <if test="pouringStrength != null">
+        pouring_strength = #{pouringStrength,jdbcType=DOUBLE},
+      </if>
+      <if test="bataNo != null">
+        bata_no = #{bataNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.PouringBase">
+    update pouring_base
+    set small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      open_time = #{openTime,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=VARCHAR},
+      cover_time = #{coverTime,jdbcType=VARCHAR},
+      temp_control_id = #{tempControlId,jdbcType=INTEGER},
+      work_amount = #{workAmount,jdbcType=DOUBLE},
+      beton_id = #{betonId,jdbcType=INTEGER},
+      design_pouring_temp = #{designPouringTemp,jdbcType=DOUBLE},
+      inter_cooling_start_time = #{interCoolingStartTime,jdbcType=VARCHAR},
+      second_cooling_start_time = #{secondCoolingStartTime,jdbcType=VARCHAR},
+      closure_grout_time = #{closureGroutTime,jdbcType=VARCHAR},
+      face_keep_warm = #{faceKeepWarm,jdbcType=VARCHAR},
+      pouring_time = #{pouringTime,jdbcType=DOUBLE},
+      pouring_strength = #{pouringStrength,jdbcType=DOUBLE},
+      bata_no = #{bataNo,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.PouringBaseVO">
+    select
+      p.id as id,
+      s.small_sb_no as smallSbNo,
+      s.id as smallSbId,
+      p.open_time as openTime,
+      p.close_time as closeTime,
+      p.cover_time as coverTime,
+      p.temp_control_id as tempControlId,
+      p.work_amount as workAmount,
+      b.mark_number as markNumber,
+      b.material_no as materialNo,
+      p.design_pouring_temp as designPouringTemp,
+      p.inter_cooling_start_time as interCoolingStartTime,
+      p.second_cooling_start_time as secondCoolingStartTime,
+      p.closure_grout_time as closureGroutTime,
+      p.face_keep_warm as faceKeepWarm,
+      p.pouring_time as pouringTime,
+      p.pouring_strength as pouringStrength,
+      p.bata_no as bataNo
+    from pouring_base p
+           left join small_storage_bin s on p.small_sb_id = s.id
+           left join beton b on p.beton_id = b.id
+  </select>
+
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.PouringBaseVO">
+    select
+    p.id as id,
+    s.small_sb_no as smallSbNo,
+    p.open_time as openTime,
+    p.close_time as closeTime,
+    p.cover_time as coverTime,
+    p.temp_control_id as tempControlId,
+    p.work_amount as workAmount,
+    b.mark_number as markNumber,
+    b.material_no as materialNo,
+    p.design_pouring_temp as designPouringTemp,
+    p.inter_cooling_start_time as interCoolingStartTime,
+    p.second_cooling_start_time as secondCoolingStartTime,
+    p.closure_grout_time as closureGroutTime,
+    p.face_keep_warm as faceKeepWarm,
+    p.pouring_time as pouringTime,
+    p.pouring_strength as pouringStrength,
+    p.bata_no as bataNo
+    from pouring_base p
+    left join small_storage_bin s on p.small_sb_id = s.id
+    left join beton b on p.beton_id = b.id
+    where p.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectListQue" resultType="com.example.dampouring.model.vo.PouringBaseVO" parameterType="com.example.dampouring.query.PouringBaseQue">
+    select
+    p.id as id,
+    s.small_sb_no as smallSbNo,
+    p.open_time as openTime,
+    p.close_time as closeTime,
+    p.cover_time as coverTime,
+    p.temp_control_id as tempControlId,
+    p.work_amount as workAmount,
+    b.mark_number as markNumber,
+    b.material_no as materialNo,
+    p.design_pouring_temp as designPouringTemp,
+    p.inter_cooling_start_time as interCoolingStartTime,
+    p.second_cooling_start_time as secondCoolingStartTime,
+    p.closure_grout_time as closureGroutTime,
+    p.face_keep_warm as faceKeepWarm,
+    p.pouring_time as pouringTime,
+    p.pouring_strength as pouringStrength,
+    p.bata_no as bataNo
+    from pouring_base p
+    left join small_storage_bin s on p.small_sb_id = s.id
+    left join beton b on p.beton_id = b.id
+    <where>
+    <if test="dsName != null">
+        and s.ds_start &lt;=#{dsName} and s.ds_end &gt;=#{dsName}
+    </if>
+    <if test="smallId != null">
+      and p.small_sb_id =#{smallId}
+    </if>
+    <if test="startTime != null">
+      and  p.open_time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and p.close_time &lt;= #{endTime}
+    </if>
+    </where>
+  </select>
+
+  <select id="selectByFg" resultType="com.example.dampouring.model.vo.PouringBaseVO" parameterType="com.example.dampouring.query.PouringBaseQue">
+    select
+    p.id as id,
+    s.small_sb_no as smallSbNo,
+    p.open_time as openTime,
+    p.close_time as closeTime,
+    p.cover_time as coverTime,
+    p.temp_control_id as tempControlId,
+    p.work_amount as workAmount,
+    b.mark_number as markNumber,
+    b.material_no as materialNo,
+    p.design_pouring_temp as designPouringTemp,
+    p.inter_cooling_start_time as interCoolingStartTime,
+    p.second_cooling_start_time as secondCoolingStartTime,
+    p.closure_grout_time as closureGroutTime,
+    p.face_keep_warm as faceKeepWarm,
+    p.pouring_time as pouringTime,
+    p.pouring_strength as pouringStrength,
+    p.bata_no as bataNo
+    from pouring_base p
+    left join small_storage_bin s on p.small_sb_id = s.id
+    left join beton b on p.beton_id = b.id
+    where  p.cover_time='' or p.cover_time is null
+      <if test="dsName != null">
+        and s.ds_start &lt;=#{dsName} and s.ds_end &gt;=#{dsName}
+      </if>
+      <if test="smallId != null">
+        and p.small_sb_id =#{smallId}
+      </if>
+      <if test="startTime != null">
+        and  p.open_time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and p.close_time &lt;= #{endTime}
+      </if>
+  </select>
+
+
+
+  <select id="tempUp" parameterType="com.example.dampouring.query.TempUpQue" resultType="com.example.dampouring.model.vo.TempUpVo">
+    SELECT small_sb_no as sbNo,
+    emta.avg_temp as exportMachineTemp,
+    ita.avg_temp as inBoundTemp,
+    pta.avg_temp as pouringTemp,
+    ita.avg_temp-emta.avg_temp as inBoundUp,
+    pta.avg_temp-ita.avg_temp as pouringUp,
+    emta.pouring_base_id as pouringId
+    from small_storage_bin ssb
+    LEFT JOIN pouring_base pb on ssb.id = pb.small_sb_id
+    LEFT JOIN export_machine_temp_assess emta on emta.pouring_base_id = pb.id
+    LEFT JOIN inbound_temp_assess ita on ita.pouring_base_id = pb.id
+    LEFT JOIN pouring_temp_assess pta on pta.pouring_base_id = pb.id
+    <where>
+      <if test="smallId != null">
+        and ssb.id =#{smallId}
+      </if>
+    </where>
+  </select>
+</mapper>

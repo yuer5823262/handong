@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.RainWaterInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.RainWaterInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="station" jdbcType="VARCHAR" property="station" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="value" jdbcType="INTEGER" property="value" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="alternate_field" jdbcType="VARCHAR" property="alternateField" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, station, `type`, `time`, `value`, remark, alternate_field
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rain_water_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rain_water_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.RainWaterInfo">
+    insert into rain_water_info (id, station, `type`, 
+      `time`, `value`, remark, 
+      alternate_field)
+    values (#{id,jdbcType=INTEGER}, #{station,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{value,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{alternateField,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.RainWaterInfo">
+    insert into rain_water_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="station != null">
+        station,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="value != null">
+        `value`,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="alternateField != null">
+        alternate_field,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="station != null">
+        #{station,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="alternateField != null">
+        #{alternateField,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.RainWaterInfo">
+    update rain_water_info
+    <set>
+      <if test="station != null">
+        station = #{station,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        `value` = #{value,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="alternateField != null">
+        alternate_field = #{alternateField,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.RainWaterInfo">
+    update rain_water_info
+    set station = #{station,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=VARCHAR},
+      `value` = #{value,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      alternate_field = #{alternateField,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from rain_water_info
+    where type = #{type}
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.RainWaterInfoQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from rain_water_info
+    <where>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+    <if test="station != null">
+     and station =#{station}
+    </if>
+    <if test="startTime != null">
+    and  time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and time &lt;= #{endTime}
+    </if>
+    <if test="valStart != null">
+      and  value &gt;=#{valStart}
+    </if>
+    <if test="valEnd != null">
+      and value &lt;= #{valEnd}
+    </if>
+    </where>
+  </select>
+</mapper>

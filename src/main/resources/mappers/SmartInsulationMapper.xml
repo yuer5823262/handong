@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartInsulationMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartInsulation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_id" jdbcType="INTEGER" property="smallId" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="cold_wave" jdbcType="DOUBLE" property="coldWave" />
+    <result column="temp_diff" jdbcType="DOUBLE" property="tempDiff" />
+    <result column="is_baowen" jdbcType="INTEGER" property="isBaowen" />
+    <result column="is_ganyu" jdbcType="INTEGER" property="isGanyu" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_id, `time`, cold_wave, temp_diff, is_baowen, is_ganyu, `type`, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_insulation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_insulation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartInsulation">
+    insert into smart_insulation (id, small_id, `time`, 
+      cold_wave, temp_diff, is_baowen, 
+      is_ganyu, `type`, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{smallId,jdbcType=INTEGER}, #{time,jdbcType=CHAR}, 
+      #{coldWave,jdbcType=DOUBLE}, #{tempDiff,jdbcType=DOUBLE}, #{isBaowen,jdbcType=INTEGER}, 
+      #{isGanyu,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartInsulation">
+    insert into smart_insulation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallId != null">
+        small_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="coldWave != null">
+        cold_wave,
+      </if>
+      <if test="tempDiff != null">
+        temp_diff,
+      </if>
+      <if test="isBaowen != null">
+        is_baowen,
+      </if>
+      <if test="isGanyu != null">
+        is_ganyu,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallId != null">
+        #{smallId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="coldWave != null">
+        #{coldWave,jdbcType=DOUBLE},
+      </if>
+      <if test="tempDiff != null">
+        #{tempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="isBaowen != null">
+        #{isBaowen,jdbcType=INTEGER},
+      </if>
+      <if test="isGanyu != null">
+        #{isGanyu,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartInsulation">
+    update smart_insulation
+    <set>
+      <if test="smallId != null">
+        small_id = #{smallId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="coldWave != null">
+        cold_wave = #{coldWave,jdbcType=DOUBLE},
+      </if>
+      <if test="tempDiff != null">
+        temp_diff = #{tempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="isBaowen != null">
+        is_baowen = #{isBaowen,jdbcType=INTEGER},
+      </if>
+      <if test="isGanyu != null">
+        is_ganyu = #{isGanyu,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartInsulation">
+    update smart_insulation
+    set small_id = #{smallId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=CHAR},
+      cold_wave = #{coldWave,jdbcType=DOUBLE},
+      temp_diff = #{tempDiff,jdbcType=DOUBLE},
+      is_baowen = #{isBaowen,jdbcType=INTEGER},
+      is_ganyu = #{isGanyu,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.SmartInsulationQue" resultType="com.example.dampouring.model.vo.SmartInsulationVO">
+    select
+      si.id as id,
+      s.small_sb_no as smallNo,
+      si.time as time,
+    si.cold_wave as coldWave,
+    si.temp_diff as tempDiff,
+    si.is_baowen as isBaowen,
+    si.is_ganyu as isGanyu,
+    si.type as type,
+    si.remark as remark
+    from smart_insulation si
+      left join small_storage_bin s on si.small_id = s.id
+    <where>
+      <if test="type != null">
+        and si.type = #{type}
+      </if>
+      <if test="smallId != null">
+        and  si.small_id =#{smallId}
+      </if>
+
+    </where>
+  </select>
+
+  <select id="writeTemp" resultType="com.example.dampouring.model.vo.BwTempVO">
+    SELECT ssb.small_sb_no as sbNo,
+           ssb.ds_start as dsNo,
+           ssb.elevation_start as elevationStart,
+           ssb.elevation_end as elevationEnd,
+           p.pouring_time as pouringTime,
+           tb1.pouringTemp as pouringTemp,
+           tb2.temp as innerTemp
+    from small_storage_bin ssb
+           LEFT JOIN pouring_base p on p.small_sb_id =ssb.id
+           LEFT JOIN
+         (SELECT pouring_base_id,avg(temperature) pouringTemp from pouring_temp_info GROUP BY pouring_base_id) tb1 on tb1.pouring_base_id=p.id
+           LEFT JOIN
+         (
+           SELECT
+             t1.*
+           FROM
+             (
+               SELECT
+                 itf.time AS time,
+			itf.temp AS temp,
+			s.id as sbId
+               FROM
+                 inner_temp_sensor_info itf
+                 LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                 LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                 LEFT JOIN pouring_base p ON s.id = p.small_sb_id
+             ) t1
+               RIGHT JOIN (
+               SELECT
+                 max(time) AS time,
+		s.small_sb_no AS smallNo,
+		s.id as sbId
+               FROM
+                 inner_temp_sensor_info itf
+                 LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                 LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+               GROUP BY
+                 s.id
+             ) t2 ON t1.sbId = t2.sbId
+               AND t1.time = t2.time
+         ) tb2 on tb2.sbId=ssb.id
+    ORDER BY ssb.ds_start,ssb.elevation_start
+  </select>
+
+<!--  <select id="bwAdvice" resultType="com.example.dampouring.model.vo.SmartBwAdviceVO">-->
+<!--    SELECT-->
+<!--      sbz.ds_name AS dsNo,-->
+<!--      sbz.piles AS plies,-->
+<!--      sbm.piles AS futurePlies,-->
+<!--      tb2.materials AS materials,-->
+<!--      tb2.thickness AS ply,-->
+<!--      tb2.thickness * sbz.piles AS currentPly,-->
+<!--      tb2.thickness * sbm.piles AS futurePly,-->
+<!--      tb2.remark AS materialsMark-->
+<!--    FROM-->
+<!--      smart_bw_zero sbz-->
+<!--        LEFT JOIN smart_bw_mdang sbm ON sbm.ds_name = sbz.ds_name-->
+<!--        LEFT JOIN (-->
+<!--        SELECT-->
+<!--          s.small_sb_no,-->
+<!--          s.id,-->
+<!--          s.ds_start-->
+<!--        FROM-->
+<!--          (-->
+<!--            SELECT-->
+<!--              ds_start,-->
+<!--              max(elevation_end) AS elevation_end-->
+<!--            FROM-->
+<!--              small_storage_bin-->
+<!--            GROUP BY-->
+<!--              ds_start-->
+<!--          ) aaa-->
+<!--            LEFT JOIN small_storage_bin s ON s.ds_start = aaa.ds_start-->
+<!--            AND s.elevation_end = aaa.elevation_end-->
+<!--      ) tb1 ON tb1.ds_start = sbz.ds_name-->
+<!--        LEFT JOIN (-->
+<!--        SELECT-->
+<!--          hp.*-->
+<!--        FROM-->
+<!--          (-->
+<!--            SELECT-->
+<!--              max(warm_start_time) AS time,-->
+<!--				small_sb_id-->
+<!--            FROM-->
+<!--              heat_preservation-->
+<!--            GROUP BY-->
+<!--              small_sb_id-->
+<!--          ) aaa-->
+<!--            LEFT JOIN heat_preservation hp ON aaa.small_sb_id = hp.small_sb_id-->
+<!--            AND aaa.time = hp.warm_start_time-->
+<!--      ) tb2 ON tb1.id = tb2.small_sb_id-->
+<!--  </select>-->
+  <select id="bwAdvice" resultType="com.example.dampouring.model.vo.SmartBwAdviceVO">
+    SELECT
+      sbz.ds_name AS dsNo,
+      sbz.piles AS plies,
+      sbz.piles*5 as currentPly,
+      sbm.piles AS futurePlies,
+      sbm.piles*5 as futurePly,
+      '保温卷材' as materials,
+      '导热系数 8.7kj/（m.d.℃）' as materialsMark,
+      5 as ply
+    FROM
+      smart_bw_zero sbz
+        LEFT JOIN smart_bw_mdang sbm ON sbm.ds_name = sbz.ds_name
+  </select>
+
+  <select id="writeTESTINFOR" resultType="com.example.dampouring.model.vo.TESTINFORVO">
+    SELECT
+    dsNo,
+    eSta,
+    eEnd,
+    betonId,
+    DATE_FORMAT(
+    pouringTime,
+    '%Y %m %d %H %i %s'
+    ) AS pouringTime,
+
+    IF (
+    pouringTemp IS NULL,
+    12,
+    pouringTemp
+    ) AS pouringTemp,
+
+    IF (
+    innerTemp IS NULL ,- 9999,
+    innerTemp
+    ) AS innerTemp
+    FROM
+    (
+    SELECT
+    tb1.ds_name AS dsNo,
+    tb1.elevation_start AS eSta,
+    tb1.elevation_end AS eEnd,
+    pb.open_time AS pouringTime,
+    tb2.pouringTemp AS pouringTemp,
+    tb3.innerTemp AS innerTemp,
+    pb.beton_id AS betonId
+    FROM
+    (
+    SELECT
+    ds.ds_name,
+    ssb.id AS sbId,
+    ssb.elevation_start,
+    ssb.elevation_end
+    FROM
+    dam_segment ds
+    LEFT JOIN small_storage_bin ssb ON ssb.ds_start &lt;= ds.ds_name
+    AND ssb.ds_end >= ds.ds_name
+    WHERE
+    (
+    SELECT
+    count(*)
+    FROM
+    dam_segment ds1
+    LEFT JOIN small_storage_bin ssb1 ON ssb1.ds_start &lt;= ds1.ds_name
+    AND ssb1.ds_end >= ds1.ds_name
+    WHERE
+    ds.ds_name = ds1.ds_name
+    AND ssb.elevation_end &lt; ssb1.elevation_end
+    ) &lt; 6
+    ORDER BY
+    ds.ds_name,
+    ssb.elevation_start DESC
+    ) tb1
+    LEFT JOIN pouring_base pb ON tb1.sbId = pb.small_sb_id
+    LEFT JOIN (
+    SELECT
+    pouring_base_id,
+    avg(temperature) AS pouringTemp
+    FROM
+    pouring_temp_info
+    GROUP BY
+    pouring_base_id
+    ) tb2 ON tb2.pouring_base_id = pb.id
+    LEFT JOIN (
+    SELECT
+    its.sb_id AS sbId,
+    avg(itsi.temp) AS innerTemp
+    FROM
+    inner_temp_sensor_info itsi
+    LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
+    WHERE
+    LEFT (itsi.time, 13) = LEFT (NOW(), 13)
+    GROUP BY
+    its.sb_id
+    ) tb3 ON tb3.sbId = tb1.sbId
+    ) zong
+    WHERE dsNo &lt; 28
+    ORDER BY
+    dsNo,
+    eSta DESC
+  </select>
+  <select id="writeBEIYONG" resultType="com.example.dampouring.model.vo.BEIYONGVO">
+    SELECT
+    t1.*,
+    IF (
+    tta.top_temp_time IS NULL,
+    '-9999 -9999 -9999 -9999',
+    DATE_FORMAT(
+    tta.top_temp_time,
+    '%Y %m %d %H'
+    )
+    ) AS maxTime,
+
+    IF (
+    tta.top_temp IS NULL ,- 9999,
+    tta.top_temp
+    ) AS maxTemp,
+
+    IF (
+    pb.inter_cooling_start_time IS NULL,
+    '-9999 -9999 -9999 -9999',
+    DATE_FORMAT(
+    pb.inter_cooling_start_time,
+    '%Y %m %d %H'
+    )
+    ) AS interTime,
+
+    IF (
+    wpfa.enter_temp_avg IS NULL ,- 9999,
+    wpfa.enter_temp_avg
+    ) AS avgWaterTemp,
+
+    IF (
+    innerTemp IS NULL ,- 9999,
+    innerTemp
+    ) AS innerTemp,
+
+    IF (
+    tb4.waterTemp IS NULL ,- 9999,
+    tb4.waterTemp
+    ) AS waterTemp
+    FROM
+    (
+    SELECT
+    ds.ds_name as dsName,
+    ssb.id AS sbId,
+    ssb.elevation_start,
+    ssb.elevation_end
+    FROM
+    dam_segment ds
+    LEFT JOIN small_storage_bin ssb ON ssb.ds_start &lt;= ds.ds_name
+    AND ssb.ds_end >= ds.ds_name
+    WHERE
+    ssb.id IS NOT NULL
+    AND (
+    SELECT
+    count(*)
+    FROM
+    dam_segment ds1
+    LEFT JOIN small_storage_bin ssb1 ON ssb1.ds_start &lt;= ds1.ds_name
+    AND ssb1.ds_end >= ds1.ds_name
+    WHERE
+    ds.ds_name = ds1.ds_name
+    AND ssb.elevation_end &lt; ssb1.elevation_end
+    ) &lt; 6
+    ORDER BY
+    ds.ds_name,
+    ssb.elevation_start DESC
+    ) t1
+    LEFT JOIN pouring_base pb ON pb.small_sb_id = t1.sbId
+    LEFT JOIN top_temp_assess tta ON tta.pouring_base_id = pb.id
+    LEFT JOIN (
+    SELECT
+    its.sb_id AS sbId,
+    avg(itsi.temp) AS innerTemp
+    FROM
+    inner_temp_sensor_info itsi
+    LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
+    WHERE
+    LEFT (itsi.time, 13) = LEFT (NOW(), 13)
+    GROUP BY
+    its.sb_id
+    ) tb3 ON tb3.sbId = t1.sbId
+    LEFT JOIN water_pipe wp ON wp.sb_id = t1.sbId
+    LEFT JOIN water_pipe_flow_assess wpfa ON wpfa.water_pipe_id = wp.id
+    AND qi = "一期"
+    LEFT JOIN (
+    SELECT
+    its.sb_id AS sbId,
+    avg(itsi.enter_temp) AS waterTemp
+    FROM
+    water_pipe_flow_info itsi
+    LEFT JOIN water_pipe its ON itsi.water_pipe_id = its.id
+    WHERE
+    LEFT (itsi.time, 13) = LEFT (NOW(), 13)
+    GROUP BY
+    its.sb_id
+    ) tb4 ON tb4.sbId = t1.sbId
+    where dsName &lt; 28
+    ORDER BY dsName,elevation_start desc
+  </select>
+
+  <select id="writeBwFile1" resultType="com.example.dampouring.model.vo.BwFilePourTemp">
+    SELECT
+    ds.ds_no as dsNo,
+    pb.close_time as closeTime,
+    pta.avg_temp as pourTemp
+    FROM
+    dam_segment ds
+    LEFT JOIN small_storage_bin ssb ON ssb.ds_start = ds.ds_no
+    LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+    LEFT JOIN pouring_temp_assess pta ON pta.pouring_base_id = pb.id
+    WHERE
+    pb.close_time &lt; NOW()
+  </select>
+
+  <select id="writeBwFile2" resultType="com.example.dampouring.model.vo.BwFileFaceTempVO">
+    SELECT
+      ssb.ds_start AS dsNo,
+      ft.sb_id as sbId,
+      LEFT ( fti.TIME, 13 ) AS time,
+      avg( temp ) as avgTemp
+    FROM
+      face_temp_sensor_info fti
+      LEFT JOIN face_temp_sensor ft ON fti.inner_temp_sensor_id = ft.id
+      LEFT JOIN small_storage_bin ssb ON ft.sb_id = ssb.id
+    where ssb.id is not null
+    GROUP BY
+      ft.sb_id,
+      LEFT ( fti.TIME, 13 )
+    ORDER BY
+      ssb.ds_start,
+      time,
+      ssb.id
+  </select>
+
+  <select id="writeBwFile3" resultType="com.example.dampouring.model.vo.BwFileFlowVO">
+    SELECT
+      ssb.ds_start as dsNo,
+      wp.sb_id as sbId,
+      LEFT ( wpi.TIME, 13 ) AS time,
+      AVG( wpi.enter_temp ) as temp,
+      avg( wpi.flow ) as flow
+    FROM
+      water_pipe_flow_info wpi
+      LEFT JOIN water_pipe wp ON wpi.water_pipe_id = wp.id
+      LEFT JOIN small_storage_bin ssb ON ssb.id = wp.sb_id
+    where ssb.id is not null
+    GROUP BY
+      wp.sb_id,
+      LEFT ( wpi.TIME, 13 )
+    ORDER BY
+      ssb.ds_start,
+      time
+
+  </select>
+
+
+
+</mapper>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TopTempAssessMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TopTempAssess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pouring_base_id" jdbcType="INTEGER" property="pouringBaseId" />
+    <result column="top_temp" jdbcType="DOUBLE" property="topTemp" />
+    <result column="top_avg_temp" jdbcType="DOUBLE" property="topAvgTemp" />
+    <result column="norm_temp" jdbcType="DOUBLE" property="normTemp" />
+    <result column="excessive" jdbcType="DOUBLE" property="excessive" />
+    <result column="is_excessive" jdbcType="VARCHAR" property="isExcessive" />
+    <result column="top_temp_time" jdbcType="VARCHAR" property="topTempTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pouring_base_id, top_temp,top_avg_temp, norm_temp, excessive, is_excessive, top_temp_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from top_temp_assess
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from top_temp_assess
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteAll">
+    delete from top_temp_assess
+  </delete>
+
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TopTempAssess">
+    insert into top_temp_assess (id, pouring_base_id, top_temp, top_avg_temp,
+      norm_temp, excessive, is_excessive, 
+      top_temp_time)
+    values (#{id,jdbcType=INTEGER}, #{pouringBaseId,jdbcType=INTEGER}, #{topTemp,jdbcType=DOUBLE},
+            #{topAvgTemp,jdbcType=DOUBLE},#{normTemp,jdbcType=DOUBLE}, #{excessive,jdbcType=DOUBLE}, #{isExcessive,jdbcType=VARCHAR},
+      #{topTempTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TopTempAssess">
+    insert into top_temp_assess
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pouringBaseId != null">
+        pouring_base_id,
+      </if>
+      <if test="topTemp != null">
+        top_temp,
+      </if>
+      <if test="topAvgTemp != null">
+        top_avg_temp,
+      </if>
+      <if test="normTemp != null">
+        norm_temp,
+      </if>
+      <if test="excessive != null">
+        excessive,
+      </if>
+      <if test="isExcessive != null">
+        is_excessive,
+      </if>
+      <if test="topTempTime != null">
+        top_temp_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pouringBaseId != null">
+        #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="topTemp != null">
+        #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topAvgTemp != null">
+        #{topAvgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="normTemp != null">
+        #{normTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="excessive != null">
+        #{excessive,jdbcType=DOUBLE},
+      </if>
+      <if test="isExcessive != null">
+        #{isExcessive,jdbcType=VARCHAR},
+      </if>
+      <if test="topTempTime != null">
+        #{topTempTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TopTempAssess">
+    update top_temp_assess
+    <set>
+      <if test="pouringBaseId != null">
+        pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      </if>
+      <if test="topTemp != null">
+        top_temp = #{topTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="topAvgTemp != null">
+        top_avg_temp = #{topAvgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="normTemp != null">
+        norm_temp = #{normTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="excessive != null">
+        excessive = #{excessive,jdbcType=DOUBLE},
+      </if>
+      <if test="isExcessive != null">
+        is_excessive = #{isExcessive,jdbcType=VARCHAR},
+      </if>
+      <if test="topTempTime != null">
+        top_temp_time = #{topTempTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TopTempAssess">
+    update top_temp_assess
+    set pouring_base_id = #{pouringBaseId,jdbcType=INTEGER},
+      top_temp = #{topTemp,jdbcType=DOUBLE},
+      top_avg_temp = #{topAvgTemp,jdbcType=DOUBLE},
+      norm_temp = #{normTemp,jdbcType=DOUBLE},
+      excessive = #{excessive,jdbcType=DOUBLE},
+      is_excessive = #{isExcessive,jdbcType=VARCHAR},
+      top_temp_time = #{topTempTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultType="com.example.dampouring.model.vo.TopTempAssessVO">
+    select
+      tta.id as id,
+      s.small_sb_no as smallNo,
+      tta.norm_temp as normTemp,
+      tta.top_temp as topTemp,
+      tta.top_avg_temp as topAvgTemp,
+      tta.excessive as excessive,
+      if(tta.excessive is null,0,tta.excessive) as excessive,
+      tta.top_temp_time as topTempTime
+    from top_temp_assess tta
+      left join pouring_base p on tta.pouring_base_id=p.id
+      left join small_storage_bin s on p.small_sb_id = s.id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.TopTempAssessQue" resultType="com.example.dampouring.model.vo.TopTempAssessVO">
+    select
+    tta.id as id,
+    s.small_sb_no as smallNo,
+    tta.norm_temp as normTemp,
+    tta.top_temp as topTemp,
+    tta.top_avg_temp as topAvgTemp,
+    if(tta.excessive is null,0,tta.excessive) as excessive,
+    tta.is_excessive as isExcessive,
+    tta.top_temp_time as topTempTime
+    from top_temp_assess tta
+    left join pouring_base p on tta.pouring_base_id=p.id
+    left join small_storage_bin s on p.small_sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id = #{sbId}
+      </if>
+      <if test="pbId != null">
+        and p.id = #{pbId}
+      </if>
+    </where>
+    order by s.small_sb_no desc
+  </select>
+</mapper>

@@ -1,0 +1,48 @@
+
+server:
+        port: 7772
+        servlet:
+                context-path: /tunnel
+spring:
+        servlet:
+                multipart:
+                        max-file-size: 10MB
+        jpa:
+                show-sql: true
+
+        datasource:
+
+#                db1:
+#                        driver-class-name: com.mysql.cj.jdbc.Driver
+#                        name: dam_pouring_datasourcez
+#                        username: root
+#                        password: dam_dam5000
+#                        jdbc-url: jdbc:mysql://39.107.204.26:3306/tunnelpourdb?useUnicode=true
+#                        type: com.alibaba.druid.pool.DruidDataSource
+#                db2:
+#                        driver-class-name: com.mysql.cj.jdbc.Driver
+#                        name: dam_pouring_datasource
+#                        username: root
+#                        password: dam_dam5000
+#                        jdbc-url: jdbc:mysql://127.0.0.1:3306/tunnelpourdb?useUnicode=true
+#                        type: com.alibaba.druid.pool.DruidDataSource
+                db1:
+                        driver-class-name: com.mysql.cj.jdbc.Driver
+                        name: dam_pouring_datasource
+                        username: root
+                        password: dam_dam5000
+                        jdbc-url: jdbc:mysql://127.0.0.1:3306/tunnelpourdb?useUnicode=true
+                        type: com.alibaba.druid.pool.DruidDataSource
+                db2:
+                        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+                        name: dam_pouring_datasource1
+                        username: sa
+                        password: iwhr2023
+                        jdbc-url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=Mln.user
+                        type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+        mapper-locations: classpath:mappers/*.xml
+logging:
+#        config: classpath:log4j2.xml
+        config: classpath:log4j2_32.xml
+

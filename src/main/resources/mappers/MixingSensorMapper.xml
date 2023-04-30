@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.MixingSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.MixingSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="belong_id" jdbcType="INTEGER" property="belongId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="no" jdbcType="VARCHAR" property="no" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, belong_id, `type`, cu_id, `no`, addr, channel_no,channel, create_time, `operator`
+  </sql>
+  <select id="selectByCuId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mixing_sensor
+    where cu_id = #{cuId,jdbcType=INTEGER} and channel is not null and channel!=''
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_sensor
+  </select>
+  <select id="selectByCuIdCNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_sensor
+    where cu_id = #{cuId,jdbcType=INTEGER} and channel_no = #{channelNo,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey">
+    delete from mixing_sensor
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.MixingSensor">
+    insert into mixing_sensor (id, belong_id, `type`, 
+      cu_id, `no`, addr, channel_no, channel,
+      create_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{belongId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{cuId,jdbcType=INTEGER}, #{no,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, #{channelNo,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER},
+            #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.MixingSensor">
+    insert into mixing_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="belongId != null">
+        belong_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="no != null">
+        `no`,
+      </if>
+      <if test="addr != null">
+        addr,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="belongId != null">
+        #{belongId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.MixingSensor">
+    update mixing_sensor
+    <set>
+      <if test="belongId != null">
+        belong_id = #{belongId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="no != null">
+        `no` = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.MixingSensor">
+    update mixing_sensor
+    set belong_id = #{belongId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=VARCHAR},
+      cu_id = #{cuId,jdbcType=INTEGER},
+      `no` = #{no,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      channel_no = #{channelNo,jdbcType=INTEGER},
+        channel = #{channel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByTempNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_sensor
+    where no = #{no,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.MixingSensorVO" parameterType="com.example.dampouring.query.MixingSensorInfoQue">
+    select
+    i.id as id,
+    mb.no as buildingNo,
+    i.type as type,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.no as No,
+    i.addr as Addr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.create_time as createTime,
+    i.operator as operator
+    from mixing_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join mixing_building mb on i.belong_id=mb.id
+    <where>
+      <if test="buildingId != null">
+        and i.belong_id = #{buildingId}
+      </if>
+      <if test="type != null">
+        and i.type = #{type}
+      </if>
+    </where>
+
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.MixingSensorVO">
+    select
+    i.id as id,
+    mb.no as buildingNo,
+    i.type as type,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.no as No,
+    i.addr as Addr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.create_time as createTime,
+    i.operator as operator
+    from mixing_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join mixing_building mb on i.belong_id=mb.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

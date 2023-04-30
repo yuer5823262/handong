@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.MixingSandAssessMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.MixingSandAssess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="building_no" jdbcType="VARCHAR" property="buildingNo" />
+    <result column="max_temp" jdbcType="DOUBLE" property="maxTemp" />
+    <result column="min_temp" jdbcType="DOUBLE" property="minTemp" />
+    <result column="avg_temp" jdbcType="DOUBLE" property="avgTemp" />
+    <result column="norm" jdbcType="DOUBLE" property="norm" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="qualified_count" jdbcType="INTEGER" property="qualifiedCount" />
+    <result column="percent" jdbcType="INTEGER" property="percent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, building_no, max_temp, min_temp, avg_temp, norm, `count`, qualified_count, `percent`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mixing_sand_assess
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mixing_sand_assess
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.MixingSandAssess">
+    insert into mixing_sand_assess (id, building_no, max_temp, 
+      min_temp, avg_temp, norm, 
+      `count`, qualified_count, `percent`
+      )
+    values (#{id,jdbcType=INTEGER}, #{buildingNo,jdbcType=VARCHAR}, #{maxTemp,jdbcType=DOUBLE}, 
+      #{minTemp,jdbcType=DOUBLE}, #{avgTemp,jdbcType=DOUBLE}, #{norm,jdbcType=DOUBLE}, 
+      #{count,jdbcType=INTEGER}, #{qualifiedCount,jdbcType=INTEGER}, #{percent,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.MixingSandAssess">
+    insert into mixing_sand_assess
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="buildingNo != null">
+        building_no,
+      </if>
+      <if test="maxTemp != null">
+        max_temp,
+      </if>
+      <if test="minTemp != null">
+        min_temp,
+      </if>
+      <if test="avgTemp != null">
+        avg_temp,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="qualifiedCount != null">
+        qualified_count,
+      </if>
+      <if test="percent != null">
+        `percent`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="buildingNo != null">
+        #{buildingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="maxTemp != null">
+        #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="minTemp != null">
+        #{minTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="qualifiedCount != null">
+        #{qualifiedCount,jdbcType=INTEGER},
+      </if>
+      <if test="percent != null">
+        #{percent,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.MixingSandAssess">
+    update mixing_sand_assess
+    <set>
+      <if test="buildingNo != null">
+        building_no = #{buildingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="maxTemp != null">
+        max_temp = #{maxTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="minTemp != null">
+        min_temp = #{minTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="qualifiedCount != null">
+        qualified_count = #{qualifiedCount,jdbcType=INTEGER},
+      </if>
+      <if test="percent != null">
+        `percent` = #{percent,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.MixingSandAssess">
+    update mixing_sand_assess
+    set building_no = #{buildingNo,jdbcType=VARCHAR},
+      max_temp = #{maxTemp,jdbcType=DOUBLE},
+      min_temp = #{minTemp,jdbcType=DOUBLE},
+      avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      norm = #{norm,jdbcType=DOUBLE},
+      `count` = #{count,jdbcType=INTEGER},
+      qualified_count = #{qualifiedCount,jdbcType=INTEGER},
+      `percent` = #{percent,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="delAll" parameterType="java.lang.Integer">
+    delete from mixing_sand_assess
+  </delete>
+  <select id="selectList" parameterType="com.example.dampouring.query.MixingWaterAssessQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_sand_assess
+    <where>
+      <if test="buildingNo != null">
+        and  building_no =#{buildingNo}
+      </if>
+    </where>
+  </select>
+  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.MixingSandAssess">
+    SELECT
+      building_no as buildingNo,
+      avg(temp) as avgTemp,
+      max(temp)as maxTemp,
+      min(temp)as minTemp,
+      count(id) as count,
+      25 as norm,
+    sum(temp>25) as qualifiedCount,
+		cast(sum(temp>25)/count(id)*100 as signed) as percent
+    from mixing_sand_info
+    GROUP BY building_no
+  </select>
+</mapper>

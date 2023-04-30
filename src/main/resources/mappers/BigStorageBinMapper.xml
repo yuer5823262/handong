@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.BigStorageBinMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.BigStorageBin">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="big_sb_no" jdbcType="VARCHAR" property="bigSbNo" />
+    <result column="ds_start" jdbcType="VARCHAR" property="dsStart" />
+    <result column="ds_end" jdbcType="VARCHAR" property="dsEnd" />
+    <result column="elevation_start" jdbcType="DOUBLE" property="elevationStart" />
+    <result column="elevation_end" jdbcType="DOUBLE" property="elevationEnd" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, big_sb_no, ds_start, ds_end, elevation_start, elevation_end, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from big_storage_bin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from big_storage_bin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.BigStorageBin">
+    insert into big_storage_bin (id, big_sb_no, ds_start, 
+      ds_end, elevation_start, elevation_end, 
+      create_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{bigSbNo,jdbcType=VARCHAR}, #{dsStart,jdbcType=VARCHAR}, 
+      #{dsEnd,jdbcType=VARCHAR}, #{elevationStart,jdbcType=DOUBLE}, #{elevationEnd,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.BigStorageBin">
+    insert into big_storage_bin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bigSbNo != null">
+        big_sb_no,
+      </if>
+      <if test="dsStart != null">
+        ds_start,
+      </if>
+      <if test="dsEnd != null">
+        ds_end,
+      </if>
+      <if test="elevationStart != null">
+        elevation_start,
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bigSbNo != null">
+        #{bigSbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dsStart != null">
+        #{dsStart,jdbcType=VARCHAR},
+      </if>
+      <if test="dsEnd != null">
+        #{dsEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="elevationStart != null">
+        #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.BigStorageBin">
+    update big_storage_bin
+    <set>
+      <if test="bigSbNo != null">
+        big_sb_no = #{bigSbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dsStart != null">
+        ds_start = #{dsStart,jdbcType=VARCHAR},
+      </if>
+      <if test="dsEnd != null">
+        ds_end = #{dsEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="elevationStart != null">
+        elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.BigStorageBin">
+    update big_storage_bin
+    set big_sb_no = #{bigSbNo,jdbcType=VARCHAR},
+      ds_start = #{dsStart,jdbcType=VARCHAR},
+      ds_end = #{dsEnd,jdbcType=VARCHAR},
+      elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectVoList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from big_storage_bin
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from big_storage_bin
+    where big_sb_no = #{bigSbNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByids" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from big_storage_bin
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

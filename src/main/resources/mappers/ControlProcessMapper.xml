@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.ControlProcessMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.ControlProcess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="sb_no" jdbcType="VARCHAR" property="sbNo" />
+    <result column="wp_no" jdbcType="VARCHAR" property="wpNo" />
+    <result column="electricity" jdbcType="DOUBLE" property="electricity" />
+    <result column="opening" jdbcType="DOUBLE" property="opening" />
+    <result column="flow" jdbcType="DOUBLE" property="flow" />
+    <result column="mb_flow" jdbcType="DOUBLE" property="mbFlow" />
+    <result column="direction" jdbcType="VARCHAR" property="direction" />
+    <result column="is_meet_demand" jdbcType="VARCHAR" property="isMeetDemand" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `time`, sb_no, wp_no, electricity,opening, flow, mb_flow, direction,
+    is_meet_demand
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from control_process
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from control_process
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.ControlProcess">
+    insert into control_process (id, `time`, sb_no, 
+      wp_no, electricity,opening, flow,
+      mb_flow, direction, is_meet_demand
+      )
+    values (#{id,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{sbNo,jdbcType=VARCHAR}, 
+      #{wpNo,jdbcType=VARCHAR}, #{electricity,jdbcType=DOUBLE},#{opening,jdbcType=DOUBLE}, #{flow,jdbcType=DOUBLE},
+      #{mbFlow,jdbcType=DOUBLE}, #{direction,jdbcType=VARCHAR}, #{isMeetDemand,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.ControlProcess">
+    insert into control_process
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="sbNo != null">
+        sb_no,
+      </if>
+      <if test="wpNo != null">
+        wp_no,
+      </if>
+      <if test="electricity != null">
+        electricity,
+      </if>
+      <if test="opening != null">
+        opening,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="mbFlow != null">
+        mb_flow,
+      </if>
+      <if test="direction != null">
+        direction,
+      </if>
+      <if test="isMeetDemand != null">
+        is_meet_demand,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sbNo != null">
+        #{sbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wpNo != null">
+        #{wpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="electricity != null">
+        #{electricity,jdbcType=DOUBLE},
+      </if>
+      <if test="opening != null">
+        #{opening,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="mbFlow != null">
+        #{mbFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="direction != null">
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="isMeetDemand != null">
+        #{isMeetDemand,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.ControlProcess">
+    update control_process
+    <set>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sbNo != null">
+        sb_no = #{sbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wpNo != null">
+        wp_no = #{wpNo,jdbcType=VARCHAR},
+      </if>electricity
+      <if test="electricity != null">
+        electricity = #{electricity,jdbcType=DOUBLE},
+      </if>
+      <if test="opening != null">
+        opening = #{opening,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="mbFlow != null">
+        mb_flow = #{mbFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="direction != null">
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="isMeetDemand != null">
+        is_meet_demand = #{isMeetDemand,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.ControlProcess">
+    update control_process
+    set `time` = #{time,jdbcType=VARCHAR},
+      sb_no = #{sbNo,jdbcType=VARCHAR},
+      wp_no = #{wpNo,jdbcType=VARCHAR},
+        electricity = #{electricity,jdbcType=DOUBLE},
+      opening = #{opening,jdbcType=DOUBLE},
+      flow = #{flow,jdbcType=DOUBLE},
+      mb_flow = #{mbFlow,jdbcType=DOUBLE},
+      direction = #{direction,jdbcType=VARCHAR},
+      is_meet_demand = #{isMeetDemand,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+<!--  <select id="selectList" parameterType="com.example.dampouring.query.ControlProcessQue" resultType="com.example.dampouring.model.pojo.ControlProcess">-->
+<!--    select-->
+<!--    wpi.id as id,-->
+<!--    s.small_sb_no as sbNo,-->
+<!--    wpi.time as time,-->
+<!--    wp.wp_no as wpNo,-->
+<!--    wpi.flow as flow,-->
+<!--    wpi.opening as opening,-->
+<!--    sfc.mb_flow as mbFlow,-->
+<!--    '反向' as direction,-->
+<!--    wpi.flow*16/10+4 as electricity,-->
+<!--    if(wpi.flow>=sfc.mb_flow,"是","否") as isMeetDemand-->
+<!--    from water_pipe_flow_info wpi-->
+<!--    left join water_pipe wp on wpi.water_pipe_id= wp.id-->
+<!--    left join small_storage_bin s on wp.sb_id = s.id-->
+<!--    left join sw_follow_curve sfc on s.small_sb_no = sfc.sb_no and LEFT(sfc.time,10) =left(wpi.time,10)-->
+<!--    <where>-->
+<!--      <if test="startTime != null">-->
+<!--        and  wpi.time &gt;=#{startTime}-->
+<!--      </if>-->
+<!--      <if test="endTime != null">-->
+<!--        and wpi.time &lt;= #{endTime}-->
+<!--      </if>-->
+<!--      <if test="sbNo != null">-->
+<!--        and s.small_sb_no = #{sbNo}-->
+<!--      </if>-->
+<!--      <if test="isMeet != null">-->
+<!--        and wpi.flow>=sfc.mb_flow-->
+<!--      </if>-->
+<!--    </where>-->
+<!--    order by wpi.time desc-->
+<!--  </select>-->
+  <select id="selectList" parameterType="com.example.dampouring.query.ControlProcessQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from control_process
+    <where>
+      <if test="startTime != null">
+        and  time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+      <if test="sbNo != null">
+        and sb_no = #{sbNo}
+      </if>
+      <if test="isMeet != null">
+        and is_meet_demand = #{isMeet}
+      </if>
+    </where>
+    order by time desc
+  </select>
+</mapper>

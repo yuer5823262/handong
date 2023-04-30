@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempRiseAlertMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempRiseAlert">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tmeter_id" jdbcType="INTEGER" property="tmeterId" />
+    <result column="sb_norm" jdbcType="DOUBLE" property="sbNorm" />
+    <result column="alert_type" jdbcType="VARCHAR" property="alertType" />
+    <result column="alert_content" jdbcType="VARCHAR" property="alertContent" />
+    <result column="alert_time" jdbcType="VARCHAR" property="alertTime" />
+    <result column="has_dispose" jdbcType="CHAR" property="hasDispose" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="op_time" jdbcType="VARCHAR" property="opTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tmeter_id, sb_norm, alert_type, alert_content, alert_time, has_dispose, sb_id, 
+    op_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_rise_alert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from temp_rise_alert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempRiseAlert">
+    insert into temp_rise_alert (id, tmeter_id, sb_norm, 
+      alert_type, alert_content, alert_time, 
+      has_dispose, sb_id, op_time, 
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{tmeterId,jdbcType=INTEGER}, #{sbNorm,jdbcType=DOUBLE}, 
+      #{alertType,jdbcType=VARCHAR}, #{alertContent,jdbcType=VARCHAR}, #{alertTime,jdbcType=VARCHAR}, 
+      #{hasDispose,jdbcType=CHAR}, #{sbId,jdbcType=INTEGER}, #{opTime,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempRiseAlert">
+    insert into temp_rise_alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tmeterId != null">
+        tmeter_id,
+      </if>
+      <if test="sbNorm != null">
+        sb_norm,
+      </if>
+      <if test="alertType != null">
+        alert_type,
+      </if>
+      <if test="alertContent != null">
+        alert_content,
+      </if>
+      <if test="alertTime != null">
+        alert_time,
+      </if>
+      <if test="hasDispose != null">
+        has_dispose,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tmeterId != null">
+        #{tmeterId,jdbcType=INTEGER},
+      </if>
+      <if test="sbNorm != null">
+        #{sbNorm,jdbcType=DOUBLE},
+      </if>
+      <if test="alertType != null">
+        #{alertType,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempRiseAlert">
+    update temp_rise_alert
+    <set>
+      <if test="tmeterId != null">
+        tmeter_id = #{tmeterId,jdbcType=INTEGER},
+      </if>
+      <if test="sbNorm != null">
+        sb_norm = #{sbNorm,jdbcType=DOUBLE},
+      </if>
+      <if test="alertType != null">
+        alert_type = #{alertType,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        alert_content = #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        alert_time = #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        has_dispose = #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempRiseAlert">
+    update temp_rise_alert
+    set tmeter_id = #{tmeterId,jdbcType=INTEGER},
+      sb_norm = #{sbNorm,jdbcType=DOUBLE},
+      alert_type = #{alertType,jdbcType=VARCHAR},
+      alert_content = #{alertContent,jdbcType=VARCHAR},
+      alert_time = #{alertTime,jdbcType=VARCHAR},
+      has_dispose = #{hasDispose,jdbcType=CHAR},
+      sb_id = #{sbId,jdbcType=INTEGER},
+      op_time = #{opTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="processinge">
+    update temp_rise_alert
+    set has_dispose = '1'
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.AlertQue" resultType="com.example.dampouring.model.vo.TempRiseAlertVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as sbNo,
+    aaa.tmeter_id as tmeterId,
+    aaa.sb_norm as sbNorm,
+    aaa.alert_type as alertType,
+    aaa.alert_content as alertContent,
+    aaa.alert_time as alertTime,
+    aaa.has_dispose as hasDispose,
+    aaa.op_time as opTime,
+    aaa.operator as operator
+    from temp_rise_alert aaa
+    left join small_storage_bin s on aaa.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and  aaa.sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="list" resultType="com.example.dampouring.model.vo.AlertBaseVO">
+    select
+      aaa.id as id,
+      s.small_sb_no as position,
+    aaa.alert_type as type,
+    aaa.alert_content as content,
+    aaa.alert_time as time,
+    aaa.has_dispose as state,
+    aaa.op_time as opTime,
+    aaa.operator as operator,
+    '15' as typeNo
+    from temp_rise_alert aaa
+      left join small_storage_bin s on aaa.sb_id = s.id
+    where
+      has_dispose&lt;#{type}
+  </select>
+</mapper>

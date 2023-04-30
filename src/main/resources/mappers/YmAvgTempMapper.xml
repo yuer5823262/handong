@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.YmAvgTempMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.YmAvgTemp">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mounth" jdbcType="INTEGER" property="mounth" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="minTemp" jdbcType="DOUBLE" property="minTemp" />
+    <result column="maxTemp" jdbcType="DOUBLE" property="maxTemp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mounth, `temp`,minTemp,maxTemp
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ym_avg_temp
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="list"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ym_avg_temp
+  </select>
+  <select id="mmaTemp"  resultType="com.example.dampouring.model.vo.MmaTempVO">
+    select
+      temp as avgTemp,
+      minTemp as minTemp,
+      maxTemp as maxTemp
+    from ym_avg_temp
+    WHERE mounth=MONTH(NOW())
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ym_avg_temp
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.YmAvgTemp">
+    insert into ym_avg_temp (id, mounth, `temp`
+      )
+    values (#{id,jdbcType=INTEGER}, #{mounth,jdbcType=INTEGER}, #{temp,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.YmAvgTemp">
+    insert into ym_avg_temp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mounth != null">
+        mounth,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mounth != null">
+        #{mounth,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.YmAvgTemp">
+    update ym_avg_temp
+    <set>
+      <if test="mounth != null">
+        mounth = #{mounth,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="minTemp != null">
+        minTemp = #{minTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="maxTemp != null">
+        maxTemp = #{maxTemp,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.YmAvgTemp">
+    update ym_avg_temp
+    set mounth = #{mounth,jdbcType=INTEGER},
+      `temp` = #{temp,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

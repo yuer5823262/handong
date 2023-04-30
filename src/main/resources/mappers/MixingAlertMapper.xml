@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.MixingAlertMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.MixingAlert">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bno" jdbcType="VARCHAR" property="bno" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="has_dispose" jdbcType="VARCHAR" property="hasDispose" />
+    <result column="op_time" jdbcType="VARCHAR" property="opTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bno, `time`, `type`, content, has_dispose, op_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mixing_alert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mixing_alert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.MixingAlert">
+    insert into mixing_alert (id, bno, `time`,
+      `type`, content, has_dispose, 
+      op_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{bno,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{hasDispose,jdbcType=VARCHAR}, 
+      #{opTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.MixingAlert">
+    insert into mixing_alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bno != null">
+        bno,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="hasDispose != null">
+        has_dispose,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bno != null">
+        #{bno,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        #{hasDispose,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.MixingAlert">
+    update mixing_alert
+    <set>
+      <if test="bno != null">
+        bno = #{bno,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        has_dispose = #{hasDispose,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.MixingAlert">
+    update mixing_alert
+    set bno = #{bno,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      has_dispose = #{hasDispose,jdbcType=VARCHAR},
+      op_time = #{opTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="list" resultType="com.example.dampouring.model.vo.AlertBaseVO">
+    select
+      id as id,
+      bno as position,
+      type as type,
+      content as content,
+      time as time,
+      has_dispose as state,
+      op_time as opTime,
+      operator as operator,
+      '9' as typeNo
+    from mixing_alert
+    where
+      has_dispose&lt;#{type}
+  </select>
+
+  <update id="processinge">
+    update mixing_alert
+    set has_dispose = '1'
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.MixingAlertQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mixing_alert
+    <where>
+      <if test="bno != null">
+        and  bno =#{bno}
+      </if>
+    </where>
+  </select>
+</mapper>

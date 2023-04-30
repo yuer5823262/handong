@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.DailyTwoWaterMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.DailyTwoWater">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="min_24h_temp" jdbcType="DOUBLE" property="min24hTemp" />
+    <result column="avg_temp" jdbcType="DOUBLE" property="avgTemp" />
+    <result column="water_beton_temp_diff" jdbcType="DOUBLE" property="waterBetonTempDiff" />
+    <result column="inner_temp" jdbcType="DOUBLE" property="innerTemp" />
+    <result column="is_hg_diff" jdbcType="VARCHAR" property="isHgDiff" />
+    <result column="cooling_rate" jdbcType="DOUBLE" property="coolingRate" />
+    <result column="water_time" jdbcType="INTEGER" property="waterTime" />
+    <result column="is_hg_temp" jdbcType="VARCHAR" property="isHgTemp" />
+    <result column="flow" jdbcType="DOUBLE" property="flow" />
+    <result column="in_temp" jdbcType="DOUBLE" property="inTemp" />
+    <result column="out_temp" jdbcType="DOUBLE" property="outTemp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, `time`, min_24h_temp, avg_temp, water_beton_temp_diff, inner_temp, is_hg_diff, 
+    cooling_rate, water_time, is_hg_temp, flow, in_temp, out_temp
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from daily_two_water
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_two_water
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.DailyTwoWater">
+    insert into daily_two_water (id, sb_id, `time`, 
+      min_24h_temp, avg_temp, water_beton_temp_diff, 
+      inner_temp, is_hg_diff, cooling_rate, 
+      water_time, is_hg_temp, flow, 
+      in_temp, out_temp)
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{min24hTemp,jdbcType=DOUBLE}, #{avgTemp,jdbcType=DOUBLE}, #{waterBetonTempDiff,jdbcType=DOUBLE}, 
+      #{innerTemp,jdbcType=DOUBLE}, #{isHgDiff,jdbcType=VARCHAR}, #{coolingRate,jdbcType=DOUBLE}, 
+      #{waterTime,jdbcType=INTEGER}, #{isHgTemp,jdbcType=VARCHAR}, #{flow,jdbcType=DOUBLE}, 
+      #{inTemp,jdbcType=DOUBLE}, #{outTemp,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.DailyTwoWater">
+    insert into daily_two_water
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="min24hTemp != null">
+        min_24h_temp,
+      </if>
+      <if test="avgTemp != null">
+        avg_temp,
+      </if>
+      <if test="waterBetonTempDiff != null">
+        water_beton_temp_diff,
+      </if>
+      <if test="innerTemp != null">
+        inner_temp,
+      </if>
+      <if test="isHgDiff != null">
+        is_hg_diff,
+      </if>
+      <if test="coolingRate != null">
+        cooling_rate,
+      </if>
+      <if test="waterTime != null">
+        water_time,
+      </if>
+      <if test="isHgTemp != null">
+        is_hg_temp,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="inTemp != null">
+        in_temp,
+      </if>
+      <if test="outTemp != null">
+        out_temp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="min24hTemp != null">
+        #{min24hTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterBetonTempDiff != null">
+        #{waterBetonTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="innerTemp != null">
+        #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="isHgDiff != null">
+        #{isHgDiff,jdbcType=VARCHAR},
+      </if>
+      <if test="coolingRate != null">
+        #{coolingRate,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTime != null">
+        #{waterTime,jdbcType=INTEGER},
+      </if>
+      <if test="isHgTemp != null">
+        #{isHgTemp,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="inTemp != null">
+        #{inTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outTemp != null">
+        #{outTemp,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.DailyTwoWater">
+    update daily_two_water
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="min24hTemp != null">
+        min_24h_temp = #{min24hTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="avgTemp != null">
+        avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterBetonTempDiff != null">
+        water_beton_temp_diff = #{waterBetonTempDiff,jdbcType=DOUBLE},
+      </if>
+      <if test="innerTemp != null">
+        inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="isHgDiff != null">
+        is_hg_diff = #{isHgDiff,jdbcType=VARCHAR},
+      </if>
+      <if test="coolingRate != null">
+        cooling_rate = #{coolingRate,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTime != null">
+        water_time = #{waterTime,jdbcType=INTEGER},
+      </if>
+      <if test="isHgTemp != null">
+        is_hg_temp = #{isHgTemp,jdbcType=VARCHAR},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="inTemp != null">
+        in_temp = #{inTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outTemp != null">
+        out_temp = #{outTemp,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.DailyTwoWater">
+    update daily_two_water
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      min_24h_temp = #{min24hTemp,jdbcType=DOUBLE},
+      avg_temp = #{avgTemp,jdbcType=DOUBLE},
+      water_beton_temp_diff = #{waterBetonTempDiff,jdbcType=DOUBLE},
+      inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      is_hg_diff = #{isHgDiff,jdbcType=VARCHAR},
+      cooling_rate = #{coolingRate,jdbcType=DOUBLE},
+      water_time = #{waterTime,jdbcType=INTEGER},
+      is_hg_temp = #{isHgTemp,jdbcType=VARCHAR},
+      flow = #{flow,jdbcType=DOUBLE},
+      in_temp = #{inTemp,jdbcType=DOUBLE},
+      out_temp = #{outTemp,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.DailyPourTempQue" resultType="com.example.dampouring.model.vo.DailyTwoWaterVO">
+    select
+    d.id as  id,
+
+    s.id as  sbId,
+    s.small_sb_no as  sbNo,
+    d.time as  time,
+
+    d.min_24h_temp as min24hTemp,
+
+    d.avg_temp as avgTemp,
+
+    d.water_beton_temp_diff as waterBetonTempDiff,
+
+    d.inner_temp as innerTemp,
+
+    d.is_hg_diff as isHgDiff,
+
+    d.cooling_rate as coolingRate,
+
+    d.water_time as waterTime,
+
+    d.is_hg_temp as  isHgTemp,
+
+    d.flow as flow,
+
+    d.in_temp as inTemp,
+
+    d.out_temp as outTemp
+    from daily_two_water d
+    left join small_storage_bin s on d.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id =#{sbId}
+      </if>
+      <if test="startTime != null">
+        and  d.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and d.time &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="dailyTwoWater" resultType="com.example.dampouring.model.pojo.DailyTwoWater">
+    SELECT
+    sb.sbId as sbId,
+    now() as time,
+    tmm.avgTemp as avgTemp,
+    tmm.minTemp as min24hTemp,
+    nit.innerTemp-nfti.enterTemp as waterBetonTempDiff,
+    nit.innerTemp as innerTemp,
+    tb1.yAvgTemp - nit.innerTemp as coolingRate,
+    nwd.waterDay as waterTime,
+    if(tb1.yAvgTemp - nit.innerTemp&lt;=0.5,"是","否") as isHgTemp,
+    nfti.flow as flow,
+    nfti.enterTemp as inTemp,
+    nfti.outTemp as outTemp
+    from
+    (SELECT ssb.id as sbId,ssb.ds_start as ds from small_storage_bin ssb
+    LEFT JOIN pouring_base pb on pb.small_sb_id = ssb.id
+    WHERE pb.second_cooling_start_time&lt;=NOW() and ssb.ds_start&lt;=27
+    )sb
+    LEFT JOIN newest_inner_temp nit on sb.sbId=nit.sbId
+    LEFT JOIN (SELECT avg(tm.temperature) as avgTemp,min(tm.temperature) as minTemp from temp_measurements tm WHERE tm.date>=now()- INTERVAL 1 DAY) tmm on 1
+    LEFT JOIN newest_flow_temp_info nfti on nfti.sbId=sb.sbId
+    LEFT JOIN newest_water_day nwd on nwd.sbId=sb.sbId
+    LEFT JOIN (SELECT DISTINCT its.sb_id as sbId,max(itsi.avgtemp) as yAvgTemp from inner_temp_sensor_info itsi
+    LEFT JOIN inner_temp_sensor its on its.id = itsi.inner_temp_sensor_id
+    WHERE left(itsi.time,13) = left(now()- INTERVAL 1 DAY,13)
+    GROUP BY its.sb_id) tb1 on tb1.sbId = sb.sbId
+
+
+
+  </select>
+</mapper>

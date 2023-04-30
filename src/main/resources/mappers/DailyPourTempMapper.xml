@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.DailyPourTempMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.DailyPourTemp">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="ex_temp" jdbcType="DOUBLE" property="exTemp" />
+    <result column="in_temp" jdbcType="DOUBLE" property="inTemp" />
+    <result column="pour_temp" jdbcType="DOUBLE" property="pourTemp" />
+    <result column="trans_temp_up" jdbcType="DOUBLE" property="transTempUp" />
+    <result column="surface_temp_up" jdbcType="DOUBLE" property="surfaceTempUp" />
+    <result column="is_hg" jdbcType="VARCHAR" property="isHg" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, `time`, `temp`, ex_temp, in_temp, pour_temp, trans_temp_up, surface_temp_up, 
+    is_hg, mark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from daily_pour_temp
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_pour_temp
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.DailyPourTemp">
+    insert into daily_pour_temp (id, sb_id, `time`, 
+      `temp`, ex_temp, in_temp, 
+      pour_temp, trans_temp_up, surface_temp_up, 
+      is_hg, mark)
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{temp,jdbcType=DOUBLE}, #{exTemp,jdbcType=DOUBLE}, #{inTemp,jdbcType=DOUBLE}, 
+      #{pourTemp,jdbcType=DOUBLE}, #{transTempUp,jdbcType=DOUBLE}, #{surfaceTempUp,jdbcType=DOUBLE}, 
+      #{isHg,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.DailyPourTemp">
+    insert into daily_pour_temp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="exTemp != null">
+        ex_temp,
+      </if>
+      <if test="inTemp != null">
+        in_temp,
+      </if>
+      <if test="pourTemp != null">
+        pour_temp,
+      </if>
+      <if test="transTempUp != null">
+        trans_temp_up,
+      </if>
+      <if test="surfaceTempUp != null">
+        surface_temp_up,
+      </if>
+      <if test="isHg != null">
+        is_hg,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="exTemp != null">
+        #{exTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="inTemp != null">
+        #{inTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="pourTemp != null">
+        #{pourTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="transTempUp != null">
+        #{transTempUp,jdbcType=DOUBLE},
+      </if>
+      <if test="surfaceTempUp != null">
+        #{surfaceTempUp,jdbcType=DOUBLE},
+      </if>
+      <if test="isHg != null">
+        #{isHg,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.DailyPourTemp">
+    update daily_pour_temp
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="exTemp != null">
+        ex_temp = #{exTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="inTemp != null">
+        in_temp = #{inTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="pourTemp != null">
+        pour_temp = #{pourTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="transTempUp != null">
+        trans_temp_up = #{transTempUp,jdbcType=DOUBLE},
+      </if>
+      <if test="surfaceTempUp != null">
+        surface_temp_up = #{surfaceTempUp,jdbcType=DOUBLE},
+      </if>
+      <if test="isHg != null">
+        is_hg = #{isHg,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.DailyPourTemp">
+    update daily_pour_temp
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      ex_temp = #{exTemp,jdbcType=DOUBLE},
+      in_temp = #{inTemp,jdbcType=DOUBLE},
+      pour_temp = #{pourTemp,jdbcType=DOUBLE},
+      trans_temp_up = #{transTempUp,jdbcType=DOUBLE},
+      surface_temp_up = #{surfaceTempUp,jdbcType=DOUBLE},
+      is_hg = #{isHg,jdbcType=VARCHAR},
+      mark = #{mark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.DailyPourTempQue" resultType="com.example.dampouring.model.vo.DailyPourTempVO">
+    select
+    d.id as  id,
+
+    s.id as  sbId,
+
+    s.small_sb_no as sbNo,
+
+    d.time as time,
+
+    d.temp as temp,
+
+    d.ex_temp as exTemp,
+
+    d.in_temp as inTemp,
+
+    d.pour_temp as pourTemp,
+
+    d.trans_temp_up as transTempUp,
+
+    d.surface_temp_up as surfaceTempUp,
+
+    d.is_hg as isHg,
+
+    d.mark as mark
+    from daily_pour_temp d
+    left join small_storage_bin s on d.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and s.id =#{sbId}
+      </if>
+      <if test="startTime != null">
+        and  d.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and d.time &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="dailyPourTemp" resultType="com.example.dampouring.model.pojo.DailyPourTemp">
+    SELECT
+    sb.sbId as sbId,
+    NOW() as time,
+    ntm.temperature as temp,
+    emts.avg_temp as exTemp,
+    ita.avg_temp as inTemp,
+    pta.avg_temp as pourTemp,
+    ita.avg_temp - emts.avg_temp as transTempUp,
+    pta.avg_temp - ita.avg_temp as surfaceTempUp
+    FROM
+    (
+    SELECT
+    small_sb_no AS sbNo,
+    id AS sbId
+    FROM
+    small_storage_bin
+    WHERE
+    id IN (
+    SELECT
+    max(id)
+    FROM
+    small_storage_bin
+    WHERE
+    ds_start &lt;= 27
+    GROUP BY
+    ds_start
+    )
+    ) sb
+    LEFT JOIN pouring_base pb on pb.small_sb_id=sb.sbId
+    LEFT JOIN export_machine_temp_assess emts on emts.pouring_base_id=pb.id
+    LEFT JOIN inbound_temp_assess ita on ita.pouring_base_id=pb.id
+    LEFT JOIN pouring_temp_assess pta on pta.pouring_base_id=pb.id
+    LEFT JOIN (SELECT tm.temperature from temp_measurements tm ORDER BY tm.date desc LIMIT 1) ntm on 1
+  </select>
+</mapper>

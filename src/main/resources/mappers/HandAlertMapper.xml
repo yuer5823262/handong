@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.HandAlertMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.HandAlert">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="eq_no" jdbcType="VARCHAR" property="eqNo" />
+    <result column="alert_type" jdbcType="VARCHAR" property="alertType" />
+    <result column="alert_content" jdbcType="VARCHAR" property="alertContent" />
+    <result column="alert_time" jdbcType="VARCHAR" property="alertTime" />
+    <result column="create_op" jdbcType="VARCHAR" property="createOp" />
+    <result column="op_time" jdbcType="VARCHAR" property="opTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="has_dispose" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, role_id, eq_no, alert_type, alert_content, alert_time, create_op, op_time, `operator`,has_dispose
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hand_alert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hand_alert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.HandAlert">
+    insert into hand_alert (id, role_id, eq_no, 
+      alert_type, alert_content, alert_time, 
+      create_op, op_time, `operator`,has_dispose
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{eqNo,jdbcType=VARCHAR}, 
+      #{alertType,jdbcType=VARCHAR}, #{alertContent,jdbcType=VARCHAR}, #{alertTime,jdbcType=VARCHAR}, 
+      #{createOp,jdbcType=VARCHAR}, #{opTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR},#{hasDispose,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.HandAlert">
+    insert into hand_alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="eqNo != null">
+        eq_no,
+      </if>
+      <if test="alertType != null">
+        alert_type,
+      </if>
+      <if test="alertContent != null">
+        alert_content,
+      </if>
+      <if test="alertTime != null">
+        alert_time,
+      </if>
+      <if test="createOp != null">
+        create_op,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+      <if test="operator != null">
+        has_dispose,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="eqNo != null">
+        #{eqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="alertType != null">
+        #{alertType,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createOp != null">
+        #{createOp,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        #{hasDispose,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.HandAlert">
+    update hand_alert
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="eqNo != null">
+        eq_no = #{eqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="alertType != null">
+        alert_type = #{alertType,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        alert_content = #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null">
+        alert_time = #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createOp != null">
+        create_op = #{createOp,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        `has_dispose` = #{hasDispose,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.HandAlert">
+    update hand_alert
+    set role_id = #{roleId,jdbcType=INTEGER},
+      eq_no = #{eqNo,jdbcType=VARCHAR},
+      alert_type = #{alertType,jdbcType=VARCHAR},
+      alert_content = #{alertContent,jdbcType=VARCHAR},
+      alert_time = #{alertTime,jdbcType=VARCHAR},
+      create_op = #{createOp,jdbcType=VARCHAR},
+      op_time = #{opTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR},
+        has_dispose = #{hasDispose,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="list" resultType="com.example.dampouring.model.vo.AlertBaseVO">
+    select
+    id as id,
+      eq_no as position,
+      alert_type as type,
+      alert_content as content,
+    alert_time as time,
+    has_dispose as has_dispose,
+    op_time as opTime,
+    operator as operator,
+    '5' as typeNo
+    from hand_alert
+    where role_id = #{roleId} and
+    has_dispose&lt;#{type}
+
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.example.dampouring.query.HandAlertQue">
+    select
+    <include refid="Base_Column_List"></include>
+    from hand_alert
+    <where>
+      <if test="roleId != null">
+        role_id = #{roleId}
+      </if>
+    </where>
+  </select>
+</mapper>

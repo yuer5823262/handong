@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.InsulationSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.InsulationSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="ds_no" jdbcType="INTEGER" property="dsNo" />
+    <result column="chanel_no" jdbcType="INTEGER" property="chanelNo" />
+    <result column="chanel" jdbcType="INTEGER" property="chanel" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="temp_no" jdbcType="VARCHAR" property="tempNo" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cu_id, ds_no, chanel_no, chanel, `position`, addr, temp_no, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insulation_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByUseful" resultMap="BaseResultMap">
+    select
+      its.*
+    from insulation_sensor its
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from insulation_sensor
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.InsulationSensor">
+    insert into insulation_sensor (id, cu_id, ds_no, 
+      chanel_no, chanel, `position`, 
+      addr, temp_no, create_time, 
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{cuId,jdbcType=INTEGER}, #{dsNo,jdbcType=INTEGER}, 
+      #{chanelNo,jdbcType=INTEGER}, #{chanel,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
+      #{addr,jdbcType=VARCHAR}, #{tempNo,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.InsulationSensor">
+    insert into insulation_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="dsNo != null">
+        ds_no,
+      </if>
+      <if test="chanelNo != null">
+        chanel_no,
+      </if>
+      <if test="chanel != null">
+        chanel,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="addr != null">
+        addr,
+      </if>
+      <if test="tempNo != null">
+        temp_no,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="dsNo != null">
+        #{dsNo,jdbcType=INTEGER},
+      </if>
+      <if test="chanelNo != null">
+        #{chanelNo,jdbcType=INTEGER},
+      </if>
+      <if test="chanel != null">
+        #{chanel,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tempNo != null">
+        #{tempNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.InsulationSensor">
+    update insulation_sensor
+    <set>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="dsNo != null">
+        ds_no = #{dsNo,jdbcType=INTEGER},
+      </if>
+      <if test="chanelNo != null">
+        chanel_no = #{chanelNo,jdbcType=INTEGER},
+      </if>
+      <if test="chanel != null">
+        chanel = #{chanel,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tempNo != null">
+        temp_no = #{tempNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.InsulationSensor">
+    update insulation_sensor
+    set cu_id = #{cuId,jdbcType=INTEGER},
+      ds_no = #{dsNo,jdbcType=INTEGER},
+      chanel_no = #{chanelNo,jdbcType=INTEGER},
+      chanel = #{chanel,jdbcType=INTEGER},
+      `position` = #{position,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      temp_no = #{tempNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectListByCuId" parameterType="java.lang.Integer" resultType="com.example.dampouring.model.vo.InsulationSensorVO">
+    select
+      its.id as id,
+      its.ds_no as dsNo,
+      its.chanel_no as chanelNo,
+      its.chanel as chanel,
+      its.temp_no as tempNo
+    from insulation_sensor its
+    where its.cu_id = #{cuId} and its.chanel is not null and its.chanel!=''
+  </select>
+
+  <select id="selectByTempNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from insulation_sensor
+    where temp_no = #{tempNo,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectList" resultType="com.example.dampouring.model.vo.InsulationSensorVO" parameterType="com.example.dampouring.query.InsulationSensorQue">
+    select
+    i.id as id,
+    i.ds_no as dsNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.temp_no as tempNo,
+    i.addr as addr,
+    i.position as position,
+    i.chanel_no as chanelNo,
+    i.chanel as chanel,
+    i.create_time as createTime,
+    i.operator as operator
+    from insulation_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    <where>
+      <if test="dsNo != null">
+        and i.ds_no = #{dsNo}
+      </if>
+    </where>
+
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.InsulationSensorVO">
+    select
+    i.id as id,
+    i.ds_no as dsNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.temp_no as tempNo,
+    i.addr as addr,
+    i.position as position,
+    i.chanel_no as chanelNo,
+    i.chanel as chanel,
+    i.create_time as createTime,
+    i.operator as operator
+    from insulation_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+</mapper>

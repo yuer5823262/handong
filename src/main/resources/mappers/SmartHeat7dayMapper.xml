@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartHeat7dayMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartHeat7day">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="bw_time" jdbcType="VARCHAR" property="bwTime" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="materials" jdbcType="VARCHAR" property="materials" />
+    <result column="thickness" jdbcType="DOUBLE" property="thickness" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, bw_time, `time`, materials, thickness
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_heat_7day
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_heat_7day
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartHeat7day">
+    insert into smart_heat_7day (id, sb_id, bw_time, 
+      `time`, materials, thickness
+      )
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{bwTime,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{materials,jdbcType=VARCHAR}, #{thickness,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartHeat7day">
+    insert into smart_heat_7day
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="bwTime != null">
+        bw_time,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="materials != null">
+        materials,
+      </if>
+      <if test="thickness != null">
+        thickness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="bwTime != null">
+        #{bwTime,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null">
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="thickness != null">
+        #{thickness,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartHeat7day">
+    update smart_heat_7day
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="bwTime != null">
+        bw_time = #{bwTime,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null">
+        materials = #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="thickness != null">
+        thickness = #{thickness,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartHeat7day">
+    update smart_heat_7day
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      bw_time = #{bwTime,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=VARCHAR},
+      materials = #{materials,jdbcType=VARCHAR},
+      thickness = #{thickness,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectList" parameterType="com.example.dampouring.query.AlertQue" resultType="com.example.dampouring.model.vo.SmartHeat7dayVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as sbNo,
+    aaa.bw_time as bwTime,
+    aaa.materials as materials,
+    aaa.thickness as thickness,
+    aaa.time as time
+    from smart_heat_7day aaa
+    left join small_storage_bin s on aaa.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and  aaa.sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+</mapper>

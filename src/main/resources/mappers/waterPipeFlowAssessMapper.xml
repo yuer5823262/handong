@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.waterPipeFlowAssessMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="water_pipe_id" jdbcType="INTEGER" property="waterPipeId" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
+    <result column="pipe_num" jdbcType="INTEGER" property="pipeNum" />
+    <result column="enter_temp_top" jdbcType="DOUBLE" property="enterTempTop" />
+    <result column="enter_temp_bottom" jdbcType="DOUBLE" property="enterTempBottom" />
+    <result column="enter_temp_avg" jdbcType="DOUBLE" property="enterTempAvg" />
+    <result column="out_temp_top" jdbcType="DOUBLE" property="outTempTop" />
+    <result column="out_temp_bottom" jdbcType="DOUBLE" property="outTempBottom" />
+    <result column="out_temp_avg" jdbcType="DOUBLE" property="outTempAvg" />
+    <result column="enter_mpa_top" jdbcType="DOUBLE" property="enterMpaTop" />
+    <result column="enter_mpa_bottom" jdbcType="DOUBLE" property="enterMpaBottom" />
+    <result column="enter_mpa_avg" jdbcType="DOUBLE" property="enterMpaAvg" />
+    <result column="out_mpa_top" jdbcType="DOUBLE" property="outMpaTop" />
+    <result column="out_mpa_bottom" jdbcType="DOUBLE" property="outMpaBottom" />
+    <result column="out_mpa_avg" jdbcType="DOUBLE" property="outMpaAvg" />
+    <result column="flow_top" jdbcType="DOUBLE" property="flowTop" />
+    <result column="flow_bottom" jdbcType="DOUBLE" property="flowBottom" />
+    <result column="flow_avg" jdbcType="DOUBLE" property="flowAvg" />
+    <result column="qi" jdbcType="VARCHAR" property="qi" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, water_pipe_id, start_time, pipe_num, enter_temp_top, enter_temp_bottom, enter_temp_avg, 
+    out_temp_top, out_temp_bottom, out_temp_avg, enter_mpa_top, enter_mpa_bottom, enter_mpa_avg, 
+    out_mpa_top, out_mpa_bottom, out_mpa_avg, flow_top, flow_bottom, flow_avg,qi
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from water_pipe_flow_assess
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from water_pipe_flow_assess
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteAll">
+    delete from water_pipe_flow_assess
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    insert into water_pipe_flow_assess (id, water_pipe_id, start_time, 
+      pipe_num, enter_temp_top, enter_temp_bottom, 
+      enter_temp_avg, out_temp_top, out_temp_bottom, 
+      out_temp_avg, enter_mpa_top, enter_mpa_bottom, 
+      enter_mpa_avg, out_mpa_top, out_mpa_bottom, 
+      out_mpa_avg, flow_top, flow_bottom, 
+      flow_avg,qi)
+    values (#{id,jdbcType=INTEGER}, #{waterPipeId,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, 
+      #{pipeNum,jdbcType=INTEGER}, #{enterTempTop,jdbcType=DOUBLE}, #{enterTempBottom,jdbcType=DOUBLE}, 
+      #{enterTempAvg,jdbcType=DOUBLE}, #{outTempTop,jdbcType=DOUBLE}, #{outTempBottom,jdbcType=DOUBLE}, 
+      #{outTempAvg,jdbcType=DOUBLE}, #{enterMpaTop,jdbcType=DOUBLE}, #{enterMpaBottom,jdbcType=DOUBLE}, 
+      #{enterMpaAvg,jdbcType=DOUBLE}, #{outMpaTop,jdbcType=DOUBLE}, #{outMpaBottom,jdbcType=DOUBLE}, 
+      #{outMpaAvg,jdbcType=DOUBLE}, #{flowTop,jdbcType=DOUBLE}, #{flowBottom,jdbcType=DOUBLE}, 
+      #{flowAvg,jdbcType=DOUBLE}),#{qi,jdbcType=VARCHAR}
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    insert into water_pipe_flow_assess
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waterPipeId != null">
+        water_pipe_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="pipeNum != null">
+        pipe_num,
+      </if>
+      <if test="enterTempTop != null">
+        enter_temp_top,
+      </if>
+      <if test="enterTempBottom != null">
+        enter_temp_bottom,
+      </if>
+      <if test="enterTempAvg != null">
+        enter_temp_avg,
+      </if>
+      <if test="outTempTop != null">
+        out_temp_top,
+      </if>
+      <if test="outTempBottom != null">
+        out_temp_bottom,
+      </if>
+      <if test="outTempAvg != null">
+        out_temp_avg,
+      </if>
+      <if test="enterMpaTop != null">
+        enter_mpa_top,
+      </if>
+      <if test="enterMpaBottom != null">
+        enter_mpa_bottom,
+      </if>
+      <if test="enterMpaAvg != null">
+        enter_mpa_avg,
+      </if>
+      <if test="outMpaTop != null">
+        out_mpa_top,
+      </if>
+      <if test="outMpaBottom != null">
+        out_mpa_bottom,
+      </if>
+      <if test="outMpaAvg != null">
+        out_mpa_avg,
+      </if>
+      <if test="flowTop != null">
+        flow_top,
+      </if>
+      <if test="flowBottom != null">
+        flow_bottom,
+      </if>
+      <if test="flowAvg != null">
+        flow_avg,
+      </if>
+      <if test="qi != null">
+        qi,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterPipeId != null">
+        #{waterPipeId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNum != null">
+        #{pipeNum,jdbcType=INTEGER},
+      </if>
+      <if test="enterTempTop != null">
+        #{enterTempTop,jdbcType=DOUBLE},
+      </if>
+      <if test="enterTempBottom != null">
+        #{enterTempBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="enterTempAvg != null">
+        #{enterTempAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempTop != null">
+        #{outTempTop,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempBottom != null">
+        #{outTempBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempAvg != null">
+        #{outTempAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaTop != null">
+        #{enterMpaTop,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaBottom != null">
+        #{enterMpaBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaAvg != null">
+        #{enterMpaAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaTop != null">
+        #{outMpaTop,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaBottom != null">
+        #{outMpaBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaAvg != null">
+        #{outMpaAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTop != null">
+        #{flowTop,jdbcType=DOUBLE},
+      </if>
+      <if test="flowBottom != null">
+        #{flowBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="flowAvg != null">
+        #{flowAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="qi != null">
+        #{qi,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    update water_pipe_flow_assess
+    <set>
+      <if test="waterPipeId != null">
+        water_pipe_id = #{waterPipeId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNum != null">
+        pipe_num = #{pipeNum,jdbcType=INTEGER},
+      </if>
+      <if test="enterTempTop != null">
+        enter_temp_top = #{enterTempTop,jdbcType=DOUBLE},
+      </if>
+      <if test="enterTempBottom != null">
+        enter_temp_bottom = #{enterTempBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="enterTempAvg != null">
+        enter_temp_avg = #{enterTempAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempTop != null">
+        out_temp_top = #{outTempTop,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempBottom != null">
+        out_temp_bottom = #{outTempBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="outTempAvg != null">
+        out_temp_avg = #{outTempAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaTop != null">
+        enter_mpa_top = #{enterMpaTop,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaBottom != null">
+        enter_mpa_bottom = #{enterMpaBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="enterMpaAvg != null">
+        enter_mpa_avg = #{enterMpaAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaTop != null">
+        out_mpa_top = #{outMpaTop,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaBottom != null">
+        out_mpa_bottom = #{outMpaBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="outMpaAvg != null">
+        out_mpa_avg = #{outMpaAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="flowTop != null">
+        flow_top = #{flowTop,jdbcType=DOUBLE},
+      </if>
+      <if test="flowBottom != null">
+        flow_bottom = #{flowBottom,jdbcType=DOUBLE},
+      </if>
+      <if test="flowAvg != null">
+        flow_avg = #{flowAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="qi != null">
+        qi = #{qi,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+    update water_pipe_flow_assess
+    set water_pipe_id = #{waterPipeId,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      pipe_num = #{pipeNum,jdbcType=INTEGER},
+      enter_temp_top = #{enterTempTop,jdbcType=DOUBLE},
+      enter_temp_bottom = #{enterTempBottom,jdbcType=DOUBLE},
+      enter_temp_avg = #{enterTempAvg,jdbcType=DOUBLE},
+      out_temp_top = #{outTempTop,jdbcType=DOUBLE},
+      out_temp_bottom = #{outTempBottom,jdbcType=DOUBLE},
+      out_temp_avg = #{outTempAvg,jdbcType=DOUBLE},
+      enter_mpa_top = #{enterMpaTop,jdbcType=DOUBLE},
+      enter_mpa_bottom = #{enterMpaBottom,jdbcType=DOUBLE},
+      enter_mpa_avg = #{enterMpaAvg,jdbcType=DOUBLE},
+      out_mpa_top = #{outMpaTop,jdbcType=DOUBLE},
+      out_mpa_bottom = #{outMpaBottom,jdbcType=DOUBLE},
+      out_mpa_avg = #{outMpaAvg,jdbcType=DOUBLE},
+      flow_top = #{flowTop,jdbcType=DOUBLE},
+      flow_bottom = #{flowBottom,jdbcType=DOUBLE},
+      flow_avg = #{flowAvg,jdbcType=DOUBLE},
+        qi = #{qi,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultType="com.example.dampouring.model.vo.WaterPipeFlowAssessVO">
+    select
+      wpfa.id as id,
+      ssb.small_sb_no as smallNo,
+      wp.wp_no as waterPipeNo,
+      wpfa.start_time as startTime,
+      wpfa.pipe_num as pipeNum,
+      wpfa.enter_temp_top as enterTempTop,
+      wpfa.enter_temp_bottom as enterTempBottom,
+      wpfa.enter_temp_avg as enterTempAvg,
+      wpfa.out_temp_top as outTempTop,
+      wpfa.out_temp_bottom as outTempBottom,
+      wpfa.out_temp_avg as outTempAvg,
+      wpfa.enter_mpa_top as enterMpaTop,
+      wpfa.enter_mpa_bottom as enterMpaBottom,
+      wpfa.enter_mpa_avg as enterMpaAvg,
+      wpfa.out_mpa_top as outMpaTop,
+      wpfa.out_mpa_bottom as outMpaBottom,
+      wpfa.out_mpa_avg as outMpaAvg,
+      wpfa.flow_top as flowTop,
+      wpfa.flow_bottom as flowBottom,
+      wpfa.flow_avg as flowAvg,
+      wpfa.qi as qi
+    from water_pipe_flow_assess wpfa
+           left join water_pipe wp on wpfa.water_pipe_id=wp.id
+           left join small_storage_bin ssb on ssb.id = wp.sb_id
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.WaterPipeFlowAssessQue" resultType="com.example.dampouring.model.vo.WaterPipeFlowAssessVO">
+    select
+      wpfa.id as id,
+      ssb.small_sb_no as smallNo,
+      wp.wp_no as waterPipeNo,
+      wpfa.start_time as startTime,
+      wpfa.pipe_num as pipeNum,
+      wpfa.enter_temp_top as enterTempTop,
+      wpfa.enter_temp_bottom as enterTempBottom,
+      wpfa.enter_temp_avg as enterTempAvg,
+      wpfa.out_temp_top as outTempTop,
+      wpfa.out_temp_bottom as outTempBottom,
+      wpfa.out_temp_avg as outTempAvg,
+      wpfa.enter_mpa_top as enterMpaTop,
+      wpfa.enter_mpa_bottom as enterMpaBottom,
+      wpfa.enter_mpa_avg as enterMpaAvg,
+      wpfa.out_mpa_top as outMpaTop,
+      wpfa.out_mpa_bottom as outMpaBottom,
+      wpfa.out_mpa_avg as outMpaAvg,
+      wpfa.flow_top as flowTop,
+      wpfa.flow_bottom as flowBottom,
+      wpfa.flow_avg as flowAvg,
+      wpfa.qi as qi
+    from water_pipe_flow_assess wpfa
+           left join water_pipe wp on wpfa.water_pipe_id=wp.id
+           left join small_storage_bin ssb on ssb.id = wp.sb_id
+    <where>
+      <if test="sbId != null">
+        and ssb.id = #{sbId}
+      </if>
+      <if test="wpId != null">
+        and wpfa.water_pipe_id = #{wpId}
+      </if>
+      <if test="qs != null">
+        and wpfa.qi = #{qs}
+      </if>
+    </where>
+    ORDER BY ssb.small_sb_no desc,wp.wp_no asc,wpfa.qi asc
+  </select>
+</mapper>

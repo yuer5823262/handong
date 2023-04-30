@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.WeatherForecastMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.WeatherForecast">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="first_day" jdbcType="VARCHAR" property="firstDay" />
+    <result column="first_day_hight" jdbcType="DOUBLE" property="firstDayHight" />
+    <result column="first_day_low" jdbcType="DOUBLE" property="firstDayLow" />
+    <result column="second_day" jdbcType="VARCHAR" property="secondDay" />
+    <result column="second_day_hight" jdbcType="DOUBLE" property="secondDayHight" />
+    <result column="second_day_low" jdbcType="DOUBLE" property="secondDayLow" />
+    <result column="third_day" jdbcType="VARCHAR" property="thirdDay" />
+    <result column="third_day_hight" jdbcType="DOUBLE" property="thirdDayHight" />
+    <result column="third_day_low" jdbcType="DOUBLE" property="thirdDayLow" />
+    <result column="temp_difference" jdbcType="DOUBLE" property="tempDifference" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, first_day, first_day_hight, first_day_low, second_day, second_day_hight, second_day_low, 
+    third_day, third_day_hight, third_day_low, temp_difference, city,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from weather_forecast
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from weather_forecast
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.WeatherForecast">
+    insert into weather_forecast (id, first_day, first_day_hight, 
+      first_day_low, second_day, second_day_hight, 
+      second_day_low, third_day, third_day_hight, 
+      third_day_low, temp_difference, city,bl
+      )
+    values (#{id,jdbcType=INTEGER}, #{firstDay,jdbcType=VARCHAR}, #{firstDayHight,jdbcType=DOUBLE}, 
+      #{firstDayLow,jdbcType=DOUBLE}, #{secondDay,jdbcType=VARCHAR}, #{secondDayHight,jdbcType=DOUBLE}, 
+      #{secondDayLow,jdbcType=DOUBLE}, #{thirdDay,jdbcType=VARCHAR}, #{thirdDayHight,jdbcType=DOUBLE}, 
+      #{thirdDayLow,jdbcType=DOUBLE}, #{tempDifference,jdbcType=DOUBLE}, #{city,jdbcType=VARCHAR}
+      ,#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.WeatherForecast">
+    insert into weather_forecast
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="firstDay != null">
+        first_day,
+      </if>
+      <if test="firstDayHight != null">
+        first_day_hight,
+      </if>
+      <if test="firstDayLow != null">
+        first_day_low,
+      </if>
+      <if test="secondDay != null">
+        second_day,
+      </if>
+      <if test="secondDayHight != null">
+        second_day_hight,
+      </if>
+      <if test="secondDayLow != null">
+        second_day_low,
+      </if>
+      <if test="thirdDay != null">
+        third_day,
+      </if>
+      <if test="thirdDayHight != null">
+        third_day_hight,
+      </if>
+      <if test="thirdDayLow != null">
+        third_day_low,
+      </if>
+      <if test="tempDifference != null">
+        temp_difference,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="firstDay != null">
+        #{firstDay,jdbcType=VARCHAR},
+      </if>
+      <if test="firstDayHight != null">
+        #{firstDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="firstDayLow != null">
+        #{firstDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="secondDay != null">
+        #{secondDay,jdbcType=VARCHAR},
+      </if>
+      <if test="secondDayHight != null">
+        #{secondDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="secondDayLow != null">
+        #{secondDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="thirdDay != null">
+        #{thirdDay,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdDayHight != null">
+        #{thirdDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="thirdDayLow != null">
+        #{thirdDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="tempDifference != null">
+        #{tempDifference,jdbcType=DOUBLE},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.WeatherForecast">
+    update weather_forecast
+    <set>
+      <if test="firstDay != null">
+        first_day = #{firstDay,jdbcType=VARCHAR},
+      </if>
+      <if test="firstDayHight != null">
+        first_day_hight = #{firstDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="firstDayLow != null">
+        first_day_low = #{firstDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="secondDay != null">
+        second_day = #{secondDay,jdbcType=VARCHAR},
+      </if>
+      <if test="secondDayHight != null">
+        second_day_hight = #{secondDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="secondDayLow != null">
+        second_day_low = #{secondDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="thirdDay != null">
+        third_day = #{thirdDay,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdDayHight != null">
+        third_day_hight = #{thirdDayHight,jdbcType=DOUBLE},
+      </if>
+      <if test="thirdDayLow != null">
+        third_day_low = #{thirdDayLow,jdbcType=DOUBLE},
+      </if>
+      <if test="tempDifference != null">
+        temp_difference = #{tempDifference,jdbcType=DOUBLE},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.WeatherForecast">
+    update weather_forecast
+    set first_day = #{firstDay,jdbcType=VARCHAR},
+      first_day_hight = #{firstDayHight,jdbcType=DOUBLE},
+      first_day_low = #{firstDayLow,jdbcType=DOUBLE},
+      second_day = #{secondDay,jdbcType=VARCHAR},
+      second_day_hight = #{secondDayHight,jdbcType=DOUBLE},
+      second_day_low = #{secondDayLow,jdbcType=DOUBLE},
+      third_day = #{thirdDay,jdbcType=VARCHAR},
+      third_day_hight = #{thirdDayHight,jdbcType=DOUBLE},
+      third_day_low = #{thirdDayLow,jdbcType=DOUBLE},
+      temp_difference = #{tempDifference,jdbcType=DOUBLE},
+      city = #{city,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from weather_forecast
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.WeatherForecastQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from weather_forecast
+    <where>
+    <if test="startTime != null">
+      and first_day &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and first_day &lt;= #{endTime}
+    </if>
+    </where>
+    order by first_day desc
+  </select>
+</mapper>

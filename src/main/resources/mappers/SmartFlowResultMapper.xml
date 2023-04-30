@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartFlowResultMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartFlowResult">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="inner_temp" jdbcType="DOUBLE" property="innerTemp" />
+    <result column="predic_temp" jdbcType="DOUBLE" property="predicTemp" />
+    <result column="target_temp" jdbcType="DOUBLE" property="targetTemp" />
+    <result column="flow" jdbcType="DOUBLE" property="flow" />
+    <result column="target_flow" jdbcType="DOUBLE" property="targetFlow" />
+    <result column="water_temp" jdbcType="DOUBLE" property="waterTemp" />
+    <result column="air_temp" jdbcType="DOUBLE" property="airTemp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sb_id, `time`, inner_temp, predic_temp, target_temp, flow, target_flow, water_temp, 
+    air_temp
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_flow_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_flow_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartFlowResult">
+    insert into smart_flow_result (id, sb_id, `time`, 
+      inner_temp, predic_temp, target_temp, 
+      flow, target_flow, water_temp, 
+      air_temp)
+    values (#{id,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{innerTemp,jdbcType=DOUBLE}, #{predicTemp,jdbcType=DOUBLE}, #{targetTemp,jdbcType=DOUBLE}, 
+      #{flow,jdbcType=DOUBLE}, #{targetFlow,jdbcType=DOUBLE}, #{waterTemp,jdbcType=DOUBLE}, 
+      #{airTemp,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartFlowResult">
+    insert into smart_flow_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="innerTemp != null">
+        inner_temp,
+      </if>
+      <if test="predicTemp != null">
+        predic_temp,
+      </if>
+      <if test="targetTemp != null">
+        target_temp,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="targetFlow != null">
+        target_flow,
+      </if>
+      <if test="waterTemp != null">
+        water_temp,
+      </if>
+      <if test="airTemp != null">
+        air_temp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTemp != null">
+        #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="predicTemp != null">
+        #{predicTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="targetTemp != null">
+        #{targetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="targetFlow != null">
+        #{targetFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="airTemp != null">
+        #{airTemp,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartFlowResult">
+    update smart_flow_result
+    <set>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTemp != null">
+        inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="predicTemp != null">
+        predic_temp = #{predicTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="targetTemp != null">
+        target_temp = #{targetTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=DOUBLE},
+      </if>
+      <if test="targetFlow != null">
+        target_flow = #{targetFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        water_temp = #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="airTemp != null">
+        air_temp = #{airTemp,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartFlowResult">
+    update smart_flow_result
+    set sb_id = #{sbId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      inner_temp = #{innerTemp,jdbcType=DOUBLE},
+      predic_temp = #{predicTemp,jdbcType=DOUBLE},
+      target_temp = #{targetTemp,jdbcType=DOUBLE},
+      flow = #{flow,jdbcType=DOUBLE},
+      target_flow = #{targetFlow,jdbcType=DOUBLE},
+      water_temp = #{waterTemp,jdbcType=DOUBLE},
+      air_temp = #{airTemp,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.SmartFlowResultQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from smart_flow_result
+    <where>
+      <if test="startTime != null">
+        and time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+      <if test="sbId != null">
+        and sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+</mapper>

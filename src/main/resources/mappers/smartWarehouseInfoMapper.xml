@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.smartWarehouseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.smartWarehouseInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="humidity" jdbcType="DOUBLE" property="humidity" />
+    <result column="wind_speed" jdbcType="DOUBLE" property="windSpeed" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `time`, `temp`, humidity, wind_speed
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_warehouse_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_warehouse_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.smartWarehouseInfo">
+    insert into smart_warehouse_info (id, `time`, `temp`, 
+      humidity, wind_speed)
+    values (#{id,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{temp,jdbcType=DOUBLE}, 
+      #{humidity,jdbcType=DOUBLE}, #{windSpeed,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.smartWarehouseInfo">
+    insert into smart_warehouse_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="humidity != null">
+        humidity,
+      </if>
+      <if test="windSpeed != null">
+        wind_speed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="humidity != null">
+        #{humidity,jdbcType=DOUBLE},
+      </if>
+      <if test="windSpeed != null">
+        #{windSpeed,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.smartWarehouseInfo">
+    update smart_warehouse_info
+    <set>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="humidity != null">
+        humidity = #{humidity,jdbcType=DOUBLE},
+      </if>
+      <if test="windSpeed != null">
+        wind_speed = #{windSpeed,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.smartWarehouseInfo">
+    update smart_warehouse_info
+    set `time` = #{time,jdbcType=VARCHAR},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      humidity = #{humidity,jdbcType=DOUBLE},
+      wind_speed = #{windSpeed,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.SmartWarehouseInfoQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from smart_warehouse_info
+    <where>
+      <if test="startTemp != null">
+        and  temp &gt;=#{startTemp}
+      </if>
+      <if test="endTemp != null">
+        and temp &lt;= #{endTemp}
+      </if>
+      <if test="startHumidity != null">
+        and  humidity &gt;=#{startHumidity}
+      </if>
+      <if test="endHumidity != null">
+        and humidity &lt;= #{endHumidity}
+      </if>
+      <if test="startWindSpeed != null">
+        and  wind_speed &gt;=#{startWindSpeed}
+      </if>
+      <if test="endWindSpeed != null">
+        and wind_speed &lt;= #{endWindSpeed}
+      </if>
+
+    </where>
+  </select>
+</mapper>

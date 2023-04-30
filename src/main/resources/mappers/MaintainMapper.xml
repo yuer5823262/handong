@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.MaintainMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.Maintain">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_sb_id" jdbcType="INTEGER" property="smallSbId" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_sb_id, start_time, end_time, `position`, `type`, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from maintain
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from maintain
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.Maintain">
+    insert into maintain (id, small_sb_id, start_time, 
+      end_time, `position`, `type`, 
+      create_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.Maintain">
+    insert into maintain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallSbId != null">
+        small_sb_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallSbId != null">
+        #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.Maintain">
+    update maintain
+    <set>
+      <if test="smallSbId != null">
+        small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.Maintain">
+    update maintain
+    set small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      `position` = #{position,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.MaintainVO">
+    select
+      m.id as id,
+      s.small_sb_no as smallNo,
+      m.start_time as startTime,
+      m.end_time as endTime,
+      m.position as position,
+      m.type as type,
+      m.create_time as createTime,
+      m.operator as operator
+    from maintain m
+      left join small_storage_bin s on m.small_sb_id=s.id
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.MaintainVO">
+    select
+    m.id as id,
+    s.small_sb_no as smallNo,
+    m.start_time as startTime,
+    m.end_time as endTime,
+    m.position as position,
+    m.type as type,
+    m.create_time as createTime,
+    m.operator as operator
+    from maintain m
+    left join small_storage_bin s on m.small_sb_id=s.id
+    where m.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectListByQue" resultType="com.example.dampouring.model.vo.MaintainVO" parameterType="com.example.dampouring.query.MaintainQue">
+    select
+      m.id as id,
+      s.small_sb_no as smallNo,
+      m.start_time as startTime,
+      m.end_time as endTime,
+      m.position as position,
+      m.type as type,
+      m.create_time as createTime,
+      m.operator as operator
+    from maintain m
+      left join small_storage_bin s on m.small_sb_id=s.id
+    <where>
+      <if test="startTime != null">
+        and  m.start_time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and m.end_time &lt;= #{endTime}
+      </if>
+      <if test="smallId != null">
+        and m.small_sb_id = #{smallId}
+      </if>
+      <if test="type != null">
+        and m.type = #{type}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.HeatPreservationMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.HeatPreservation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_sb_id" jdbcType="INTEGER" property="smallSbId" />
+    <result column="warm_start_time" jdbcType="VARCHAR" property="warmStartTime" />
+    <result column="warm_end_time" jdbcType="VARCHAR" property="warmEndTime" />
+    <result column="expose_start_time" jdbcType="VARCHAR" property="exposeStartTime" />
+    <result column="expose_end_time" jdbcType="VARCHAR" property="exposeEndTime" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="materials" jdbcType="VARCHAR" property="materials" />
+    <result column="thickness" jdbcType="INTEGER" property="thickness" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_sb_id, warm_start_time, warm_end_time, expose_start_time, expose_end_time, 
+    `position`, materials, thickness, remark, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from heat_preservation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from heat_preservation
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.HeatPreservation">
+    insert into heat_preservation (id, small_sb_id, warm_start_time, 
+      warm_end_time, expose_start_time, expose_end_time, 
+      `position`, materials, thickness, 
+      remark, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{warmStartTime,jdbcType=VARCHAR}, 
+      #{warmEndTime,jdbcType=VARCHAR}, #{exposeStartTime,jdbcType=VARCHAR}, #{exposeEndTime,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{materials,jdbcType=VARCHAR}, #{thickness,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.HeatPreservation">
+    insert into heat_preservation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallSbId != null">
+        small_sb_id,
+      </if>
+      <if test="warmStartTime != null">
+        warm_start_time,
+      </if>
+      <if test="warmEndTime != null">
+        warm_end_time,
+      </if>
+      <if test="exposeStartTime != null">
+        expose_start_time,
+      </if>
+      <if test="exposeEndTime != null">
+        expose_end_time,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="materials != null">
+        materials,
+      </if>
+      <if test="thickness != null">
+        thickness,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallSbId != null">
+        #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="warmStartTime != null">
+        #{warmStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="warmEndTime != null">
+        #{warmEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="exposeStartTime != null">
+        #{exposeStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="exposeEndTime != null">
+        #{exposeEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null">
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="thickness != null">
+        #{thickness,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.HeatPreservation">
+    update heat_preservation
+    <set>
+      <if test="smallSbId != null">
+        small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="warmStartTime != null">
+        warm_start_time = #{warmStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="warmEndTime != null">
+        warm_end_time = #{warmEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="exposeStartTime != null">
+        expose_start_time = #{exposeStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="exposeEndTime != null">
+        expose_end_time = #{exposeEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null">
+        materials = #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="thickness != null">
+        thickness = #{thickness,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.HeatPreservation">
+    update heat_preservation
+    set small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      warm_start_time = #{warmStartTime,jdbcType=VARCHAR},
+      warm_end_time = #{warmEndTime,jdbcType=VARCHAR},
+      expose_start_time = #{exposeStartTime,jdbcType=VARCHAR},
+      expose_end_time = #{exposeEndTime,jdbcType=VARCHAR},
+      `position` = #{position,jdbcType=VARCHAR},
+      materials = #{materials,jdbcType=VARCHAR},
+      thickness = #{thickness,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.HeatPreservationVO">
+    select
+      h.id as id,
+      s.small_sb_no as smallNo,
+      h.warm_start_time as warmStartTime,
+      h.warm_end_time as warmEndTime,
+      h.expose_start_time as exposeStartTime,
+      h.expose_end_time as exposeEndTime,
+      h.position as position,
+      h.thickness as thickness,
+      h.materials as materials,
+      h.remark as remark,
+      h.create_time as createTime,
+      h.operator as operator
+    from heat_preservation h
+           left join small_storage_bin s on h.small_sb_id=s.id
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.HeatPreservationVO">
+    select
+    h.id as id,
+    s.small_sb_no as smallNo,
+    h.warm_start_time as warmStartTime,
+    h.warm_end_time as warmEndTime,
+    h.expose_start_time as exposeStartTime,
+    h.expose_end_time as exposeEndTime,
+    h.position as position,
+    h.thickness as thickness,
+    h.materials as materials,
+    h.remark as remark,
+    h.create_time as createTime,
+    h.operator as operator
+    from heat_preservation h
+    left join small_storage_bin s on h.small_sb_id=s.id
+    where h.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectListByQue" resultType="com.example.dampouring.model.vo.HeatPreservationVO" parameterType="com.example.dampouring.query.HeatPreservationQue">
+    select
+      h.id as id,
+      s.small_sb_no as smallNo,
+      h.warm_start_time as warmStartTime,
+      h.warm_end_time as warmEndTime,
+      h.expose_start_time as exposeStartTime,
+      h.expose_end_time as exposeEndTime,
+      h.position as position,
+      h.thickness as thickness,
+      h.materials as materials,
+      h.remark as remark,
+      h.create_time as createTime,
+      h.operator as operator
+    from heat_preservation h
+      left join small_storage_bin s on h.small_sb_id=s.id
+    <where>
+      <if test="startTime != null">
+        and  h.warm_start_time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and h.warm_end_time &lt;= #{endTime}
+      </if>
+      <if test="smallId != null">
+        and h.small_sb_id = #{smallId}
+      </if>
+    </where>
+  </select>
+</mapper>

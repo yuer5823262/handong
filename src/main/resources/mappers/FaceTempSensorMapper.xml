@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.FaceTempSensorMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.FaceTempSensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="temp_no" jdbcType="CHAR" property="tempNo" />
+    <result column="temp_addr" jdbcType="VARCHAR" property="tempAddr" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="stake_mark_up" jdbcType="VARCHAR" property="stakeMarkUp" />
+    <result column="stake_mark_down" jdbcType="VARCHAR" property="stakeMarkDown" />
+    <result column="stake_mark_left" jdbcType="VARCHAR" property="stakeMarkLeft" />
+    <result column="stake_mark_right" jdbcType="VARCHAR" property="stakeMarkRight" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, temp_no, temp_addr, channel_no, channel, stake_mark_up, stake_mark_down, stake_mark_left, 
+    stake_mark_right, sb_id, cu_id, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from face_temp_sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCuIdCNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_temp_sensor
+    where cu_id = #{cuId,jdbcType=INTEGER} and channel_no = #{channelNo,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRemoteDev"  resultType="com.example.dampouring.model.vo.InnerTempSensorVO">
+    select
+      its.id as id,
+      ssb.small_sb_no as smallNo,
+      its.temp_no as tempNo,
+      its.channel_no as channelNo,
+      its.channel as channel,
+      ssb.is_alert as cuAddr
+    from face_temp_sensor its
+           LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
+           LEFT JOIN control_unit cu on its.cu_id=cu.id
+    where cu.`name` = #{device_id,jdbcType=VARCHAR} and its.channel = #{ch,jdbcType=INTEGER}
+  </select>
+  <select id="listByUseful" resultMap="BaseResultMap">
+    select
+      its.*
+    from face_temp_sensor its
+           left join small_storage_bin ssb on ssb.id=its.sb_id
+    WHERE ssb.is_calculate='1' and  TRIM(its.channel_no)!=''
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from face_temp_sensor
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.FaceTempSensor">
+    insert into face_temp_sensor (id, temp_no, temp_addr, 
+      channel_no, channel, stake_mark_up, 
+      stake_mark_down, stake_mark_left, stake_mark_right, 
+      sb_id, cu_id, create_time, 
+      `operator`)
+    values (#{id,jdbcType=INTEGER}, #{tempNo,jdbcType=CHAR}, #{tempAddr,jdbcType=VARCHAR}, 
+      #{channelNo,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, #{stakeMarkUp,jdbcType=VARCHAR}, 
+      #{stakeMarkDown,jdbcType=VARCHAR}, #{stakeMarkLeft,jdbcType=VARCHAR}, #{stakeMarkRight,jdbcType=VARCHAR}, 
+      #{sbId,jdbcType=INTEGER}, #{cuId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.FaceTempSensor">
+    insert into face_temp_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tempNo != null">
+        temp_no,
+      </if>
+      <if test="tempAddr != null">
+        temp_addr,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="stakeMarkUp != null">
+        stake_mark_up,
+      </if>
+      <if test="stakeMarkDown != null">
+        stake_mark_down,
+      </if>
+      <if test="stakeMarkLeft != null">
+        stake_mark_left,
+      </if>
+      <if test="stakeMarkRight != null">
+        stake_mark_right,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tempNo != null">
+        #{tempNo,jdbcType=CHAR},
+      </if>
+      <if test="tempAddr != null">
+        #{tempAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="stakeMarkUp != null">
+        #{stakeMarkUp,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkDown != null">
+        #{stakeMarkDown,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkLeft != null">
+        #{stakeMarkLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkRight != null">
+        #{stakeMarkRight,jdbcType=VARCHAR},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.FaceTempSensor">
+    update face_temp_sensor
+    <set>
+      <if test="tempNo != null">
+        temp_no = #{tempNo,jdbcType=CHAR},
+      </if>
+      <if test="tempAddr != null">
+        temp_addr = #{tempAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="stakeMarkUp != null">
+        stake_mark_up = #{stakeMarkUp,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkDown != null">
+        stake_mark_down = #{stakeMarkDown,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkLeft != null">
+        stake_mark_left = #{stakeMarkLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkRight != null">
+        stake_mark_right = #{stakeMarkRight,jdbcType=VARCHAR},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.FaceTempSensor">
+    update face_temp_sensor
+    set temp_no = #{tempNo,jdbcType=CHAR},
+      temp_addr = #{tempAddr,jdbcType=VARCHAR},
+      channel_no = #{channelNo,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      stake_mark_up = #{stakeMarkUp,jdbcType=VARCHAR},
+      stake_mark_down = #{stakeMarkDown,jdbcType=VARCHAR},
+      stake_mark_left = #{stakeMarkLeft,jdbcType=VARCHAR},
+      stake_mark_right = #{stakeMarkRight,jdbcType=VARCHAR},
+      sb_id = #{sbId,jdbcType=INTEGER},
+      cu_id = #{cuId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectListByCuId" parameterType="java.lang.Integer" resultType="com.example.dampouring.model.vo.InnerTempSensorVO">
+    select
+      its.id as id,
+      ssb.small_sb_no as smallNo,
+      its.temp_no as tempNo,
+      its.channel_no as channelNo,
+      its.channel as channel,
+      ssb.is_alert as cuAddr
+    from face_temp_sensor its
+           LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
+    where its.cu_id = #{cuId} and  TRIM(its.channel)!='' and ssb.is_calculate='1'
+  </select>
+
+
+  <select id="selectByTempNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_temp_sensor
+    where temp_no = #{tempNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.InnerTempSensorVO" parameterType="com.example.dampouring.query.InnerTempSensorQue">
+    select
+    i.id as id,
+    ssb.small_sb_no as smallNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.temp_no as tempNo,
+    i.temp_addr as tempAddr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.stake_mark_up as stakeMarkUp,
+    i.stake_mark_down as stakeMarkDown,
+    i.stake_mark_left as stakeMarkLeft,
+    i.stake_mark_right as stakeMarkRight,
+    i.create_time as createTime,
+    i.operator as operator
+    from face_temp_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join small_storage_bin ssb on i.sb_id=ssb.id
+    <where>
+      <if test="smallId != null">
+        and ssb.id = #{smallId}
+      </if>
+    </where>
+
+
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.InnerTempSensorVO">
+    select
+    i.id as id,
+    ssb.small_sb_no as smallNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.temp_no as tempNo,
+    i.temp_addr as tempAddr,
+    i.channel_no as channelNo,
+    i.channel as channel,
+    i.stake_mark_up as stakeMarkUp,
+    i.stake_mark_down as stakeMarkDown,
+    i.stake_mark_left as stakeMarkLeft,
+    i.stake_mark_right as stakeMarkRight,
+    i.create_time as createTime,
+    i.operator as operator
+    from face_temp_sensor i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join small_storage_bin ssb on i.sb_id=ssb.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+</mapper>

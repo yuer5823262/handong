@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.WaterPipeMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.WaterPipe">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cu_id" jdbcType="INTEGER" property="cuId" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="wp_no" jdbcType="VARCHAR" property="wpNo" />
+    <result column="wp_type" jdbcType="VARCHAR" property="wpType" />
+    <result column="water_begin_time" jdbcType="VARCHAR" property="waterBeginTime" />
+    <result column="channel_no" jdbcType="INTEGER" property="channelNo" />
+    <result column="branch_num" jdbcType="INTEGER" property="branchNum" />
+    <result column="horizontal_spacing" jdbcType="DOUBLE" property="horizontalSpacing" />
+    <result column="vertical_spacing" jdbcType="DOUBLE" property="verticalSpacing" />
+    <result column="pipe_len" jdbcType="DOUBLE" property="pipeLen" />
+    <result column="max_flow" jdbcType="DOUBLE" property="maxFlow" />
+    <result column="water_density" jdbcType="DOUBLE" property="waterDensity" />
+    <result column="water_specific_heat" jdbcType="DOUBLE" property="waterSpecificHeat" />
+    <result column="pipe_specific_heat" jdbcType="DOUBLE" property="pipeSpecificHeat" />
+    <result column="outer_diameter" jdbcType="DOUBLE" property="outerDiameter" />
+    <result column="inner_diameter" jdbcType="DOUBLE" property="innerDiameter" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cu_id,sb_id, wp_no, wp_type, water_begin_time, channel_no, branch_num, horizontal_spacing,
+    vertical_spacing, pipe_len, max_flow, water_density, water_specific_heat, pipe_specific_heat, 
+    outer_diameter, inner_diameter, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from water_pipe
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectListByCuId" parameterType="java.lang.Integer" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.wp_no as wpNo,
+      i.wp_type as wpType,
+      i.water_begin_time as waterBeginTime,
+      i.channel_no as channelNo,
+      i.branch_num as branchNum,
+      i.horizontal_spacing as horizontalSpacing,
+      i.vertical_spacing as verticalSpacing,
+
+      i.pipe_len as pipeLen,
+      i.max_flow as maxFlow,
+      i.water_density as waterDensity,
+      i.water_specific_heat as waterSpecificHeat,
+      i.pipe_specific_heat as pipeSpecificHeat,
+      i.outer_diameter as outerDiameter,
+      i.inner_diameter as innerDiameter,
+      i.create_time as createTime,
+      i.operator as operator
+    from water_pipe i
+     left join control_unit cu on i.cu_id=cu.id
+     left join control_box cb on cu.cb_no=cb.id
+     left join sub_control_station scs on cb.scs_id=scs.id
+     left join small_storage_bin ssb on i.sb_id=ssb.id
+    where i.cu_id = #{cuId} and ssb.is_get_water='1'
+  </select>
+
+    <select id="selectByComputing" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+      select
+        i.id as id,
+        ssb.id as sbId,
+        ssb.small_sb_no as smallNo,
+        scs.scs_no as fkzNo,
+        cb.cb_no as kzxNo,
+        cu.cu_addr as cuAddr,
+        i.wp_no as wpNo,
+        i.wp_type as wpType,
+        i.water_begin_time as waterBeginTime,
+        i.channel_no as channelNo,
+        i.branch_num as branchNum,
+        i.horizontal_spacing as horizontalSpacing,
+        i.vertical_spacing as verticalSpacing,
+
+        i.pipe_len as pipeLen,
+        i.max_flow as maxFlow,
+        i.water_density as waterDensity,
+        i.water_specific_heat as waterSpecificHeat,
+        i.pipe_specific_heat as pipeSpecificHeat,
+        i.outer_diameter as outerDiameter,
+        i.inner_diameter as innerDiameter,
+        i.create_time as createTime,
+        i.operator as operator
+      from water_pipe i
+             left join control_unit cu on i.cu_id=cu.id
+             left join control_box cb on cu.cb_no=cb.id
+             left join sub_control_station scs on cb.scs_id=scs.id
+             left join small_storage_bin ssb on i.sb_id=ssb.id
+      where ssb.is_get_water = '1'
+    </select>
+
+  <select id="getQsByWPid" resultType="java.lang.String">
+    SELECT
+      IF (
+              pb.second_cooling_start_time >now(),
+
+              IF (
+                      pb.inter_cooling_start_time >now(),
+                      "一期",
+                      "中期"
+                ),
+              "二期"
+        ) AS qi
+    FROM
+      water_pipe wp
+        LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
+        LEFT JOIN pouring_base pb ON pb.small_sb_id = s.id
+    WHERE wp.id = #{wpId}
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from water_pipe
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.WaterPipe">
+    insert into water_pipe (id, cu_id,sb_id, wp_no,
+      wp_type, water_begin_time, channel_no, 
+      branch_num, horizontal_spacing, vertical_spacing, 
+      pipe_len, max_flow, water_density, 
+      water_specific_heat, pipe_specific_heat, outer_diameter, 
+      inner_diameter, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{cuId,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{wpNo,jdbcType=VARCHAR},
+      #{wpType,jdbcType=VARCHAR}, #{waterBeginTime,jdbcType=VARCHAR}, #{channelNo,jdbcType=INTEGER}, 
+      #{branchNum,jdbcType=INTEGER}, #{horizontalSpacing,jdbcType=DOUBLE}, #{verticalSpacing,jdbcType=DOUBLE}, 
+      #{pipeLen,jdbcType=DOUBLE}, #{maxFlow,jdbcType=DOUBLE}, #{waterDensity,jdbcType=DOUBLE}, 
+      #{waterSpecificHeat,jdbcType=DOUBLE}, #{pipeSpecificHeat,jdbcType=DOUBLE}, #{outerDiameter,jdbcType=DOUBLE}, 
+      #{innerDiameter,jdbcType=DOUBLE}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.WaterPipe">
+    insert into water_pipe
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cuId != null">
+        cu_id,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="wpNo != null">
+        wp_no,
+      </if>
+      <if test="wpType != null">
+        wp_type,
+      </if>
+      <if test="waterBeginTime != null">
+        water_begin_time,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="branchNum != null">
+        branch_num,
+      </if>
+      <if test="horizontalSpacing != null">
+        horizontal_spacing,
+      </if>
+      <if test="verticalSpacing != null">
+        vertical_spacing,
+      </if>
+      <if test="pipeLen != null">
+        pipe_len,
+      </if>
+      <if test="maxFlow != null">
+        max_flow,
+      </if>
+      <if test="waterDensity != null">
+        water_density,
+      </if>
+      <if test="waterSpecificHeat != null">
+        water_specific_heat,
+      </if>
+      <if test="pipeSpecificHeat != null">
+        pipe_specific_heat,
+      </if>
+      <if test="outerDiameter != null">
+        outer_diameter,
+      </if>
+      <if test="innerDiameter != null">
+        inner_diameter,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cuId != null">
+        #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="wpNo != null">
+        #{wpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wpType != null">
+        #{wpType,jdbcType=VARCHAR},
+      </if>
+      <if test="waterBeginTime != null">
+        #{waterBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="branchNum != null">
+        #{branchNum,jdbcType=INTEGER},
+      </if>
+      <if test="horizontalSpacing != null">
+        #{horizontalSpacing,jdbcType=DOUBLE},
+      </if>
+      <if test="verticalSpacing != null">
+        #{verticalSpacing,jdbcType=DOUBLE},
+      </if>
+      <if test="pipeLen != null">
+        #{pipeLen,jdbcType=DOUBLE},
+      </if>
+      <if test="maxFlow != null">
+        #{maxFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="waterDensity != null">
+        #{waterDensity,jdbcType=DOUBLE},
+      </if>
+      <if test="waterSpecificHeat != null">
+        #{waterSpecificHeat,jdbcType=DOUBLE},
+      </if>
+      <if test="pipeSpecificHeat != null">
+        #{pipeSpecificHeat,jdbcType=DOUBLE},
+      </if>
+      <if test="outerDiameter != null">
+        #{outerDiameter,jdbcType=DOUBLE},
+      </if>
+      <if test="innerDiameter != null">
+        #{innerDiameter,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.WaterPipe">
+    update water_pipe
+    <set>
+      <if test="cuId != null">
+        cu_id = #{cuId,jdbcType=INTEGER},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="wpNo != null">
+        wp_no = #{wpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wpType != null">
+        wp_type = #{wpType,jdbcType=VARCHAR},
+      </if>
+      <if test="waterBeginTime != null">
+        water_begin_time = #{waterBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=INTEGER},
+      </if>
+      <if test="branchNum != null">
+        branch_num = #{branchNum,jdbcType=INTEGER},
+      </if>
+      <if test="horizontalSpacing != null">
+        horizontal_spacing = #{horizontalSpacing,jdbcType=DOUBLE},
+      </if>
+      <if test="verticalSpacing != null">
+        vertical_spacing = #{verticalSpacing,jdbcType=DOUBLE},
+      </if>
+      <if test="pipeLen != null">
+        pipe_len = #{pipeLen,jdbcType=DOUBLE},
+      </if>
+      <if test="maxFlow != null">
+        max_flow = #{maxFlow,jdbcType=DOUBLE},
+      </if>
+      <if test="waterDensity != null">
+        water_density = #{waterDensity,jdbcType=DOUBLE},
+      </if>
+      <if test="waterSpecificHeat != null">
+        water_specific_heat = #{waterSpecificHeat,jdbcType=DOUBLE},
+      </if>
+      <if test="pipeSpecificHeat != null">
+        pipe_specific_heat = #{pipeSpecificHeat,jdbcType=DOUBLE},
+      </if>
+      <if test="outerDiameter != null">
+        outer_diameter = #{outerDiameter,jdbcType=DOUBLE},
+      </if>
+      <if test="innerDiameter != null">
+        inner_diameter = #{innerDiameter,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.WaterPipe">
+    update water_pipe
+    set cu_id = #{cuId,jdbcType=INTEGER},
+        sb_id = #{sbId,jdbcType=INTEGER},
+      wp_no = #{wpNo,jdbcType=VARCHAR},
+      wp_type = #{wpType,jdbcType=VARCHAR},
+      water_begin_time = #{waterBeginTime,jdbcType=VARCHAR},
+      channel_no = #{channelNo,jdbcType=INTEGER},
+      branch_num = #{branchNum,jdbcType=INTEGER},
+      horizontal_spacing = #{horizontalSpacing,jdbcType=DOUBLE},
+      vertical_spacing = #{verticalSpacing,jdbcType=DOUBLE},
+      pipe_len = #{pipeLen,jdbcType=DOUBLE},
+      max_flow = #{maxFlow,jdbcType=DOUBLE},
+      water_density = #{waterDensity,jdbcType=DOUBLE},
+      water_specific_heat = #{waterSpecificHeat,jdbcType=DOUBLE},
+      pipe_specific_heat = #{pipeSpecificHeat,jdbcType=DOUBLE},
+      outer_diameter = #{outerDiameter,jdbcType=DOUBLE},
+      inner_diameter = #{innerDiameter,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.WaterPipeVO" parameterType="com.example.dampouring.query.WaterPipeQue">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.wp_no as wpNo,
+      i.wp_type as wpType,
+      i.water_begin_time as waterBeginTime,
+      i.channel_no as channelNo,
+      i.branch_num as branchNum,
+      i.horizontal_spacing as horizontalSpacing,
+      i.vertical_spacing as verticalSpacing,
+      i.pipe_len as pipeLen,
+      i.max_flow as maxFlow,
+      i.water_density as waterDensity,
+      i.water_specific_heat as waterSpecificHeat,
+      i.pipe_specific_heat as pipeSpecificHeat,
+      i.outer_diameter as outerDiameter,
+      i.inner_diameter as innerDiameter,
+      i.create_time as createTime,
+      i.operator as operator
+    from water_pipe i
+           left join control_unit cu on i.cu_id=cu.id
+           left join control_box cb on cu.cb_no=cb.id
+           left join sub_control_station scs on cb.scs_id=scs.id
+           left join small_storage_bin ssb on i.sb_id=ssb.id
+    <where>
+      <if test="sbId != null">
+        and  i.sb_id=#{sbId}
+      </if>
+    </where>
+
+  </select>
+
+
+  <select id="getTsData" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.wp_no as wpNo,
+      i.wp_type as wpType,
+      i.water_begin_time as waterBeginTime,
+      i.channel_no as channelNo,
+      i.branch_num as branchNum,
+      i.horizontal_spacing as horizontalSpacing,
+      i.vertical_spacing as verticalSpacing,
+      i.pipe_len as pipeLen,
+      i.max_flow as maxFlow,
+      i.water_density as waterDensity,
+      i.water_specific_heat as waterSpecificHeat,
+      i.pipe_specific_heat as pipeSpecificHeat,
+      i.outer_diameter as outerDiameter,
+      i.inner_diameter as innerDiameter,
+      i.create_time as createTime,
+      i.operator as operator
+    from water_pipe i
+           left join control_unit cu on i.cu_id=cu.id
+           left join control_box cb on cu.cb_no=cb.id
+           left join sub_control_station scs on cb.scs_id=scs.id
+           left join small_storage_bin ssb on i.sb_id=ssb.id
+    where i.id in (SELECT min(id) as id from water_pipe GROUP BY sb_id) and ssb.is_get_water='1'
+    ORDER BY ssb.id desc
+  </select>
+
+
+
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+    select
+    i.id as id,
+    ssb.small_sb_no as smallNo,
+    scs.scs_no as fkzNo,
+    cb.cb_no as kzxNo,
+    cu.cu_addr as cuAddr,
+    i.wp_no as wpNo,
+    i.wp_type as wpType,
+    i.water_begin_time as waterBeginTime,
+    i.channel_no as channelNo,
+    i.branch_num as branchNum,
+    i.horizontal_spacing as horizontalSpacing,
+    i.vertical_spacing as verticalSpacing,
+
+    i.pipe_len as pipeLen,
+    i.max_flow as maxFlow,
+    i.water_density as waterDensity,
+    i.water_specific_heat as waterSpecificHeat,
+    i.pipe_specific_heat as pipeSpecificHeat,
+    i.outer_diameter as outerDiameter,
+    i.inner_diameter as innerDiameter,
+    i.create_time as createTime,
+    i.operator as operator
+    from water_pipe i
+    left join control_unit cu on i.cu_id=cu.id
+    left join control_box cb on cu.cb_no=cb.id
+    left join sub_control_station scs on cb.scs_id=scs.id
+    left join small_storage_bin ssb on i.sb_id=ssb.id
+    where i.id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectBySmallId" parameterType="java.lang.Integer" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.wp_no as wpNo,
+      i.wp_type as wpType,
+      i.water_begin_time as waterBeginTime,
+      i.channel_no as channelNo,
+      i.branch_num as branchNum,
+      i.horizontal_spacing as horizontalSpacing,
+      i.vertical_spacing as verticalSpacing,
+
+      i.pipe_len as pipeLen,
+      i.max_flow as maxFlow,
+      i.water_density as waterDensity,
+      i.water_specific_heat as waterSpecificHeat,
+      i.pipe_specific_heat as pipeSpecificHeat,
+      i.outer_diameter as outerDiameter,
+      i.inner_diameter as innerDiameter,
+      i.create_time as createTime,
+      i.operator as operator
+    from water_pipe i
+           left join control_unit cu on i.cu_id=cu.id
+           left join control_box cb on cu.cb_no=cb.id
+           left join sub_control_station scs on cb.scs_id=scs.id
+           left join small_storage_bin ssb on i.sb_id=ssb.id
+    where ssb.id = #{smallId}
+  </select>
+
+
+
+
+  <select id="selectBySbNo" parameterType="java.lang.String" resultType="com.example.dampouring.model.vo.WaterPipeVO">
+    select
+      i.id as id,
+      ssb.small_sb_no as smallNo,
+      scs.scs_no as fkzNo,
+      cb.cb_no as kzxNo,
+      cu.cu_addr as cuAddr,
+      i.wp_no as wpNo,
+      i.wp_type as wpType,
+      i.water_begin_time as waterBeginTime,
+      i.channel_no as channelNo,
+      i.branch_num as branchNum,
+      i.horizontal_spacing as horizontalSpacing,
+      i.vertical_spacing as verticalSpacing,
+
+      i.pipe_len as pipeLen,
+      i.max_flow as maxFlow,
+      i.water_density as waterDensity,
+      i.water_specific_heat as waterSpecificHeat,
+      i.pipe_specific_heat as pipeSpecificHeat,
+      i.outer_diameter as outerDiameter,
+      i.inner_diameter as innerDiameter,
+      i.create_time as createTime,
+      i.operator as operator
+    from water_pipe i
+           left join control_unit cu on i.cu_id=cu.id
+           left join control_box cb on cu.cb_no=cb.id
+           left join sub_control_station scs on cb.scs_id=scs.id
+           left join small_storage_bin ssb on i.sb_id=ssb.id
+    where ssb.small_sb_no = #{sbNo}
+  </select>
+</mapper>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.StorageBinExcludeMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.StorageBinExclude">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_sb_id" jdbcType="INTEGER" property="smallSbId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_sb_id, `time`, remark, `type`, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from storage_bin_exclude
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from storage_bin_exclude
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.StorageBinExclude">
+    insert into storage_bin_exclude (id, small_sb_id, `time`, 
+      remark, `type`, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.StorageBinExclude">
+    insert into storage_bin_exclude
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallSbId != null">
+        small_sb_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallSbId != null">
+        #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.StorageBinExclude">
+    update storage_bin_exclude
+    <set>
+      <if test="smallSbId != null">
+        small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.StorageBinExclude">
+    update storage_bin_exclude
+    set small_sb_id = #{smallSbId,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.StorageBinExcludeVO">
+    select
+    sbe.id as id,
+    sbe.time as time,
+    sbe.remark as remark,
+    sbe.type as type,
+    sbe.operator as operator,
+    ssb.small_sb_no as smallNo
+    from storage_bin_exclude sbe
+    left join small_storage_bin ssb on sbe.small_sb_id=ssb.id
+    where sbe.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.StorageBinExcludeVO" parameterType="com.example.dampouring.query.StorageBinExcludeQue">
+    select
+      sbe.id as id,
+           sbe.time as time,
+        sbe.remark as remark,
+        sbe.type as type,
+        sbe.operator as operator,
+        ssb.small_sb_no as smallNo
+    from storage_bin_exclude sbe
+           left join small_storage_bin ssb on sbe.small_sb_id=ssb.id
+    <where>
+      <if test="type != null">
+        and  sbe.type=#{type}
+      </if>
+      <if test="smallId != null">
+        and  sbe.small_sb_id=#{smallId}
+      </if>
+      <if test="remark != null">
+        and sbe.remark like '%${remark}%'
+      </if>
+    </where>
+  </select>
+</mapper>

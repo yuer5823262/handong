@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.FaceMicroClimateMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.FaceMicroClimate">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+    <result column="device_addr" jdbcType="VARCHAR" property="deviceAddr" />
+    <result column="device_ip" jdbcType="VARCHAR" property="deviceIp" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, device_no, device_addr, device_ip, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from face_micro_climate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from face_micro_climate
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.FaceMicroClimate">
+    insert into face_micro_climate (id, device_no, device_addr, 
+      device_ip, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{deviceNo,jdbcType=VARCHAR}, #{deviceAddr,jdbcType=VARCHAR}, 
+      #{deviceIp,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.FaceMicroClimate">
+    insert into face_micro_climate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deviceNo != null">
+        device_no,
+      </if>
+      <if test="deviceAddr != null">
+        device_addr,
+      </if>
+      <if test="deviceIp != null">
+        device_ip,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deviceNo != null">
+        #{deviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceAddr != null">
+        #{deviceAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIp != null">
+        #{deviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.FaceMicroClimate">
+    update face_micro_climate
+    <set>
+      <if test="deviceNo != null">
+        device_no = #{deviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceAddr != null">
+        device_addr = #{deviceAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIp != null">
+        device_ip = #{deviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.FaceMicroClimate">
+    update face_micro_climate
+    set device_no = #{deviceNo,jdbcType=VARCHAR},
+      device_addr = #{deviceAddr,jdbcType=VARCHAR},
+      device_ip = #{deviceIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByDeviceNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_micro_climate
+    where device_no = #{DeviceNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_micro_climate
+  </select>
+
+  <select id="selectByQue" resultMap="BaseResultMap" parameterType="com.example.dampouring.query.WaterRainStationQue">
+    select
+    <include refid="Base_Column_List"></include>
+    from face_micro_climate
+    <where>
+      <if test="que != null">
+        device_no like "%"#{que}"%" or device_addr like "%"#{que}"%"
+      </if>
+    </where>
+  </select>
+
+  <select id="selectListByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from face_micro_climate
+    where id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

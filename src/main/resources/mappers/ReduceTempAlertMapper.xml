@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.ReduceTempAlertMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.ReduceTempAlert">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="temp_today" jdbcType="DOUBLE" property="tempToday" />
+    <result column="temp_yesterday" jdbcType="DOUBLE" property="tempYesterday" />
+    <result column="reduce_speed" jdbcType="DOUBLE" property="reduceSpeed" />
+    <result column="exceed_amount" jdbcType="DOUBLE" property="exceedAmount" />
+    <result column="norm_speed" jdbcType="DOUBLE" property="normSpeed" />
+    <result column="alert_time" jdbcType="VARCHAR" property="alertTime" />
+    <result column="alert_content" jdbcType="VARCHAR" property="alertContent" />
+    <result column="has_dispose" jdbcType="CHAR" property="hasDispose" />
+    <result column="sb_id" jdbcType="INTEGER" property="sbId" />
+    <result column="op_time" jdbcType="VARCHAR" property="opTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, temp_today, temp_yesterday, reduce_speed, exceed_amount, norm_speed, alert_time,alert_content,
+    has_dispose, sb_id, op_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from reduce_temp_alert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reduce_temp_alert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.ReduceTempAlert">
+    insert into reduce_temp_alert (id, temp_today, temp_yesterday,
+                                   reduce_speed, exceed_amount, norm_speed,
+                                   alert_time,alert_content, has_dispose, sb_id,
+                                   op_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{tempToday,jdbcType=DOUBLE}, #{tempYesterday,jdbcType=DOUBLE},
+            #{reduceSpeed,jdbcType=DOUBLE}, #{exceedAmount,jdbcType=DOUBLE}, #{normSpeed,jdbcType=DOUBLE},
+            #{alertTime,jdbcType=VARCHAR}, #{alertContent,jdbcType=VARCHAR},#{hasDispose,jdbcType=CHAR}, #{sbId,jdbcType=INTEGER},
+            #{opTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.ReduceTempAlert">
+    insert into reduce_temp_alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tempToday != null">
+        temp_today,
+      </if>
+      <if test="tempYesterday != null">
+        temp_yesterday,
+      </if>
+      <if test="reduceSpeed != null">
+        reduce_speed,
+      </if>
+      <if test="exceedAmount != null">
+        exceed_amount,
+      </if>
+      <if test="normSpeed != null">
+        norm_speed,
+      </if>
+      <if test="alertTime != null">
+        alert_time,
+      </if>
+      <if test="alertContent != null">
+        alert_content,
+      </if>
+      <if test="hasDispose != null">
+        has_dispose,
+      </if>
+      <if test="sbId != null">
+        sb_id,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tempToday != null">
+        #{tempToday,jdbcType=DOUBLE},
+      </if>
+      <if test="tempYesterday != null">
+        #{tempYesterday,jdbcType=DOUBLE},
+      </if>
+      <if test="reduceSpeed != null">
+        #{reduceSpeed,jdbcType=DOUBLE},
+      </if>
+      <if test="exceedAmount != null">
+        #{exceedAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="normSpeed != null">
+        #{normSpeed,jdbcType=DOUBLE},
+      </if>
+      <if test="alertTime != null">
+        #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.ReduceTempAlert">
+    update reduce_temp_alert
+    <set>
+      <if test="tempToday != null">
+        temp_today = #{tempToday,jdbcType=DOUBLE},
+      </if>
+      <if test="tempYesterday != null">
+        temp_yesterday = #{tempYesterday,jdbcType=DOUBLE},
+      </if>
+      <if test="reduceSpeed != null">
+        reduce_speed = #{reduceSpeed,jdbcType=DOUBLE},
+      </if>
+      <if test="exceedAmount != null">
+        exceed_amount = #{exceedAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="normSpeed != null">
+        norm_speed = #{normSpeed,jdbcType=DOUBLE},
+      </if>
+      <if test="alertTime != null">
+        alert_time = #{alertTime,jdbcType=VARCHAR},
+      </if>
+      <if test="alertContent != null">
+        alert_content = #{alertContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hasDispose != null">
+        has_dispose = #{hasDispose,jdbcType=CHAR},
+      </if>
+      <if test="sbId != null">
+        sb_id = #{sbId,jdbcType=INTEGER},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.ReduceTempAlert">
+    update reduce_temp_alert
+    set temp_today = #{tempToday,jdbcType=DOUBLE},
+        temp_yesterday = #{tempYesterday,jdbcType=DOUBLE},
+        reduce_speed = #{reduceSpeed,jdbcType=DOUBLE},
+        exceed_amount = #{exceedAmount,jdbcType=DOUBLE},
+        norm_speed = #{normSpeed,jdbcType=DOUBLE},
+        alert_time = #{alertTime,jdbcType=VARCHAR},
+        alert_content = #{alertContent,jdbcType=VARCHAR},
+        has_dispose = #{hasDispose,jdbcType=CHAR},
+        sb_id = #{sbId,jdbcType=INTEGER},
+        op_time = #{opTime,jdbcType=VARCHAR},
+        `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="processinge">
+    update reduce_temp_alert
+    set has_dispose = '1'
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.AlertQue" resultType="com.example.dampouring.model.vo.ReduceTempAlertVO">
+    select
+    aaa.id as id,
+    s.small_sb_no as sbNo,
+    aaa.temp_today as tempToday,
+    aaa.temp_yesterday as tempYesterday,
+    aaa.reduce_speed as reduceSpeed,
+    aaa.exceed_amount as exceedAmount,
+    aaa.norm_speed as normSpeed,
+    aaa.alert_time as alertTime,
+    aaa.alert_content as alertContent,
+    aaa.has_dispose as hasDispose,
+    aaa.op_time as opTime,
+    aaa.operator as operator
+    from reduce_temp_alert aaa
+    left join small_storage_bin s on aaa.sb_id = s.id
+    <where>
+      <if test="sbId != null">
+        and  aaa.sb_id =#{sbId}
+      </if>
+    </where>
+  </select>
+  <select id="list" resultType="com.example.dampouring.model.vo.AlertBaseVO">
+    select
+      aaa.id as id,
+      s.small_sb_no as position,
+    '降温速率预警' as type,
+    aaa.alert_content as content,
+    aaa.alert_time as time,
+    aaa.has_dispose as state,
+    aaa.op_time as opTime,
+    aaa.operator as operator,
+    '12' as typeNo
+    from reduce_temp_alert aaa
+      left join small_storage_bin s on aaa.sb_id = s.id
+    where
+      has_dispose&lt;#{type}
+  </select>
+
+  <select id="reduceTempAlert" resultType="com.example.dampouring.model.pojo.ReduceTempAlert">
+    SELECT
+      tb1.*, tb2.tempYesterday
+    FROM
+      (
+        SELECT
+          its.sb_id AS sbId,
+          avg(itsi.temp) AS tempToday
+        FROM
+          inner_temp_sensor_info itsi
+            LEFT JOIN inner_temp_sensor its ON its.id = itsi.inner_temp_sensor_id
+        WHERE
+          LEFT (itsi.time, 10) = #{today}
+        GROUP BY
+          its.sb_id
+      ) tb1
+        LEFT JOIN (
+        SELECT
+          its.sb_id AS sbId,
+          avg(itsi.temp) AS tempYesterday
+        FROM
+          inner_temp_sensor_info itsi
+            LEFT JOIN inner_temp_sensor its ON its.id = itsi.inner_temp_sensor_id
+        WHERE
+          LEFT (itsi.time, 10) = #{yesterday}
+        GROUP BY
+          its.sb_id
+      ) tb2 ON tb1.sbId = tb2.sbId
+  </select>
+
+
+  <select id="normInfo" resultType="com.example.dampouring.model.vo.MaxTempNormVO">
+    SELECT
+    stb.ds_start as ds,
+    stb.id as sbId,
+    stb.small_sb_no as sbNo,
+    <if test="qs == 1">
+      tcni.one_cold_before as maxTemp
+    </if>
+    <if test="qs == 2">
+      tcni.one_cold_after as maxTemp
+    </if>
+    <if test="qs == 3">
+      tcni.middle_clod as maxTemp
+    </if>
+    from sb_temp_norm tcni
+    LEFT JOIN small_storage_bin stb on stb.id=tcni.sb_id
+    WHERE stb.id = #{sbId}
+  </select>
+</mapper>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartMixingResultMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartMixingResult">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mbId" jdbcType="INTEGER" property="mbid" />
+    <result column="mbNo" jdbcType="INTEGER" property="mbNo" />
+    <result column="actual_port_temp" jdbcType="DOUBLE" property="actualPortTemp" />
+    <result column="projections_port_temp" jdbcType="DOUBLE" property="projectionsPortTemp" />
+    <result column="target_port_temp" jdbcType="DOUBLE" property="targetPortTemp" />
+    <result column="water_temp" jdbcType="DOUBLE" property="waterTemp" />
+    <result column="beton_temp" jdbcType="DOUBLE" property="betonTemp" />
+    <result column="flyash_temp" jdbcType="DOUBLE" property="flyashTemp" />
+    <result column="tds_temp" jdbcType="DOUBLE" property="tdsTemp" />
+    <result column="ds_temp" jdbcType="DOUBLE" property="dsTemp" />
+    <result column="zs_temp" jdbcType="DOUBLE" property="zsTemp" />
+    <result column="xs_temp" jdbcType="DOUBLE" property="xsTemp" />
+    <result column="stand_temp" jdbcType="DOUBLE" property="standTemp" />
+    <result column="additive_temp" jdbcType="DOUBLE" property="additiveTemp" />
+    <result column="T01" jdbcType="DOUBLE" property="t01" />
+    <result column="Ts" jdbcType="DOUBLE" property="ts" />
+    <result column="Tb" jdbcType="DOUBLE" property="tb" />
+    <result column="Ts1" jdbcType="DOUBLE" property="ts1" />
+    <result column="Tb1" jdbcType="DOUBLE" property="tb1" />
+    <result column="Gb" jdbcType="DOUBLE" property="gb" />
+    <result column="Tsr" jdbcType="DOUBLE" property="tsr" />
+    <result column="Tg" jdbcType="DOUBLE" property="tg" />
+    <result column="μ" jdbcType="DOUBLE" property="μ" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="sf" jdbcType="VARCHAR" property="sf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mbId, actual_port_temp, projections_port_temp, target_port_temp, water_temp, 
+    beton_temp, flyash_temp, tds_temp, ds_temp, zs_temp, xs_temp, stand_temp, additive_temp, 
+    T01, Ts, Tb,Ts1, Tb1, Gb, Tsr, Tg, μ, `time`, sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_mixing_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_mixing_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartMixingResult">
+    insert into smart_mixing_result (id, mbId, actual_port_temp, 
+      projections_port_temp, target_port_temp, water_temp, 
+      beton_temp, flyash_temp, tds_temp, 
+      ds_temp, zs_temp, xs_temp, 
+      stand_temp, additive_temp, T01, 
+      Ts, Tb, Gb, Tsr, 
+      Tg, μ, `time`, sf
+      )
+    values (#{id,jdbcType=INTEGER}, #{mbid,jdbcType=INTEGER}, #{actualPortTemp,jdbcType=DOUBLE}, 
+      #{projectionsPortTemp,jdbcType=DOUBLE}, #{targetPortTemp,jdbcType=DOUBLE}, #{waterTemp,jdbcType=DOUBLE}, 
+      #{betonTemp,jdbcType=DOUBLE}, #{flyashTemp,jdbcType=DOUBLE}, #{tdsTemp,jdbcType=DOUBLE}, 
+      #{dsTemp,jdbcType=DOUBLE}, #{zsTemp,jdbcType=DOUBLE}, #{xsTemp,jdbcType=DOUBLE}, 
+      #{standTemp,jdbcType=DOUBLE}, #{additiveTemp,jdbcType=DOUBLE}, #{t01,jdbcType=DOUBLE}, 
+      #{ts,jdbcType=DOUBLE}, #{tb,jdbcType=DOUBLE}, #{gb,jdbcType=DOUBLE}, #{tsr,jdbcType=DOUBLE}, 
+      #{tg,jdbcType=DOUBLE}, #{μ,jdbcType=DOUBLE}, #{time,jdbcType=VARCHAR}, #{sf,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartMixingResult">
+    insert into smart_mixing_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mbid != null">
+        mbId,
+      </if>
+      <if test="actualPortTemp != null">
+        actual_port_temp,
+      </if>
+      <if test="projectionsPortTemp != null">
+        projections_port_temp,
+      </if>
+      <if test="targetPortTemp != null">
+        target_port_temp,
+      </if>
+      <if test="waterTemp != null">
+        water_temp,
+      </if>
+      <if test="betonTemp != null">
+        beton_temp,
+      </if>
+      <if test="flyashTemp != null">
+        flyash_temp,
+      </if>
+      <if test="tdsTemp != null">
+        tds_temp,
+      </if>
+      <if test="dsTemp != null">
+        ds_temp,
+      </if>
+      <if test="zsTemp != null">
+        zs_temp,
+      </if>
+      <if test="xsTemp != null">
+        xs_temp,
+      </if>
+      <if test="standTemp != null">
+        stand_temp,
+      </if>
+      <if test="additiveTemp != null">
+        additive_temp,
+      </if>
+      <if test="t01 != null">
+        T01,
+      </if>
+      <if test="ts != null">
+        Ts,
+      </if>
+      <if test="tb != null">
+        Tb,
+      </if>
+      <if test="ts1 != null">
+        Ts1,
+      </if>
+      <if test="tb1 != null">
+        Tb1,
+      </if>
+      <if test="gb != null">
+        Gb,
+      </if>
+      <if test="tsr != null">
+        Tsr,
+      </if>
+      <if test="tg != null">
+        Tg,
+      </if>
+      <if test="μ != null">
+        μ,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="sf != null">
+        sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mbid != null">
+        #{mbid,jdbcType=INTEGER},
+      </if>
+      <if test="actualPortTemp != null">
+        #{actualPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="projectionsPortTemp != null">
+        #{projectionsPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="targetPortTemp != null">
+        #{targetPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="betonTemp != null">
+        #{betonTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flyashTemp != null">
+        #{flyashTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsTemp != null">
+        #{tdsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="dsTemp != null">
+        #{dsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="zsTemp != null">
+        #{zsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="xsTemp != null">
+        #{xsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="standTemp != null">
+        #{standTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="additiveTemp != null">
+        #{additiveTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="t01 != null">
+        #{t01,jdbcType=DOUBLE},
+      </if>
+      <if test="ts != null">
+        #{ts,jdbcType=DOUBLE},
+      </if>
+      <if test="tb != null">
+        #{tb,jdbcType=DOUBLE},
+      </if>
+      <if test="ts1 != null">
+        #{ts1,jdbcType=DOUBLE},
+      </if>
+      <if test="tb1 != null">
+        #{tb1,jdbcType=DOUBLE},
+      </if>
+      <if test="gb != null">
+        #{gb,jdbcType=DOUBLE},
+      </if>
+      <if test="tsr != null">
+        #{tsr,jdbcType=DOUBLE},
+      </if>
+      <if test="tg != null">
+        #{tg,jdbcType=DOUBLE},
+      </if>
+      <if test="μ != null">
+        #{μ,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sf != null">
+        #{sf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartMixingResult">
+    update smart_mixing_result
+    <set>
+      <if test="mbid != null">
+        mbId = #{mbid,jdbcType=INTEGER},
+      </if>
+      <if test="actualPortTemp != null">
+        actual_port_temp = #{actualPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="projectionsPortTemp != null">
+        projections_port_temp = #{projectionsPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="targetPortTemp != null">
+        target_port_temp = #{targetPortTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="waterTemp != null">
+        water_temp = #{waterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="betonTemp != null">
+        beton_temp = #{betonTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="flyashTemp != null">
+        flyash_temp = #{flyashTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsTemp != null">
+        tds_temp = #{tdsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="dsTemp != null">
+        ds_temp = #{dsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="zsTemp != null">
+        zs_temp = #{zsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="xsTemp != null">
+        xs_temp = #{xsTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="standTemp != null">
+        stand_temp = #{standTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="additiveTemp != null">
+        additive_temp = #{additiveTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="t01 != null">
+        T01 = #{t01,jdbcType=DOUBLE},
+      </if>
+      <if test="ts != null">
+        Ts = #{ts,jdbcType=DOUBLE},
+      </if>
+      <if test="tb != null">
+        Tb = #{tb,jdbcType=DOUBLE},
+      </if>
+      <if test="ts1 != null">
+        Ts1 = #{ts1,jdbcType=DOUBLE},
+      </if>
+      <if test="tb1 != null">
+        Tb1 = #{tb1,jdbcType=DOUBLE},
+      </if>
+      <if test="gb != null">
+        Gb = #{gb,jdbcType=DOUBLE},
+      </if>
+      <if test="tsr != null">
+        Tsr = #{tsr,jdbcType=DOUBLE},
+      </if>
+      <if test="tg != null">
+        Tg = #{tg,jdbcType=DOUBLE},
+      </if>
+      <if test="μ != null">
+        μ = #{μ,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="sf != null">
+        sf = #{sf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartMixingResult">
+    update smart_mixing_result
+    set mbId = #{mbid,jdbcType=INTEGER},
+      actual_port_temp = #{actualPortTemp,jdbcType=DOUBLE},
+      projections_port_temp = #{projectionsPortTemp,jdbcType=DOUBLE},
+      target_port_temp = #{targetPortTemp,jdbcType=DOUBLE},
+      water_temp = #{waterTemp,jdbcType=DOUBLE},
+      beton_temp = #{betonTemp,jdbcType=DOUBLE},
+      flyash_temp = #{flyashTemp,jdbcType=DOUBLE},
+      tds_temp = #{tdsTemp,jdbcType=DOUBLE},
+      ds_temp = #{dsTemp,jdbcType=DOUBLE},
+      zs_temp = #{zsTemp,jdbcType=DOUBLE},
+      xs_temp = #{xsTemp,jdbcType=DOUBLE},
+      stand_temp = #{standTemp,jdbcType=DOUBLE},
+      additive_temp = #{additiveTemp,jdbcType=DOUBLE},
+      T01 = #{t01,jdbcType=DOUBLE},
+      Ts = #{ts,jdbcType=DOUBLE},
+      Tb = #{tb,jdbcType=DOUBLE},
+      Gb = #{gb,jdbcType=DOUBLE},
+      Tsr = #{tsr,jdbcType=DOUBLE},
+      Tg = #{tg,jdbcType=DOUBLE},
+      μ = #{μ,jdbcType=DOUBLE},
+      `time` = #{time,jdbcType=VARCHAR},
+      sf = #{sf,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.SmartMixingResultQue" resultMap="BaseResultMap">
+    select
+    smr.*,mb.no as mbNo
+    from smart_mixing_result smr
+    left join mixing_building mb on smr.mbId=mb.id
+    <where>
+      <if test="startTime != null">
+        and time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+      <if test="mbId != null">
+        and mbId =#{mbId}
+      </if>
+    </where>
+    order by time desc
+  </select>
+
+
+  <select id="getTemp" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT *
+    FROM
+      (
+        SELECT temperature as actual_port_temp from export_machine_temp_info
+        WHERE position=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t1,
+      (
+        SELECT temp as water_temp from
+          mixing_water_info
+        WHERE building_no=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t2,
+      (
+        SELECT temp as beton_temp from
+          mixing_beton_info
+        WHERE building_no=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t3,
+      (
+        SELECT temp as flyash_temp from
+          mixing_flyash_info
+        WHERE building_no=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t4,
+      (
+        SELECT temp as stand_temp from
+          mixing_sand_info
+        WHERE building_no=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t5,
+      (
+        SELECT temp as additive_temp from
+          mixing_additive_info
+        WHERE building_no=#{no} and left(time,10)=LEFT(NOW(),10)
+        ORDER BY time desc
+          LIMIT 1
+      ) t6,
+      (
+        SELECT temperature as tds_temp from
+          materials_temp_info
+        WHERE position=#{no} and left(time,10)=LEFT(NOW(),10) and materials="特大石"
+        ORDER BY time desc
+          LIMIT 1
+      ) t7,
+      (
+        SELECT temperature as ds_temp from
+          materials_temp_info
+        WHERE position=#{no} and left(time,10)=LEFT(NOW(),10) and materials="大石"
+        ORDER BY time desc
+          LIMIT 1
+      ) t8,
+      (
+        SELECT temperature as zs_temp from
+          materials_temp_info
+        WHERE position=#{no} and left(time,10)=LEFT(NOW(),10) and materials="中石"
+        ORDER BY time desc
+          LIMIT 1
+      ) t9,
+      (
+        SELECT temperature as xs_temp from
+          materials_temp_info
+        WHERE position=#{no} and left(time,10)=LEFT(NOW(),10) and materials="小石"
+        ORDER BY time desc
+          LIMIT 1
+      ) t10
+  </select>
+
+
+
+<!--  <select id="result" parameterType="com.example.dampouring.query.SmartMixingResultQue" resultType="com.example.dampouring.model.pojo.SmartMixingResult">-->
+<!--    SELECT-->
+<!--    tb1.time,-->
+<!--    tb1.betonTemp,-->
+<!--    tb2.flyashTemp,-->
+<!--    tb3.waterTemp,-->
+<!--    tb4.actualPortTemp,-->
+<!--    tb5.materialsTemp-->
+<!--    FROM-->
+<!--    (-->
+<!--    SELECT-->
+<!--    LEFT (time, 13) AS time,-->
+<!--    AVG(temp) AS betonTemp-->
+<!--    FROM-->
+<!--    mixing_beton_info-->
+<!--    WHERE-->
+<!--    building_no = #{bno}-->
+<!--    GROUP BY-->
+<!--    LEFT (time, 13)-->
+<!--    ) tb1-->
+<!--    LEFT JOIN (-->
+<!--    SELECT-->
+<!--    LEFT (time, 13) AS time,-->
+<!--    AVG(temp) AS flyashTemp-->
+<!--    FROM-->
+<!--    mixing_flyash_info-->
+<!--    WHERE-->
+<!--    building_no = #{bno}-->
+<!--    GROUP BY-->
+<!--    LEFT (time, 13)-->
+<!--    ) tb2 ON tb1.time = tb2.time-->
+<!--    LEFT JOIN (-->
+<!--    SELECT-->
+<!--    LEFT (time, 13) AS time,-->
+<!--    AVG(temp) AS waterTemp-->
+<!--    FROM-->
+<!--    mixing_water_info-->
+<!--    WHERE-->
+<!--    building_no = #{bno}-->
+<!--    GROUP BY-->
+<!--    LEFT (time, 13)-->
+<!--    ) tb3 ON tb1.time = tb3.time-->
+<!--    LEFT JOIN (-->
+<!--    SELECT-->
+<!--    LEFT (time, 13) AS time,-->
+<!--    AVG(temperature) AS actualPortTemp-->
+<!--    FROM-->
+<!--    export_machine_temp_info-->
+<!--    WHERE-->
+<!--    position = #{bno}-->
+<!--    GROUP BY-->
+<!--    LEFT (time, 13)-->
+<!--    ) tb4 ON tb1.time = tb4.time-->
+<!--    LEFT JOIN (-->
+<!--    SELECT-->
+<!--    LEFT (time, 13) AS time,-->
+<!--    AVG(temperature) AS materialsTemp-->
+<!--    FROM-->
+<!--    materials_temp_info-->
+<!--    WHERE-->
+<!--    position = #{bno}-->
+<!--    GROUP BY-->
+<!--    LEFT (time, 13)-->
+<!--    ) tb5 ON tb1.time = tb5.time-->
+<!--    <where>-->
+<!--      <if test="startTime != null">-->
+<!--        and tb1.time &gt;=#{startTime}-->
+<!--      </if>-->
+<!--      <if test="endTime != null">-->
+<!--        and tb1.time &lt;= #{endTime}-->
+<!--      </if>-->
+<!--    </where>-->
+<!--  </select>-->
+</mapper>

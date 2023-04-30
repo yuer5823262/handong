@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempMeasurementsMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempMeasurements">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="temperature" jdbcType="DOUBLE" property="temperature" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `date`, temperature,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_measurements
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from temp_measurements
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempMeasurements">
+    insert into temp_measurements (id, `date`, temperature,bl
+      )
+    values (#{id,jdbcType=INTEGER}, #{date,jdbcType=VARCHAR}, #{temperature,jdbcType=DOUBLE}
+      ,#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempMeasurements">
+    insert into temp_measurements
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=DOUBLE},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempMeasurements">
+    update temp_measurements
+    <set>
+      <if test="date != null">
+        `date` = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        temperature = #{temperature,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempMeasurements">
+    update temp_measurements
+    set `date` = #{date,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_measurements
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.TempMeasurementsQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from temp_measurements
+    <where>
+    <if test="startTime != null">
+      and date &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+      and date &lt;= #{endTime}
+    </if>
+    <if test="startTemp != null">
+      and temperature &gt;=#{startTemp}
+    </if>
+    <if test="endTemp != null">
+      and temperature &lt;= #{endTemp}
+    </if>
+    </where>
+    order by date desc
+  </select>
+
+  <select id="AssessComputing" parameterType="java.lang.String" resultType="com.example.dampouring.model.pojo.TempMeasurementsAssess">
+    select
+      LEFT(date,10) as time,
+      max(temperature) as topTemp,
+      min(temperature) as bottomTemp,
+      avg(temperature) as avgTemp,
+      max(temperature)-min(temperature) as differenceTemp
+    from temp_measurements
+    where LEFT(date,10)=#{yesterday}
+    group by time
+  </select>
+  <select id="assess" parameterType="com.example.dampouring.query.TempMeasurementsAssessQue" resultType="com.example.dampouring.model.pojo.TempMeasurementsAssess">
+    select
+    LEFT(date,10) as time,
+    max(temperature) as topTemp,
+    min(temperature) as bottomTemp,
+    avg(temperature) as avgTemp,
+    max(temperature)-min(temperature) as differenceTemp
+    from temp_measurements
+    <where>
+      <if test="startTime != null">
+        and date &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and date &lt;= #{endTime}
+      </if>
+    </where>
+    group by time
+    <if test="orderType != null">
+      order by #{orderType}
+    </if>
+  </select>
+
+</mapper>

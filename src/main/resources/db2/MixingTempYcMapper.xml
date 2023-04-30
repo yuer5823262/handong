@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.db2.MixingTempYcMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.MixingTempBc">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ctype" jdbcType="VARCHAR" property="ctype" />
+    <result column="gc" jdbcType="VARCHAR" property="gc" />
+    <result column="bd" jdbcType="VARCHAR" property="bd" />
+    <result column="cw" jdbcType="VARCHAR" property="cw" />
+    <result column="dcw" jdbcType="VARCHAR" property="dcw" />
+    <result column="bhlh" jdbcType="VARCHAR" property="bhlh" />
+    <result column="clwd" jdbcType="REAL" property="clwd" />
+    <result column="wdtype" jdbcType="VARCHAR" property="wdtype" />
+    <result column="wd" jdbcType="REAL" property="wd" />
+    <result column="sd" jdbcType="REAL" property="sd" />
+    <result column="hjwd" jdbcType="REAL" property="hjwd" />
+    <result column="hjsd" jdbcType="REAL" property="hjsd" />
+    <result column="wz" jdbcType="VARCHAR" property="wz" />
+    <result column="lng" jdbcType="VARCHAR" property="lng" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="ssid" jdbcType="VARCHAR" property="ssid" />
+    <result column="cwsj" jdbcType="VARCHAR" property="cwsj" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="hntlx" jdbcType="VARCHAR" property="hntlx" />
+    <result column="glclwz" jdbcType="VARCHAR" property="glclwz" />
+    <result column="gllqlx" jdbcType="VARCHAR" property="gllqlx" />
+    <result column="gllx" jdbcType="VARCHAR" property="gllx" />
+    <result column="invalid" jdbcType="INTEGER" property="invalid" />
+    <result column="sourceid" jdbcType="VARCHAR" property="sourceid" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ctype, gc, bd, cw, dcw, bhlh, clwd, wdtype, wd, sd, hjwd, hjsd, wz, lng, lat, 
+    ssid, cwsj, flag, hntlx, glclwz, gllqlx, gllx, invalid, sourceid, userid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Base_TemperaData_new
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Base_TemperaData_new
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.MixingTempBc">
+    insert into Base_TemperaData_new (id, ctype, gc, 
+      bd, cw, dcw, bhlh, 
+      clwd, wdtype, wd, sd, 
+      hjwd, hjsd, wz, lng, 
+      lat, ssid, cwsj, flag, 
+      hntlx, glclwz, gllqlx, 
+      gllx, invalid, sourceid, 
+      userid)
+    values (#{id,jdbcType=INTEGER}, #{ctype,jdbcType=VARCHAR}, #{gc,jdbcType=VARCHAR}, 
+      #{bd,jdbcType=VARCHAR}, #{cw,jdbcType=VARCHAR}, #{dcw,jdbcType=VARCHAR}, #{bhlh,jdbcType=VARCHAR}, 
+      #{clwd,jdbcType=REAL}, #{wdtype,jdbcType=VARCHAR}, #{wd,jdbcType=REAL}, #{sd,jdbcType=REAL}, 
+      #{hjwd,jdbcType=REAL}, #{hjsd,jdbcType=REAL}, #{wz,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{ssid,jdbcType=VARCHAR}, #{cwsj,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, 
+      #{hntlx,jdbcType=VARCHAR}, #{glclwz,jdbcType=VARCHAR}, #{gllqlx,jdbcType=VARCHAR}, 
+      #{gllx,jdbcType=VARCHAR}, #{invalid,jdbcType=INTEGER}, #{sourceid,jdbcType=VARCHAR},
+      #{userid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.MixingTempBc">
+    insert into Base_TemperaData_new
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ctype != null">
+        ctype,
+      </if>
+      <if test="gc != null">
+        gc,
+      </if>
+      <if test="bd != null">
+        bd,
+      </if>
+      <if test="cw != null">
+        cw,
+      </if>
+      <if test="dcw != null">
+        dcw,
+      </if>
+      <if test="bhlh != null">
+        bhlh,
+      </if>
+      <if test="clwd != null">
+        clwd,
+      </if>
+      <if test="wdtype != null">
+        wdtype,
+      </if>
+      <if test="wd != null">
+        wd,
+      </if>
+      <if test="sd != null">
+        sd,
+      </if>
+      <if test="hjwd != null">
+        hjwd,
+      </if>
+      <if test="hjsd != null">
+        hjsd,
+      </if>
+      <if test="wz != null">
+        wz,
+      </if>
+      <if test="lng != null">
+        lng,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="ssid != null">
+        ssid,
+      </if>
+      <if test="cwsj != null">
+        cwsj,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="hntlx != null">
+        hntlx,
+      </if>
+      <if test="glclwz != null">
+        glclwz,
+      </if>
+      <if test="gllqlx != null">
+        gllqlx,
+      </if>
+      <if test="gllx != null">
+        gllx,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="sourceid != null">
+        sourceid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ctype != null">
+        #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="gc != null">
+        #{gc,jdbcType=VARCHAR},
+      </if>
+      <if test="bd != null">
+        #{bd,jdbcType=VARCHAR},
+      </if>
+      <if test="cw != null">
+        #{cw,jdbcType=VARCHAR},
+      </if>
+      <if test="dcw != null">
+        #{dcw,jdbcType=VARCHAR},
+      </if>
+      <if test="bhlh != null">
+        #{bhlh,jdbcType=VARCHAR},
+      </if>
+      <if test="clwd != null">
+        #{clwd,jdbcType=REAL},
+      </if>
+      <if test="wdtype != null">
+        #{wdtype,jdbcType=VARCHAR},
+      </if>
+      <if test="wd != null">
+        #{wd,jdbcType=REAL},
+      </if>
+      <if test="sd != null">
+        #{sd,jdbcType=REAL},
+      </if>
+      <if test="hjwd != null">
+        #{hjwd,jdbcType=REAL},
+      </if>
+      <if test="hjsd != null">
+        #{hjsd,jdbcType=REAL},
+      </if>
+      <if test="wz != null">
+        #{wz,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null">
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="ssid != null">
+        #{ssid,jdbcType=VARCHAR},
+      </if>
+      <if test="cwsj != null">
+        #{cwsj,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="hntlx != null">
+        #{hntlx,jdbcType=VARCHAR},
+      </if>
+      <if test="glclwz != null">
+        #{glclwz,jdbcType=VARCHAR},
+      </if>
+      <if test="gllqlx != null">
+        #{gllqlx,jdbcType=VARCHAR},
+      </if>
+      <if test="gllx != null">
+        #{gllx,jdbcType=VARCHAR},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=INTEGER},
+      </if>
+      <if test="sourceid != null">
+        #{sourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.MixingTempBc">
+    update Base_TemperaData_new
+    <set>
+      <if test="ctype != null">
+        ctype = #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="gc != null">
+        gc = #{gc,jdbcType=VARCHAR},
+      </if>
+      <if test="bd != null">
+        bd = #{bd,jdbcType=VARCHAR},
+      </if>
+      <if test="cw != null">
+        cw = #{cw,jdbcType=VARCHAR},
+      </if>
+      <if test="dcw != null">
+        dcw = #{dcw,jdbcType=VARCHAR},
+      </if>
+      <if test="bhlh != null">
+        bhlh = #{bhlh,jdbcType=VARCHAR},
+      </if>
+      <if test="clwd != null">
+        clwd = #{clwd,jdbcType=REAL},
+      </if>
+      <if test="wdtype != null">
+        wdtype = #{wdtype,jdbcType=VARCHAR},
+      </if>
+      <if test="wd != null">
+        wd = #{wd,jdbcType=REAL},
+      </if>
+      <if test="sd != null">
+        sd = #{sd,jdbcType=REAL},
+      </if>
+      <if test="hjwd != null">
+        hjwd = #{hjwd,jdbcType=REAL},
+      </if>
+      <if test="hjsd != null">
+        hjsd = #{hjsd,jdbcType=REAL},
+      </if>
+      <if test="wz != null">
+        wz = #{wz,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null">
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="ssid != null">
+        ssid = #{ssid,jdbcType=VARCHAR},
+      </if>
+      <if test="cwsj != null">
+        cwsj = #{cwsj,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="hntlx != null">
+        hntlx = #{hntlx,jdbcType=VARCHAR},
+      </if>
+      <if test="glclwz != null">
+        glclwz = #{glclwz,jdbcType=VARCHAR},
+      </if>
+      <if test="gllqlx != null">
+        gllqlx = #{gllqlx,jdbcType=VARCHAR},
+      </if>
+      <if test="gllx != null">
+        gllx = #{gllx,jdbcType=VARCHAR},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=INTEGER},
+      </if>
+      <if test="sourceid != null">
+        sourceid = #{sourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.MixingTempBc">
+    update Base_TemperaData_new
+    set ctype = #{ctype,jdbcType=VARCHAR},
+      gc = #{gc,jdbcType=VARCHAR},
+      bd = #{bd,jdbcType=VARCHAR},
+      cw = #{cw,jdbcType=VARCHAR},
+      dcw = #{dcw,jdbcType=VARCHAR},
+      bhlh = #{bhlh,jdbcType=VARCHAR},
+      clwd = #{clwd,jdbcType=REAL},
+      wdtype = #{wdtype,jdbcType=VARCHAR},
+      wd = #{wd,jdbcType=REAL},
+      sd = #{sd,jdbcType=REAL},
+      hjwd = #{hjwd,jdbcType=REAL},
+      hjsd = #{hjsd,jdbcType=REAL},
+      wz = #{wz,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      ssid = #{ssid,jdbcType=VARCHAR},
+      cwsj = #{cwsj,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      hntlx = #{hntlx,jdbcType=VARCHAR},
+      glclwz = #{glclwz,jdbcType=VARCHAR},
+      gllqlx = #{gllqlx,jdbcType=VARCHAR},
+      gllx = #{gllx,jdbcType=VARCHAR},
+      invalid = #{invalid,jdbcType=INTEGER},
+      sourceid = #{sourceid,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="list"  resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from Base_TemperaData_new
+  WHERE DATEDIFF(HOUR, cwsj, GETDATE())&lt;=1
+  </select>
+<!--  <select id="list"  resultMap="BaseResultMap">-->
+<!--    select-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from mixing_temp_bc-->
+<!--  </select>-->
+</mapper>

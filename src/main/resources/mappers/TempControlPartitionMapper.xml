@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempControlPartitionMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempControlPartition">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ds_start" jdbcType="INTEGER" property="dsStart" />
+    <result column="ds_end" jdbcType="INTEGER" property="dsEnd" />
+    <result column="elevation_start" jdbcType="DOUBLE" property="elevationStart" />
+    <result column="elevation_end" jdbcType="DOUBLE" property="elevationEnd" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="temp_control_type_id" jdbcType="INTEGER" property="tempControlTypeId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ds_start, ds_end, elevation_start, elevation_end, `name`, temp_control_type_id, 
+    create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_control_partition
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from temp_control_partition
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempControlPartition">
+    insert into temp_control_partition (id, ds_start, ds_end, 
+      elevation_start, elevation_end, `name`, 
+      temp_control_type_id, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{dsStart,jdbcType=INTEGER}, #{dsEnd,jdbcType=INTEGER}, 
+      #{elevationStart,jdbcType=DOUBLE}, #{elevationEnd,jdbcType=DOUBLE}, #{name,jdbcType=VARCHAR}, 
+      #{tempControlTypeId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempControlPartition">
+    insert into temp_control_partition
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dsStart != null">
+        ds_start,
+      </if>
+      <if test="dsEnd != null">
+        ds_end,
+      </if>
+      <if test="elevationStart != null">
+        elevation_start,
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="tempControlTypeId != null">
+        temp_control_type_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dsStart != null">
+        #{dsStart,jdbcType=INTEGER},
+      </if>
+      <if test="dsEnd != null">
+        #{dsEnd,jdbcType=INTEGER},
+      </if>
+      <if test="elevationStart != null">
+        #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tempControlTypeId != null">
+        #{tempControlTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempControlPartition">
+    update temp_control_partition
+    <set>
+      <if test="dsStart != null">
+        ds_start = #{dsStart,jdbcType=INTEGER},
+      </if>
+      <if test="dsEnd != null">
+        ds_end = #{dsEnd,jdbcType=INTEGER},
+      </if>
+      <if test="elevationStart != null">
+        elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tempControlTypeId != null">
+        temp_control_type_id = #{tempControlTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempControlPartition">
+    update temp_control_partition
+    set ds_start = #{dsStart,jdbcType=INTEGER},
+      ds_end = #{dsEnd,jdbcType=INTEGER},
+      elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      `name` = #{name,jdbcType=VARCHAR},
+      temp_control_type_id = #{tempControlTypeId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.TempControlPartitionVO">
+    select
+    tcp.id as id,
+    tcp.ds_start as dsStart,
+    tcp.ds_end as dsEnd,
+    tcp.elevation_start as elevationStart,
+
+    tcp.elevation_end as elevationEnd,
+    tcp.name as name,
+    tcnn.name as tempControlTypeName,
+    tcp.create_time as createTime,
+    tcp.operator as operator
+
+    from temp_control_partition tcp
+    left join temp_control_norm_name tcnn on tcp.temp_control_type_id=tcnn.id
+    where tcp.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.TempControlPartitionVO">
+    select
+      tcp.id as id,
+      tcp.ds_start as dsStart,
+      tcp.ds_end as dsEnd,
+      tcp.elevation_start as elevationStart,
+
+      tcp.elevation_end as elevationEnd,
+      tcp.name as name,
+      tcnn.name as tempControlTypeName,
+      tcp.create_time as createTime,
+      tcp.operator as operator
+
+    from temp_control_partition tcp
+      left join temp_control_norm_name tcnn on tcp.temp_control_type_id=tcnn.id
+  </select>
+</mapper>

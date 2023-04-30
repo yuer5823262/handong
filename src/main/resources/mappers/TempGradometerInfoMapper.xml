@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.TempGradometerInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.TempGradometerInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="temp_gradometer_id" jdbcType="INTEGER" property="tempGradometerId" />
+    <result column="temp1" jdbcType="DOUBLE" property="temp1" />
+    <result column="temp2" jdbcType="DOUBLE" property="temp2" />
+    <result column="temp3" jdbcType="DOUBLE" property="temp3" />
+    <result column="temp4" jdbcType="DOUBLE" property="temp4" />
+    <result column="temp5" jdbcType="DOUBLE" property="temp5" />
+    <result column="temp6" jdbcType="DOUBLE" property="temp6" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="bl" jdbcType="INTEGER" property="bl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, temp_gradometer_id, temp1, temp2, temp3, temp4, temp5, temp6, `time`,bl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from temp_gradometer_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from temp_gradometer_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.TempGradometerInfo">
+    insert into temp_gradometer_info (id, temp_gradometer_id, temp1, 
+      temp2, temp3, temp4, temp5, 
+      temp6, `time`,bl)
+    values (#{id,jdbcType=INTEGER}, #{tempGradometerId,jdbcType=INTEGER}, #{temp1,jdbcType=DOUBLE}, 
+      #{temp2,jdbcType=DOUBLE}, #{temp3,jdbcType=DOUBLE}, #{temp4,jdbcType=DOUBLE}, #{temp5,jdbcType=DOUBLE}, 
+      #{temp6,jdbcType=DOUBLE}, #{time,jdbcType=CHAR},#{bl,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.TempGradometerInfo">
+    insert into temp_gradometer_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tempGradometerId != null">
+        temp_gradometer_id,
+      </if>
+      <if test="temp1 != null">
+        temp1,
+      </if>
+      <if test="temp2 != null">
+        temp2,
+      </if>
+      <if test="temp3 != null">
+        temp3,
+      </if>
+      <if test="temp4 != null">
+        temp4,
+      </if>
+      <if test="temp5 != null">
+        temp5,
+      </if>
+      <if test="temp6 != null">
+        temp6,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="bl != null">
+        bl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tempGradometerId != null">
+        #{tempGradometerId,jdbcType=INTEGER},
+      </if>
+      <if test="temp1 != null">
+        #{temp1,jdbcType=DOUBLE},
+      </if>
+      <if test="temp2 != null">
+        #{temp2,jdbcType=DOUBLE},
+      </if>
+      <if test="temp3 != null">
+        #{temp3,jdbcType=DOUBLE},
+      </if>
+      <if test="temp4 != null">
+        #{temp4,jdbcType=DOUBLE},
+      </if>
+      <if test="temp5 != null">
+        #{temp5,jdbcType=DOUBLE},
+      </if>
+      <if test="temp6 != null">
+        #{temp6,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="bl != null">
+        #{bl,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.TempGradometerInfo">
+    update temp_gradometer_info
+    <set>
+      <if test="tempGradometerId != null">
+        temp_gradometer_id = #{tempGradometerId,jdbcType=INTEGER},
+      </if>
+      <if test="temp1 != null">
+        temp1 = #{temp1,jdbcType=DOUBLE},
+      </if>
+      <if test="temp2 != null">
+        temp2 = #{temp2,jdbcType=DOUBLE},
+      </if>
+      <if test="temp3 != null">
+        temp3 = #{temp3,jdbcType=DOUBLE},
+      </if>
+      <if test="temp4 != null">
+        temp4 = #{temp4,jdbcType=DOUBLE},
+      </if>
+      <if test="temp5 != null">
+        temp5 = #{temp5,jdbcType=DOUBLE},
+      </if>
+      <if test="temp6 != null">
+        temp6 = #{temp6,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.TempGradometerInfo">
+    update temp_gradometer_info
+    set temp_gradometer_id = #{tempGradometerId,jdbcType=INTEGER},
+      temp1 = #{temp1,jdbcType=DOUBLE},
+      temp2 = #{temp2,jdbcType=DOUBLE},
+      temp3 = #{temp3,jdbcType=DOUBLE},
+      temp4 = #{temp4,jdbcType=DOUBLE},
+      temp5 = #{temp5,jdbcType=DOUBLE},
+      temp6 = #{temp6,jdbcType=DOUBLE},
+      `time` = #{time,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="List" resultType="com.example.dampouring.model.vo.TempGradometerInfoVO">
+    select
+      tgi.id as id,
+      s.small_sb_no as smallNo,
+      cb.cb_no as kzxNo,
+      tg.tgm_name as tempGradometerNo,
+      tgi.temp1 as temp1,
+      tgi.temp2 as temp2,
+      tgi.temp3 as temp3,
+      tgi.temp4 as temp4,
+      tgi.temp5 as temp5,
+      tgi.temp6 as temp6,
+      tgi.time as time,
+      tgi.bl as bl,
+      tg.position as position,
+      cu.cu_addr as cuAddr
+    from temp_gradometer_info tgi
+      left join temp_gradometer tg on tgi.temp_gradometer_id= tg.id
+      left join small_storage_bin s on tg.sb_id = s.id
+      LEFT JOIN control_unit cu on tg.cu_id = cu.id
+      left join control_box cb on cu.cb_no = cb.id
+
+
+  </select>
+
+  <select id="selectList" parameterType="com.example.dampouring.query.TempGradometerInfoQue" resultType="com.example.dampouring.model.vo.TempGradometerInfoVO">
+    select
+    tgi.id as id,
+    s.small_sb_no as smallNo,
+    cb.cb_no as kzxNo,
+    tg.tgm_name as tempGradometerNo,
+    tgi.temp1 as temp1,
+    tgi.temp2 as temp2,
+    tgi.temp3 as temp3,
+    tgi.temp4 as temp4,
+    tgi.temp5 as temp5,
+    tgi.temp6 as temp6,
+    tgi.time as time,
+    tgi.bl as bl,
+    tg.position as position,
+    cu.cu_addr as cuAddr
+    from temp_gradometer_info tgi
+    left join temp_gradometer tg on tgi.temp_gradometer_id= tg.id
+    left join small_storage_bin s on tg.sb_id = s.id
+    LEFT JOIN control_unit cu on tg.cu_id = cu.id
+    left join control_box cb on cu.cb_no = cb.id
+    <where>
+      <if test="smallId != null">
+        and s.id =#{smallId}
+      </if>
+      <if test="startTime != null">
+        and  tgi.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and tgi.time &lt;= #{endTime}
+      </if>
+      <if test="tempGradometerId != null">
+        and  tgi.temp_gradometer_id =#{tempGradometerId}
+      </if>
+    </where>
+    order by tgi.time desc
+  </select>
+</mapper>

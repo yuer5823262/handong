@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmartWarehouseWarningMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmartWarehouseWarning">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_id" jdbcType="INTEGER" property="smallId" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
+    <result column="norm" jdbcType="DOUBLE" property="norm" />
+    <result column="excessive" jdbcType="DOUBLE" property="excessive" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="is_processing" jdbcType="INTEGER" property="isProcessing" />
+    <result column="processing_time" jdbcType="VARCHAR" property="processingTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_id, `temp`, norm, excessive, `time`, is_processing, processing_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smart_warehouse_warning
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from smart_warehouse_warning
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmartWarehouseWarning">
+    insert into smart_warehouse_warning (id, small_id, `temp`, 
+      norm, excessive, `time`, is_processing, 
+      processing_time, `operator`)
+    values (#{id,jdbcType=INTEGER}, #{smallId,jdbcType=INTEGER}, #{temp,jdbcType=DOUBLE}, 
+      #{norm,jdbcType=DOUBLE}, #{excessive,jdbcType=DOUBLE}, #{time,jdbcType=CHAR}, #{isProcessing,jdbcType=INTEGER}, 
+      #{processingTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmartWarehouseWarning">
+    insert into smart_warehouse_warning
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallId != null">
+        small_id,
+      </if>
+      <if test="temp != null">
+        `temp`,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="excessive != null">
+        excessive,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="isProcessing != null">
+        is_processing,
+      </if>
+      <if test="processingTime != null">
+        processing_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallId != null">
+        #{smallId,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="excessive != null">
+        #{excessive,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="isProcessing != null">
+        #{isProcessing,jdbcType=INTEGER},
+      </if>
+      <if test="processingTime != null">
+        #{processingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmartWarehouseWarning">
+    update smart_warehouse_warning
+    <set>
+      <if test="smallId != null">
+        small_id = #{smallId,jdbcType=INTEGER},
+      </if>
+      <if test="temp != null">
+        `temp` = #{temp,jdbcType=DOUBLE},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=DOUBLE},
+      </if>
+      <if test="excessive != null">
+        excessive = #{excessive,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="isProcessing != null">
+        is_processing = #{isProcessing,jdbcType=INTEGER},
+      </if>
+      <if test="processingTime != null">
+        processing_time = #{processingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmartWarehouseWarning">
+    update smart_warehouse_warning
+    set small_id = #{smallId,jdbcType=INTEGER},
+      `temp` = #{temp,jdbcType=DOUBLE},
+      norm = #{norm,jdbcType=DOUBLE},
+      excessive = #{excessive,jdbcType=DOUBLE},
+      `time` = #{time,jdbcType=CHAR},
+      is_processing = #{isProcessing,jdbcType=INTEGER},
+      processing_time = #{processingTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" parameterType="com.example.dampouring.query.SmartWarehouseWarningQue" resultType="com.example.dampouring.model.vo.SmartWarehouseWarningVO">
+    select
+    sww.id as id,
+    s.small_sb_no as smallNo,
+    sww.temp as temp,
+    sww.norm as norm,
+    sww.excessive as excessive,
+    sww.time as time,
+    sww.is_processing as isProcessing,
+    sww.processing_time as processingTime,
+    sww.operator as operator
+    from smart_warehouse_warning sww
+    left join small_storage_bin s on sww.small_id = s.id
+    <where>
+      <if test="smallId != null">
+        and  sww.small_id =#{smallId}
+      </if>
+
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.SmallStorageBinMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmallStorageBin">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="small_sb_no" jdbcType="VARCHAR" property="smallSbNo" />
+    <result column="ds_start" jdbcType="VARCHAR" property="dsStart" />
+    <result column="ds_end" jdbcType="VARCHAR" property="dsEnd" />
+    <result column="elevation_start" jdbcType="DOUBLE" property="elevationStart" />
+    <result column="elevation_end" jdbcType="DOUBLE" property="elevationEnd" />
+    <result column="stake_mark_up" jdbcType="VARCHAR" property="stakeMarkUp" />
+    <result column="stake_mark_down" jdbcType="VARCHAR" property="stakeMarkDown" />
+    <result column="stake_mark_left" jdbcType="VARCHAR" property="stakeMarkLeft" />
+    <result column="stake_mark_right" jdbcType="VARCHAR" property="stakeMarkRight" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="is_alert" jdbcType="VARCHAR" property="isAlert" />
+    <result column="is_calculate" jdbcType="VARCHAR" property="isCalculate" />
+    <result column="is_get_water" jdbcType="VARCHAR" property="isGetWater" />
+    <result column="is_computer" jdbcType="VARCHAR" property="isComputer" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_sb_no, ds_start, ds_end, elevation_start, elevation_end, stake_mark_up, 
+    stake_mark_down, stake_mark_left, stake_mark_right, create_time, is_alert, is_calculate, 
+    is_get_water,is_computer, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from small_storage_bin
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmallStorageBin">
+    insert into small_storage_bin (id, small_sb_no, ds_start, 
+      ds_end, elevation_start, elevation_end, 
+      stake_mark_up, stake_mark_down, stake_mark_left, 
+      stake_mark_right, create_time, is_alert, 
+      is_calculate, is_get_water,,is_computer `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{smallSbNo,jdbcType=VARCHAR}, #{dsStart,jdbcType=VARCHAR}, 
+      #{dsEnd,jdbcType=VARCHAR}, #{elevationStart,jdbcType=DOUBLE}, #{elevationEnd,jdbcType=DOUBLE}, 
+      #{stakeMarkUp,jdbcType=VARCHAR}, #{stakeMarkDown,jdbcType=VARCHAR}, #{stakeMarkLeft,jdbcType=VARCHAR}, 
+      #{stakeMarkRight,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{isAlert,jdbcType=VARCHAR}, 
+      #{isCalculate,jdbcType=VARCHAR}, #{isGetWater,jdbcType=VARCHAR},#{isComputer,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SmallStorageBin" useGeneratedKeys="true" keyProperty="id">
+    insert into small_storage_bin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="smallSbNo != null">
+        small_sb_no,
+      </if>
+      <if test="dsStart != null">
+        ds_start,
+      </if>
+      <if test="dsEnd != null">
+        ds_end,
+      </if>
+      <if test="elevationStart != null">
+        elevation_start,
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end,
+      </if>
+      <if test="stakeMarkUp != null">
+        stake_mark_up,
+      </if>
+      <if test="stakeMarkDown != null">
+        stake_mark_down,
+      </if>
+      <if test="stakeMarkLeft != null">
+        stake_mark_left,
+      </if>
+      <if test="stakeMarkRight != null">
+        stake_mark_right,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isAlert != null">
+        is_alert,
+      </if>
+      <if test="isCalculate != null">
+        is_calculate,
+      </if>
+      <if test="isGetWater != null">
+        is_get_water,
+      </if>
+      <if test="isComputer != null">
+        is_computer,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smallSbNo != null">
+        #{smallSbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dsStart != null">
+        #{dsStart,jdbcType=VARCHAR},
+      </if>
+      <if test="dsEnd != null">
+        #{dsEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="elevationStart != null">
+        #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="stakeMarkUp != null">
+        #{stakeMarkUp,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkDown != null">
+        #{stakeMarkDown,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkLeft != null">
+        #{stakeMarkLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkRight != null">
+        #{stakeMarkRight,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isAlert != null">
+        #{isAlert,jdbcType=VARCHAR},
+      </if>
+      <if test="isCalculate != null">
+        #{isCalculate,jdbcType=VARCHAR},
+      </if>
+      <if test="isGetWater != null">
+        #{isGetWater,jdbcType=VARCHAR},
+      </if>
+      <if test="isComputer != null">
+        #{isComputer,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.SmallStorageBin">
+    update small_storage_bin
+    <set>
+      <if test="smallSbNo != null">
+        small_sb_no = #{smallSbNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dsStart != null">
+        ds_start = #{dsStart,jdbcType=VARCHAR},
+      </if>
+      <if test="dsEnd != null">
+        ds_end = #{dsEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="elevationStart != null">
+        elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      </if>
+      <if test="elevationEnd != null">
+        elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="stakeMarkUp != null">
+        stake_mark_up = #{stakeMarkUp,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkDown != null">
+        stake_mark_down = #{stakeMarkDown,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkLeft != null">
+        stake_mark_left = #{stakeMarkLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="stakeMarkRight != null">
+        stake_mark_right = #{stakeMarkRight,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isAlert != null">
+        is_alert = #{isAlert,jdbcType=VARCHAR},
+      </if>
+      <if test="isCalculate != null">
+        is_calculate = #{isCalculate,jdbcType=VARCHAR},
+      </if>
+      <if test="isGetWater != null">
+        is_get_water = #{isGetWater,jdbcType=VARCHAR},
+      </if>
+      <if test="isComputer != null">
+        is_computer = #{isComputer,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmallStorageBin">
+    update small_storage_bin
+    set small_sb_no = #{smallSbNo,jdbcType=VARCHAR},
+      ds_start = #{dsStart,jdbcType=VARCHAR},
+      ds_end = #{dsEnd,jdbcType=VARCHAR},
+      elevation_start = #{elevationStart,jdbcType=DOUBLE},
+      elevation_end = #{elevationEnd,jdbcType=DOUBLE},
+      stake_mark_up = #{stakeMarkUp,jdbcType=VARCHAR},
+      stake_mark_down = #{stakeMarkDown,jdbcType=VARCHAR},
+      stake_mark_left = #{stakeMarkLeft,jdbcType=VARCHAR},
+      stake_mark_right = #{stakeMarkRight,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      is_alert = #{isAlert,jdbcType=VARCHAR},
+      is_calculate = #{isCalculate,jdbcType=VARCHAR},
+      is_get_water = #{isGetWater,jdbcType=VARCHAR},
+      is_computer = #{isComputer,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCountByBigSbNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(*)
+    from small_storage_bin
+    where big_sb_no = #{bigSbNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectVoList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+  </select>
+  <select id="selectBySbNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+    where small_sb_no = #{sbNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+    where id in
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectByComputing" resultType="java.lang.Integer">
+    select
+    id
+    from small_storage_bin
+    where is_calculate = '1'
+  </select>
+
+  <select id="selectVoListQue" parameterType="com.example.dampouring.query.StorageBinQue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from small_storage_bin
+    <where>
+      <if test="dsNo != null">
+        and ds_start &lt;=#{dsNo} and ds_end &gt;=#{dsNo}
+      </if>
+      <if test="que != null">
+        and small_sb_no like "%"#{que}"%"
+      </if>
+      <if test="sbId != null">
+        and id =#{sbId}
+      </if>
+      <if test="startElevation != null">
+        and elevation_start &gt;= #{startElevation}
+      </if>
+      <if test="endElevation != null">
+        and elevation_end &lt;= #{endElevation}
+      </if>
+    </where>
+  </select>
+</mapper>

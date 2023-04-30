@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dampouring.model.dao.ControlBoxMapper">
+  <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.ControlBox">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cb_no" jdbcType="CHAR" property="cbNo" />
+    <result column="scs_id" jdbcType="INTEGER" property="scsId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cb_no, scs_id, remark, create_time, `operator`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from control_box
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey">
+    delete from control_box
+    where id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.example.dampouring.model.pojo.ControlBox">
+    insert into control_box (id, cb_no, scs_id, 
+      remark, create_time, `operator`
+      )
+    values (#{id,jdbcType=INTEGER}, #{cbNo,jdbcType=CHAR}, #{scsId,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.ControlBox">
+    insert into control_box
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cbNo != null">
+        cb_no,
+      </if>
+      <if test="scsId != null">
+        scs_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cbNo != null">
+        #{cbNo,jdbcType=CHAR},
+      </if>
+      <if test="scsId != null">
+        #{scsId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dampouring.model.pojo.ControlBox">
+    update control_box
+    <set>
+      <if test="cbNo != null">
+        cb_no = #{cbNo,jdbcType=CHAR},
+      </if>
+      <if test="scsId != null">
+        scs_id = #{scsId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.ControlBox">
+    update control_box
+    set cb_no = #{cbNo,jdbcType=CHAR},
+      scs_id = #{scsId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      `operator` = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByCbNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from control_box
+    where cb_no = #{cbNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultType="com.example.dampouring.model.vo.ControlBoxVO">
+    select
+    c.id as id,
+    c.cb_no as cbNo,
+    s.scs_no as scsNo,
+    c.remark as remark,
+    c.create_time as createTime,
+    c.operator as operator
+    from control_box c
+    left join sub_control_station s on c.scs_id=s.id
+  </select>
+  <select id="selectByQue" resultType="com.example.dampouring.model.vo.ControlBoxVO" parameterType="com.example.dampouring.query.WaterRainStationQue">
+    select
+    c.id as id,
+    c.cb_no as cbNo,
+    s.scs_no as scsNo,
+    c.remark as remark,
+    c.create_time as createTime,
+    c.operator as operator
+    from control_box c
+    left join sub_control_station s on c.scs_id=s.id
+    <where>
+      <if test="que != null">
+        c.cb_no like "%"#{que}"%" or s.scs_no like "%"#{que}"%" or c.remark like "%"#{que}"%"
+      </if>
+    </where>
+  </select>
+  <select id="selectListByIds" resultType="com.example.dampouring.model.vo.ControlBoxVO">
+    select
+    c.id as id,
+    c.cb_no as cbNo,
+    s.scs_no as scsNo,
+    c.remark as remark,
+    c.create_time as createTime,
+    c.operator as operator
+    from control_box c
+    left join sub_control_station s on c.scs_id=s.id
+    where c.id in
+    <foreach collection="ids" close=")" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectByScsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from control_box
+    where scs_id = #{scsId,jdbcType=INTEGER}
+  </select>
+</mapper>
