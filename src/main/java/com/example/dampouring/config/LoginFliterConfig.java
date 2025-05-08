@@ -14,9 +14,15 @@ class LoginFliterConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 //排除登录接口
                 .excludePathPatterns("/api/login")
-                .excludePathPatterns("/api/login/oauth2")
+                .excludePathPatterns("/api/login/oauth")
                 .excludePathPatterns("/api/SystemConstant/getSystemName")
                 .excludePathPatterns("/api/SystemConstant/getSystemBgUrl")
+                .excludePathPatterns("/api/CombinedCurves/select")
+                .excludePathPatterns("/api/InnerTempSensorInfo/select")
+                .excludePathPatterns("/api/tempMeasurementsAssess/select")
+                .excludePathPatterns("/api/TopTempAssess/select")
+                .excludePathPatterns("/api/WaterPipeFlowInfo/list")
+                .excludePathPatterns("/api/smallStorageBin/list")
                 .excludePathPatterns("/api/InnerTempSensorInfo/addByRemoteDev");
     }
 }

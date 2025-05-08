@@ -57,7 +57,8 @@ public class ReduceTempAlert {
 
 
     public void setReduceSpeedBySelf() {
-        this.reduceSpeed = this.tempYesterday-this.tempToday;
+        if(this.tempYesterday!=null && this.tempToday!=null)
+            this.reduceSpeed = this.tempYesterday-this.tempToday;
     }
 
     public Double getExceedAmount() {

@@ -12,7 +12,7 @@ public class MaterialsTempInfo {
     private String type;
     @Excel(name = "骨料类型",width = 20)
     private String materials;
-    @Excel(name = "骨料温度",width = 20)
+    @Excel(name = "骨料温度（℃）",width = 20)
     private Double temperature;
     @Excel(name = "操作人",width = 20)
     private String operator;

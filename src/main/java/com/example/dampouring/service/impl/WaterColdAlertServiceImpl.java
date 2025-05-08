@@ -69,17 +69,8 @@ public class WaterColdAlertServiceImpl implements WaterColdAlertService {
         if(maxTempNormVO==null) return;
         Double maxTemp = waterPipeFlowInfo.getMaxTemp();
         Double minTemp = waterPipeFlowInfo.getMinTemp();
-        if(maxTemp>maxTempNormVO.getMaxTemp())
+        if(maxTempNormVO.getMaxTemp()!=null  && maxTemp>maxTempNormVO.getMaxTemp())
         {
-//            WaterColdAlert waterColdAlert = new WaterColdAlert();
-//            waterColdAlert.setHasDispose("0");
-//            waterColdAlert.setInwhTemp(maxTemp);
-//            waterColdAlert.setSbId(maxTempNormVO.getSbId());
-//            waterColdAlert.setAlertTime(TimeUtils.getNowTime());
-//            waterColdAlert.setAlertType("水温超高预警");
-//            waterColdAlert.setAlertContent("水温超过温度标准:"+maxTempNormVO.getMaxTemp()+"°C,"+
-//                    "达到"+maxTemp+"°C");
-//            WaterColdAlertMapper.insertSelective(waterColdAlert);
             AlertBase alertBase = new AlertBase();
             alertBase.setTime(TimeUtils.getNowTime());
             alertBase.setState(0);
@@ -91,17 +82,9 @@ public class WaterColdAlertServiceImpl implements WaterColdAlertService {
             alertBaseMapper.insertSelective(alertBase);
             ConnectionUtil.Send(alertBase.toString());
         }
-        if(minTemp<=maxTempNormVO.getMinTemp())
+        if(maxTempNormVO.getMaxTemp()!=null  && minTemp<=maxTempNormVO.getMinTemp())
         {
-//            WaterColdAlert waterColdAlert = new WaterColdAlert();
-//            waterColdAlert.setHasDispose("0");
-//            waterColdAlert.setInwhTemp(minTemp);
-//            waterColdAlert.setSbId(maxTempNormVO.getSbId());
-//            waterColdAlert.setAlertTime(TimeUtils.getNowTime());
-//            waterColdAlert.setAlertType("水温超冷预警");
-//            waterColdAlert.setAlertContent("水温低于温度标准:"+maxTempNormVO.getMinTemp()+"°C,"+
-//                    "达到"+minTemp+"°C");
-//            WaterColdAlertMapper.insertSelective(waterColdAlert);
+
             AlertBase alertBase = new AlertBase();
             alertBase.setTime(TimeUtils.getNowTime());
             alertBase.setState(0);

@@ -27,5 +27,5 @@ public interface AlertBaseMapper {
 
     List<DataCountVO> todayDataCount();
 
-    AlertBase selectDataMissAlert(DataMissAlertQue dataMissAlertQue);
+    List<AlertBase> selectDataMissAlert(DataMissAlertQue dataMissAlertQue);
 }

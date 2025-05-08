@@ -4,7 +4,7 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 
 public class InsulationSensorVO {
     private Integer id;
-    @Excel(name="分段",width = 20)
+    @Excel(name="坝段",width = 20)
     private String dsNo;
     @Excel(name="分控站编号",width = 20)
     private String fkzNo;
@@ -18,9 +18,13 @@ public class InsulationSensorVO {
     private String addr;
     @Excel(name="通道号",width = 20)
     private Integer chanelNo;
+    @Excel(name="通道",width = 20)
+    private Integer chanel;
     @Excel(name="埋设位置",width = 20)
     private String position;
-    private Integer chanel;
+    @Excel(name="埋设类型",width = 20)
+    private String positionType;
+
     private String createTime;
     private String operator;
 
@@ -118,5 +122,13 @@ public class InsulationSensorVO {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public String getPositionType() {
+        return positionType;
+    }
+
+    public void setPositionType(String positionType) {
+        this.positionType = positionType;
     }
 }

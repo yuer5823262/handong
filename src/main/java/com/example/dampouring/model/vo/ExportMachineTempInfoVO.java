@@ -10,9 +10,9 @@ public class ExportMachineTempInfoVO {
     private String time;
     @Excel(name = "位置",width = 20)
     private String position;
-    @Excel(name = "温度",width = 20)
+    @Excel(name = "温度(℃)",width = 20)
     private Double temperature;
-    @Excel(name = "温度标准",width = 20)
+    @Excel(name = "温度标准(℃)",width = 20)
     private Double norm;
     @Excel(name = "混凝土编号",width = 20)
     private String betonNo;

@@ -7,6 +7,7 @@ import com.example.dampouring.query.CombinedCurvesQue;
 import com.example.dampouring.query.WaterPipeFlowAssessQue;
 import com.example.dampouring.query.WaterPipeFlowInfoByTimeAndWpIdQue;
 import com.example.dampouring.query.WaterPipeFlowInfoQue;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface WaterPipeFlowInfoMapper {
 
     int updateByPrimaryKey(WaterPipeFlowInfo record);
 
-    List<WaterPipeFlowInfoVO> List();
+    List<WaterPipeFlowInfoVO> List(@Param("sbId")Integer sbId);
 
     List<WaterPipeFlowInfoVO> selectList(WaterPipeFlowInfoQue waterPipeFlowInfoQue);
 
@@ -38,10 +39,14 @@ public interface WaterPipeFlowInfoMapper {
 
     List<WaterMonitorVO> waterMonitor();
 
-    List<waterPipeFlowAssess> timingComputing();
+    List<waterPipeFlowAssess> timingComputing(Integer id);
     WaterPipeFlowInfo selectByTimeAndWpId(WaterPipeFlowInfoByTimeAndWpIdQue waterPipeFlowInfoByTimeAndWpIdQue);
 
     void deleteEmpty();
 
     List<WaterPipeFlowInfoVO> selectByTime(String time);
+
+    Double selectFlowCountById(Integer wpId, String qi);
+
+    List<Integer> fetch_entity_ids_updated_today();
 }

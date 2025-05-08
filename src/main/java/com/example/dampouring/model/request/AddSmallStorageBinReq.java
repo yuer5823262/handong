@@ -21,6 +21,15 @@ public class AddSmallStorageBinReq {
     private String stakeMarkLeft;
 
     private String stakeMarkRight;
+    private String neckName;
+
+    public String getNeckName() {
+        return neckName;
+    }
+
+    public void setNeckName(String neckName) {
+        this.neckName = neckName;
+    }
 
     public String getSmallSbNo() {
         return smallSbNo;

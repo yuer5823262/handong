@@ -81,6 +81,7 @@ public class ReduceTempAlertServiceImpl implements ReduceTempAlertService {
                 reduceTempAlert.setAlertTime(TimeUtils.getNowTime());
                 reduceTempAlert.setHasDispose("0");
                 reduceTempAlert.setReduceSpeedBySelf();
+                if(reduceTempAlert.getReduceSpeed()==null) continue;
                 Integer qs = pouringBaseService.getQS(reduceTempAlert.getSbId());
                 Double norm = 1.;
                 if(qs==null||qs==0) continue;

@@ -18,11 +18,11 @@
     <result column="operator" jdbcType="VARCHAR" property="operator" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, pouring_time, mat_type, sg_id, bata_id, pouring_temp, pouring_ply, fg_time, gj_time, 
+    id, pouring_time, mat_type, sg_id, bata_id, pouring_temp, pouring_ply, fg_time, gj_time,
     lx_wk_id, el_time, small_id, create_time, `operator`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from sw_silo_data
     where id = #{id,jdbcType=INTEGER}
@@ -35,15 +35,15 @@
     </foreach>
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.SwSiloData">
-    insert into sw_silo_data (id, pouring_time, mat_type, 
-      sg_id, bata_id, pouring_temp, 
-      pouring_ply, fg_time, gj_time, 
-      lx_wk_id, el_time, small_id, 
+    insert into sw_silo_data (id, pouring_time, mat_type,
+      sg_id, bata_id, pouring_temp,
+      pouring_ply, fg_time, gj_time,
+      lx_wk_id, el_time, small_id,
       create_time, `operator`)
-    values (#{id,jdbcType=INTEGER}, #{pouringTime,jdbcType=VARCHAR}, #{matType,jdbcType=INTEGER}, 
-      #{sgId,jdbcType=INTEGER}, #{bataId,jdbcType=INTEGER}, #{pouringTemp,jdbcType=DOUBLE}, 
-      #{pouringPly,jdbcType=DOUBLE}, #{fgTime,jdbcType=VARCHAR}, #{gjTime,jdbcType=VARCHAR}, 
-      #{lxWkId,jdbcType=INTEGER}, #{elTime,jdbcType=VARCHAR}, #{smallId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{pouringTime,jdbcType=VARCHAR}, #{matType,jdbcType=INTEGER},
+      #{sgId,jdbcType=INTEGER}, #{bataId,jdbcType=INTEGER}, #{pouringTemp,jdbcType=DOUBLE},
+      #{pouringPly,jdbcType=DOUBLE}, #{fgTime,jdbcType=VARCHAR}, #{gjTime,jdbcType=VARCHAR},
+      #{lxWkId,jdbcType=INTEGER}, #{elTime,jdbcType=VARCHAR}, #{smallId,jdbcType=INTEGER},
       #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SwSiloData">
@@ -202,42 +202,29 @@
   <select id="getData" resultType="com.example.dampouring.model.vo.SwSiloDataVO">
     SELECT
       pb.id AS id,
-      DATE_FORMAT(pb.open_time, '%Y%m%d%H') AS pouringTime,
-      pb.beton_id AS matType,
+      DATE_FORMAT( pb.open_time, '%Y%m%d%H' ) AS pouringTime,
+      bt.material_no AS matType,
       pb.bata_no AS bataId,
-      DATE_FORMAT(pb.cover_time, '%Y%m%d%H') AS fgTime,
+      DATE_FORMAT( pb.cover_time, '%Y%m%d%H' ) AS fgTime,
       ssb.elevation_end - ssb.elevation_start AS pouringPly,
-      DATE_FORMAT(
-              pb.inter_cooling_start_time,
-              '%Y%m%d%H'
-        ) AS zlTime,
-      DATE_FORMAT(
-              pb.second_cooling_start_time,
-              '%Y%m%d%H'
-        ) AS elTime,
-      DATE_FORMAT(
-              pb.closure_grout_time,
-              '%Y%m%d%H'
-        ) AS gjTime,
+      DATE_FORMAT( pb.inter_cooling_start_time, '%Y%m%d%H' ) AS zlTime,
+      DATE_FORMAT( pb.second_cooling_start_time, '%Y%m%d%H' ) AS elTime,
+      DATE_FORMAT( pb.closure_grout_time, '%Y%m%d%H' ) AS gjTime,
       pb.temp_control_id AS lxWkId,
       ssb.small_sb_no AS sbNo,
-      IF (tb2.temp IS NULL, pb.design_pouring_temp, tb2.temp) AS pouringTemp,
-      wp.id as wpId
+      IF
+        ( tb2.temp IS NULL, pb.design_pouring_temp, tb2.temp ) AS pouringTemp,
+      wp.id AS wpId
     FROM
       pouring_base pb
         LEFT JOIN small_storage_bin ssb ON ssb.id = pb.small_sb_id
-        RIGHT JOIN (SELECT min(id) as id,sb_id  from water_pipe GROUP BY sb_id) wp on wp.sb_id = ssb.id
-        LEFT JOIN (
-        SELECT
-          pouring_base_id,
-          avg(temperature) AS temp
-        FROM
-          pouring_temp_info
-        GROUP BY
-          pouring_base_id
-      ) tb2 ON tb2.pouring_base_id = pb.id
-    WHERE ssb.is_get_water='1'
-    ORDER BY ssb.id desc
+        LEFT JOIN beton bt on bt.id = pb.beton_id
+        RIGHT JOIN ( SELECT min( id ) AS id, sb_id FROM water_pipe GROUP BY sb_id ) wp ON wp.sb_id = ssb.id
+        LEFT JOIN ( SELECT pouring_base_id, avg( temperature ) AS temp FROM pouring_temp_info GROUP BY pouring_base_id ) tb2 ON tb2.pouring_base_id = pb.id
+    WHERE
+      ssb.is_get_water = '1'
+    ORDER BY
+      ssb.id DESC
   </select>
   <select id="getDataZY" resultType="com.example.dampouring.model.vo.SwZyDataVO">
     SELECT
@@ -245,40 +232,40 @@
       if(tb1.waterTemp is null,12,tb1.waterTemp) as waterTemp,
       if(tb1.flow is null,0,tb1.flow) as flow,
       DATE_FORMAT(tb1.time, '%Y%m%d%H') AS time,
-	if(tb2.innerTemp is null,12,tb2.innerTemp) as innerTemp,
+      if(tb1.time = CURRENT_DATE(),IF( nit.innerTemp IS NULL, 12, nit.innerTemp ),IF( tb2.innerTemp IS NULL, 12, tb2.innerTemp )) AS innerTemp,
 	if(tb3.temp is null,12,tb3.temp) as temp
     FROM
       (
-      SELECT
-      ssb.id AS sbId,
-      ssb.small_sb_no AS sbNo,
-      LEFT (wpfi.time, 10) AS time,
-      avg(wpfi.enter_temp) AS waterTemp,
-      avg(wpfi.flow) AS flow
-      FROM
-      water_pipe_flow_info wpfi
-      LEFT JOIN water_pipe wp ON wp.id = wpfi.water_pipe_id
-      LEFT JOIN small_storage_bin ssb ON ssb.id = wp.sb_id
-      WHERE
-      ssb.is_get_water = '1'
-      GROUP BY
-      ssb.id,
-      LEFT (wpfi.time, 10)
+        SELECT
+          ssb.id AS sbId,
+          ssb.small_sb_no AS sbNo,
+          LEFT (wpfi.time, 10) AS time,
+          avg(wpfi.enter_temp) AS waterTemp,
+          avg(wpfi.flow) AS flow
+        FROM
+          water_pipe_flow_info wpfi
+            LEFT JOIN water_pipe wp ON wp.id = wpfi.water_pipe_id
+            LEFT JOIN small_storage_bin ssb ON ssb.id = wp.sb_id
+        WHERE
+          ssb.is_get_water = '1'
+        GROUP BY
+          ssb.id,
+          LEFT (wpfi.time, 10)
       ) tb1
       LEFT JOIN (
-      SELECT
-      ssb.id AS sbId,
-      avg(itsi.temp) AS innerTemp,
-      LEFT (itsi.time, 10) AS time
-      FROM
-      inner_temp_sensor_info itsi
-      LEFT JOIN inner_temp_sensor its ON its.id = itsi.inner_temp_sensor_id
-      LEFT JOIN small_storage_bin ssb ON ssb.id = its.sb_id
-      WHERE
-      ssb.is_get_water = '1'
-      GROUP BY
-      ssb.id,
-      LEFT (itsi.time, 10)
+        SELECT
+          ssb.id AS sbId,
+          avg(itsi.temp) AS innerTemp,
+          LEFT (itsi.time, 10) AS time
+        FROM
+          inner_temp_sensor_info itsi
+            LEFT JOIN inner_temp_sensor its ON its.id = itsi.inner_temp_sensor_id
+            LEFT JOIN small_storage_bin ssb ON ssb.id = its.sb_id
+        WHERE
+          ssb.is_get_water = '1'
+        GROUP BY
+          ssb.id,
+          LEFT (itsi.time, 10)
       ) tb2 ON tb2.sbId = tb1.sbId
       AND tb2.time = tb1.time
       LEFT JOIN (
@@ -290,6 +277,7 @@
       GROUP BY
       LEFT (date, 10)
       ) tb3 ON tb3.time = tb1.time
+      LEFT JOIN newest_inner_temp nit ON nit.sbId = tb1.sbId
   </select>
   <select id="selectList" resultType="com.example.dampouring.model.vo.SwSiloDataVO">
     select

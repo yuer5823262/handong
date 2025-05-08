@@ -36,5 +36,7 @@ public interface InnerTempSensorMapper {
 
     List<InnerTempSensorVO> selectByRemoteDev(String device_id, Integer ch);
 
+    InnerTempSensor selectByTempAddr(String addr);
+
 //    List<TempSensorVO> selectByComputing();
 }

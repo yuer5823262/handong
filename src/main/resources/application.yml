@@ -17,7 +17,7 @@ spring:
 #                        name: dam_pouring_datasourcez
 #                        username: root
 #                        password: dam_dam5000
-#                        jdbc-url: jdbc:mysql://39.107.204.26:3306/tunnelpourdb?useUnicode=true
+#                        jdbc-url: jdbc:mysql://123.56.106.48:3306/tunnelpourdb?useUnicode=true
 #                        type: com.alibaba.druid.pool.DruidDataSource
 #                db2:
 #                        driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,7 +30,7 @@ spring:
                         driver-class-name: com.mysql.cj.jdbc.Driver
                         name: dam_pouring_datasource
                         username: root
-                        password: dam_dam5000
+                        password: root
                         jdbc-url: jdbc:mysql://127.0.0.1:3306/tunnelpourdb?useUnicode=true
                         type: com.alibaba.druid.pool.DruidDataSource
                 db2:

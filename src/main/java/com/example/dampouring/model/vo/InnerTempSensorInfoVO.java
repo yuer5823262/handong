@@ -10,14 +10,16 @@ public class InnerTempSensorInfoVO {
     String tempSensorNo;
     @Excel(name = "时间",width = 20)
     String time;
-    @Excel(name = "温度",width = 20)
+    @Excel(name = "温度(℃)",width = 20)
     Double temp;
-    @Excel(name = "标准",width = 20)
+    @Excel(name = "标准(℃)",width = 20)
     Double norm;
     @Excel(name = "混凝土标号",width = 20)
     String betonNo;
-    @Excel(name = "平均温度",width = 20)
+    @Excel(name = "平均温度(℃)",width = 20)
     Double avgTemp;
+    @Excel(name = "备注",width = 20)
+    String bz;
     String zhs;
     String zhx;
     String zhz;
@@ -134,6 +136,14 @@ public class InnerTempSensorInfoVO {
 
     public void setMssj(String mssj) {
         this.mssj = mssj;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
     }
 
     public String toMqStr() {

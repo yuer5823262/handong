@@ -6,9 +6,9 @@ public class StorageBinVO {
     private Integer s_id;
     @Excel(name = "仓号", width = 20)
     private String sbNo;
-    @Excel(name = "起始分段", width = 20)
+    @Excel(name = "起始坝段", width = 20)
     private String dsStart;
-    @Excel(name = "终止分段", width = 20)
+    @Excel(name = "终止坝段", width = 20)
     private String dsEnd;
     @Excel(name = "起始高程", width = 20)
     private Double elevationStart;

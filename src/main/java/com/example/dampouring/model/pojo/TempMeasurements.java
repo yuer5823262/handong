@@ -6,7 +6,7 @@ public class TempMeasurements {
     private Integer id;
     @Excel(name = "时间",width = 20)
     private String date;
-    @Excel(name = "温度",width = 20)
+    @Excel(name = "温度（℃）",width = 20)
     private Double temperature;
     private Integer bl;
 

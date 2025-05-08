@@ -1,5 +1,7 @@
 package com.example.dampouring.service.impl;
 
+import com.example.dampouring.exception.DamPourException;
+import com.example.dampouring.exception.DampouringExceptionEnum;
 import com.example.dampouring.model.dao.SbTempNormMapper;
 import com.example.dampouring.model.pojo.SbTempNorm;
 import com.example.dampouring.model.pojo.YmAvgTemp;
@@ -12,6 +14,7 @@ import com.example.dampouring.service.SbTempNormService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +47,14 @@ public class SbTempNormServiceImpl implements SbTempNormService {
 
     @Override
     public void add(AddSbTempNormReq addSbTempNormReq) {
-        SbTempNorm sbTempNorm = new SbTempNorm();
-        BeanUtils.copyProperties(addSbTempNormReq,sbTempNorm);
-        sbTempNormMapper.insertSelective(sbTempNorm);
+        try {
+            SbTempNorm sbTempNorm = new SbTempNorm();
+            BeanUtils.copyProperties(addSbTempNormReq,sbTempNorm);
+            sbTempNormMapper.insertSelective(sbTempNorm);
+        } catch (Exception e) {
+            throw new DamPourException(DampouringExceptionEnum.ADD_FAILED);
+        }
+
     }
 
 }

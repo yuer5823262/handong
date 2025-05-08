@@ -4,10 +4,12 @@ import com.example.dampouring.common.Constant;
 import com.example.dampouring.model.dao.DamPourLogMapper;
 import com.example.dampouring.model.dao.UserTableMapper;
 import com.example.dampouring.model.pojo.DamPourLog;
+import com.example.dampouring.model.pojo.SystemConstant;
 import com.example.dampouring.model.pojo.UserTable;
 import com.example.dampouring.model.request.RegisterUserReq;
 import com.example.dampouring.model.request.UpdateUserReq;
 import com.example.dampouring.model.vo.UserVO;
+import com.example.dampouring.service.SystemConstantService;
 import com.example.dampouring.service.UserService;
 import com.example.dampouring.util.JwtUtils;
 import com.example.dampouring.util.MD5Utils;
@@ -23,10 +25,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     DamPourLogMapper damPourLogMapper;
+    @Autowired
+    SystemConstantService systemConstantService;
     @Override
     public UserTable getUser(int userId) {
         return userMapper.selectByPrimaryKey(userId);
@@ -158,6 +161,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO oauth2(String oauthToken) {
         return null;
+    }
+
+
+    @Override
+    public UserVO dataInterface()
+    {
+        SystemConstant dduser = systemConstantService.selectByType("dduser");
+        UserTable user = userMapper.selectByUserName(dduser.getVal());
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+        userVO.setToken(JwtUtils.getToken(user));
+        return userVO;
+    }
+    @Override
+    public UserVO oauth(String oauthToken) {
+        SystemConstant ddip = systemConstantService.selectByType("ddip");
+        SystemConstant dduser = systemConstantService.selectByType("dduser");
+        String url = "http://"+ddip.getVal()+"?token=" + oauthToken;
+        RestTemplate restTemplate = new RestTemplate();
+        String response;
+        try {
+            response = restTemplate.getForObject(url, String.class);
+        }
+        catch(Exception e){
+            throw new DamPourException(13524,"单点登录失败");
+        }
+        if (response == null || !response.contains("user_name")) {
+            throw new DamPourException(13524,"单点登录失败");
+        }
+        UserTable user = userMapper.selectByUserName(dduser.getVal());
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+        userVO.setToken(JwtUtils.getToken(user));
+        return userVO;
     }
 //    @Override
 //    public UserVO oauth2(String oauthToken) {

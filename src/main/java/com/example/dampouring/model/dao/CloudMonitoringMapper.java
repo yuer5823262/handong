@@ -24,4 +24,6 @@ public interface CloudMonitoringMapper {
     List<MaxTempMVO> maxTempM();
 
     List<CloudMonitoringVO> pouringMonitoring();
+
+    List<PouringProgressVO> pouringProgress();
 }

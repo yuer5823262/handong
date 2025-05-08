@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public  class DllUtils {
     public int cTimes=3;
-    private static DllUtils dllUtils = new DllUtils();
+    private static final DllUtils dllUtils = new DllUtils();
     public static DllUtils getDllUtils()
     {
         return dllUtils;
@@ -21,6 +21,34 @@ public  class DllUtils {
         short b = 9600;
         return CLibrary.INSTANCE.C_CommOpen(p,b);
     }
+
+    public short OpenSerialPort(short p) {
+        short b = 9600;
+        return CLibraryQh.INSTANCE.OpenSerialPort(p,b);
+    }
+
+    public short CloseSerialPort() {
+        return CLibraryQh.INSTANCE.CloseSerialPort();
+    }
+
+
+    public short  ZS_Radiation(byte Address,double[]
+            Instantaneous,double[] DailyAccumulated,int TimOut)
+    {
+        return CLibraryQh.INSTANCE.ZS_Radiation(Address,
+                Instantaneous, DailyAccumulated, TimOut);
+    }
+
+
+    public short  ZS_Weather(byte Address, double[] Temperature, double[] Humidity,
+                             int[] WindDire, double[] WindSpeed0, double[] WindSpeed2, double[] WindSpeedA,
+                             int TimOut)
+    {
+        return CLibraryQh.INSTANCE.ZS_Weather(Address,
+                Temperature, Humidity, WindDire, WindSpeed0, WindSpeed2, WindSpeedA, TimOut);
+    }
+
+
     public short LNT_ReadInIValue(byte Address,int StrChanl,int
             ChnalNumber,double[] TemperValue,int TimOut,int cTimes){
         lock.lock();
@@ -117,7 +145,7 @@ public  class DllUtils {
             Instantaneous,double[] DailyAccumulated,int TimOut)
     {
         return CLibrary.INSTANCE.Sun_GetRadiationValue(Address,
-        Instantaneous, DailyAccumulated, TimOut);
+                Instantaneous, DailyAccumulated, TimOut);
     }
 
     public short LNT_ReadSensorSerial(byte Address,byte GroupNum,byte
@@ -135,15 +163,16 @@ public  class DllUtils {
     }
     public List<Integer> getTempSensorChannel(Integer Address, Integer GroupNum, List<String> addrList)
     {
+        Constant.logger.info("更新水管温度 Addr:"+Address+"  Gn:"+GroupNum);
         if(Address==null||GroupNum==null) return null;
 //        short p = DllUtils.C_CommOpen(Constant.p);
 //        if(p!=0) return null;
-        Constant.print("getTempSensorChannel");
+
         short temp = 1;
         byte[] aa = new byte[200];
         for(int i = 0; i< 3; i++)
         {
-            temp = LNT_ReadSensorSerial(Address.byteValue(),GroupNum.byteValue(),
+            temp = LNT_ReadSensorSerial((byte)Address.intValue(),GroupNum.byteValue(),
                     (byte) 10,aa,Constant.timeout);
             if(temp==0) break;
         }
@@ -161,6 +190,7 @@ public  class DllUtils {
             if(mark==-1) indexList.add(-1);
             else indexList.add((GroupNum-1)*10+(mark/16+1));
         }
+        Constant.logger.info("更新水管温度 indexList:"+indexList+"  resultAddrs:"+result);
         return indexList;
 
     }
@@ -168,10 +198,10 @@ public  class DllUtils {
     public short  Weather_GetValue(byte Address,double[] Temperature,
 //            double[] Humidity,int[] WindDire,double[] WindSpeed0,double[]
 //                                    WindSpeed2,double[] WindSpeedA
-                                    int TimOut)
+                                   int TimOut)
     {
         return CLibrary.INSTANCE.Weather_GetValue(Address,
-        Temperature, new double[0], new int[0], new double[0],
+                Temperature, new double[0], new int[0], new double[0],
                 new double[0], new double[0],TimOut);
     }
 

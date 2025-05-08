@@ -9,7 +9,7 @@ public class InnerTempSensorInfoEx {
     String tempSensorNo;
     @Excel(name = "时间",width = 20)
     String time;
-    @Excel(name = "温度",width = 20)
+    @Excel(name = "温度（C°）",width = 20)
     Double temp;
 
     public String getSmallNo() {

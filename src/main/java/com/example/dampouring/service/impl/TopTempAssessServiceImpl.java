@@ -49,13 +49,11 @@ public class TopTempAssessServiceImpl implements TopTempAssessService {
             for (TopTempAssess topTempAssess:topTempAssesses){
                 topTempAssessQue.setPbId(topTempAssess.getPouringBaseId());
                 List<TopTempAssessVO> topTempAssessVOS = TopTempAssessMapper.selectList(topTempAssessQue);
-                if(topTempAssessVOS.size()!=0)
+                if(topTempAssessVOS.size()!=0 && topTempAssessVOS.get(0).getTopAvgTemp() < topTempAssess.getTopAvgTemp())
                 {
                     topTempAssess.setId(topTempAssessVOS.get(0).getId());
                     TopTempAssessMapper.updateByPrimaryKeySelective(topTempAssess);
-                }
-                else
-                {
+                } else if (topTempAssessVOS.size()==0) {
                     TopTempAssessMapper.insertSelective(topTempAssess);
                 }
 

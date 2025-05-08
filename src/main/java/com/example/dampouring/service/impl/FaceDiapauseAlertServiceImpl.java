@@ -99,46 +99,42 @@ public class FaceDiapauseAlertServiceImpl implements FaceDiapauseAlertService {
 
     @Override
     public void upOpenTimeFaceDiapauseAlert(PouringBase pouringBase) {
-        String upTime = pouringBase.getOpenTime();
-        SmallStorageBin smallStorageBin = smallStorageBinMapper.selectByPrimaryKey(pouringBase.getSmallSbId());
-        SelectNormQue selectNormQue = new SelectNormQue();
-        selectNormQue.setSbId(pouringBase.getSmallSbId());
-        SbTempNormVO sbTempNorm = sbTempNormMapper.selectNorm(selectNormQue);
-        if(sbTempNorm==null) return;
-        String norm = sbTempNorm.getIntervals();
-        String[] norms = norm.split("-");
-        List<PouringBase> pouringBaseList = pouringBaseMapper.selectByUpSb(smallStorageBin.getElevationStart(),
-                Integer.parseInt(smallStorageBin.getDsStart()),
-                Integer.parseInt(smallStorageBin.getDsEnd()));
-        for(PouringBase pb:pouringBaseList)
-        {
-            try {
-                Double days = TimeUtils.getHourDifferentTime(pb.getCloseTime(), upTime) / 24;
-                if((days<Integer.parseInt(norms[0])&&days>=0)||days>Integer.parseInt(norms[1]))
-                {
-//                    FaceDiapauseAlert faceDiapauseAlert = new FaceDiapauseAlert();
-//                    faceDiapauseAlert.setAlertTime(TimeUtils.getNowTime());
-//                    faceDiapauseAlert.setHasDispose("0");
-//                    faceDiapauseAlert.setDiapauseDays((double) days.intValue());
-//                    faceDiapauseAlert.setAlertContent("仓面间歇期为"+days.intValue()+",不满足标准的"+norm+"天");
-//                    faceDiapauseAlert.setAlertType("仓面间歇期预警");
-//                    faceDiapauseAlert.setTimeClose(pb.getCloseTime());
-//                    faceDiapauseAlert.setTimeCurr(TimeUtils.getNowTime());
-//                    faceDiapauseAlert.setSbId(pb.getSmallSbId());
-//                    FaceDiapauseAlertMapper.insertSelective(faceDiapauseAlert);
-                    AlertBase alertBase = new AlertBase();
-                    alertBase.setTime(TimeUtils.getNowTime());
-                    alertBase.setState(0);
-                    alertBase.setTypeNo(4);
-                    alertBase.setContent("仓面间歇期为"+days.intValue()+",不满足标准的"+norm+"天");
-                    alertBase.setType("仓面间歇期预警");
-                    alertBase.setPosition(sbTempNorm.getSbNo());
-                    alertBaseMapper.insertSelective(alertBase);
-                    ConnectionUtil.Send(alertBase.toString());
+        try {
+            String upTime = pouringBase.getOpenTime();
+            if(upTime==null) return;
+            SmallStorageBin smallStorageBin = smallStorageBinMapper.selectByPrimaryKey(pouringBase.getSmallSbId());
+            SelectNormQue selectNormQue = new SelectNormQue();
+            selectNormQue.setSbId(pouringBase.getSmallSbId());
+            SbTempNormVO sbTempNorm = sbTempNormMapper.selectNorm(selectNormQue);
+            if(sbTempNorm==null) return;
+            String norm = sbTempNorm.getIntervals();
+            String[] norms = norm.split("-");
+            List<PouringBase> pouringBaseList = pouringBaseMapper.selectByUpSb(smallStorageBin.getElevationStart(),
+                    Integer.parseInt(smallStorageBin.getDsStart()),
+                    Integer.parseInt(smallStorageBin.getDsEnd()));
+            for(PouringBase pb:pouringBaseList)
+            {
+                try {
+                    Double days = TimeUtils.getHourDifferentTime(pb.getCloseTime(), upTime) / 24;
+                    if((days<Integer.parseInt(norms[0])&&days>=0)||days>Integer.parseInt(norms[1]))
+                    {
+                        AlertBase alertBase = new AlertBase();
+                        alertBase.setTime(TimeUtils.getNowTime());
+                        alertBase.setState(0);
+                        alertBase.setTypeNo(4);
+                        alertBase.setContent("仓面间歇期为"+days.intValue()+",不满足标准的"+norm+"天");
+                        alertBase.setType("仓面间歇期预警");
+                        alertBase.setPosition(sbTempNorm.getSbNo());
+                        alertBaseMapper.insertSelective(alertBase);
+                        ConnectionUtil.Send(alertBase.toString());
+                    }
+                } catch (Exception e) {
+                    Constant.logger.error("错误:",e);
                 }
-            } catch (Exception e) {
-                Constant.logger.error("错误:",e);
             }
+
+        } catch (NumberFormatException e) {
+            Constant.logger.error("错误:",e);
         }
 
     }

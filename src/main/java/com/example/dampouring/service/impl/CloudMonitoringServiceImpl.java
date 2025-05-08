@@ -96,4 +96,20 @@ public class CloudMonitoringServiceImpl implements CloudMonitoringService {
         List<CloudMonitoringVO> cloudMonitoringVOList = cloudMonitoringMapper.pouringMonitoring();
         return cloudMonitoringVOList;
     }
+
+    @Override
+    public List<PouringProgressVO> PouringProgress() {
+        List<PouringProgressVO> pouringProgressVOS = cloudMonitoringMapper.pouringProgress();
+        PouringProgressVO zong = new PouringProgressVO();
+        zong.setDsName(0);
+        int zongEnd = 0;
+        for(PouringProgressVO pouringProgressVO:pouringProgressVOS)
+        {
+            zongEnd+=pouringProgressVO.getEndCount();
+        }
+        zong.setEndCount(zongEnd);
+        pouringProgressVOS.add(zong);
+        pouringProgressVOS.forEach(t->t.setBlbyendCount());
+        return pouringProgressVOS;
+    }
 }

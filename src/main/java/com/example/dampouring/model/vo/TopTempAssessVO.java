@@ -6,13 +6,13 @@ public class TopTempAssessVO {
     private Integer id;
     @Excel(name = "仓号",width = 20)
     private String smallNo;
-    @Excel(name = "最高温度",width = 20)
+    @Excel(name = "最高温度（℃）",width = 20)
     private Double topTemp;
-    @Excel(name = "平均最高温度",width = 20)
+    @Excel(name = "平均最高温度（℃）",width = 20)
     private Double topAvgTemp;
-    @Excel(name = "标准",width = 20)
+    @Excel(name = "标准（℃）",width = 20)
     private Double normTemp;
-    @Excel(name = "超标量",width = 20)
+    @Excel(name = "超标量（℃）",width = 20)
     private Double excessive;
     @Excel(name = "是否超标",width = 20)
     private String isExcessive;

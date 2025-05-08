@@ -45,6 +45,11 @@ public class InnerTempSensorServiceImpl implements InnerTempSensorService {
 
             throw new DamPourException(DampouringExceptionEnum.NAME_EXISTED);
         }
+        innerTempSensorCheck = innerTempSensorMapper.selectByTempAddr(addInnerTempSensorReq.getTempAddr());
+        if (innerTempSensorCheck != null) {
+
+            throw new DamPourException(31022,"温度计地址存在重复");
+        }
         InnerTempSensor innerTempSensor = new InnerTempSensor();
         BeanUtils.copyProperties(addInnerTempSensorReq,innerTempSensor);
         innerTempSensor.setOperator(userName);
@@ -122,26 +127,38 @@ public class InnerTempSensorServiceImpl implements InnerTempSensorService {
     {
         Constant.print("pSta"+Constant.pSta);
         if(Constant.pSta!=0) return null;
+
         ControlUnit controlUnit=controlUnitMapper.selectByPrimaryKey(innerTempSensor.getCuId());
+        if(controlUnit==null) return null;
         List<String> addr = new ArrayList<>();
         addr.add(innerTempSensor.getTempAddr());
-        return Constant.DllUTILS.getTempSensorChannel(Integer.parseInt(controlUnit.getCuAddr()),innerTempSensor.getChannelNo(),addr
-        );
+        return Constant.DllUTILS.getTempSensorChannel(Integer.parseInt(controlUnit.getCuAddr()),innerTempSensor.getChannelNo(),addr);
     }
 
     @Override
     public void updateChannelAll()
     {
+        if(Constant.pSta!=0) {
+            throw new DamPourException(30000,"端口没有打开");
+        }
         Constant.print("updateChannelAll");
         List<InnerTempSensor> airTempSensors=innerTempSensorMapper.listByUseful();
         for(InnerTempSensor innerTempSensor:airTempSensors)
         {
             List<Integer> cList = updateChannel(innerTempSensor);
-            Constant.print("cList:"+cList.get(0));
-            if(cList!=null)
-                System.out.println(cList.get(0));
-            if(cList!=null&&cList.get(0)!=-1) innerTempSensor.setChannel(cList.get(0));
+            if(cList==null || cList.size()==0 || cList.get(0)==-1)
+            {
+                innerTempSensor.setChannel(-1);
+                Constant.print("更新通道温度计:"+innerTempSensor.getTempNo()+"::"+"No");
+            }
+
+            else {
+                innerTempSensor.setChannel(cList.get(0));
+                Constant.print("更新通道温度计:"+innerTempSensor.getTempNo()+"::"+cList.get(0));
+            }
+
             innerTempSensorMapper.updateByPrimaryKeySelective(innerTempSensor);
+
         }
     }
 }

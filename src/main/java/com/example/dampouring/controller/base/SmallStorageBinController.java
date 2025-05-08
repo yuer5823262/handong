@@ -6,6 +6,7 @@ import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.view.PoiBaseView;
 import com.example.dampouring.common.ApiRestResponse;
 import com.example.dampouring.common.Constant;
+import com.example.dampouring.exception.DamPourException;
 import com.example.dampouring.model.pojo.SmallStorageBin;
 import com.example.dampouring.model.pojo.UserTable;
 import com.example.dampouring.model.request.AddSmallStorageBinReq;
@@ -59,7 +60,10 @@ public class SmallStorageBinController {
     @ApiOperation("删除")
     @GetMapping("/delete")
     @ResponseBody
-    public ApiRestResponse deleteSmallStorageBin(@RequestParam("ids") Integer[] ids) {
+    public ApiRestResponse deleteSmallStorageBin(@RequestParam("ids") Integer[] ids,HttpServletRequest request) {
+        String token = request.getHeader("token");
+        Integer role =  JwtUtils.GetRole(token);
+        if(role == null || role != 12) throw new DamPourException(60000,"非超级管理员不能删除");
         smallStorageBinService.delete(ids);
         return ApiRestResponse.success();
     }

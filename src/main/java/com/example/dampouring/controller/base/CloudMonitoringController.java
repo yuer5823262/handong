@@ -7,6 +7,7 @@ import com.example.dampouring.service.CloudMonitoringService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,8 +60,15 @@ public class CloudMonitoringController {
         result.put("result",heightDiffVO);
         return result;
     }
+    @ApiOperation("总体进度")
+    @GetMapping("/PouringProgress")
+    @ResponseBody
+    public ApiRestResponse PouringProgress() {
+        List<PouringProgressVO> pouringProgress = cloudMonitoringService.PouringProgress();
 
-    @ApiOperation("浇筑信息")
+        return ApiRestResponse.success(pouringProgress);
+    }
+    @ApiOperation("浇筑进度")
     @GetMapping("/pouringInfo")
     @ResponseBody
     public HashMap<String,List<PouringInfoVO>> pouringInfo() {
@@ -110,6 +118,7 @@ public class CloudMonitoringController {
 
     @ApiOperation("最高温度")
     @GetMapping("/maxTempM")
+    @Cacheable(value ="maxTempM",key = "'1'")
     @ResponseBody
     public HashMap<String,MaxTempMVO> maxTempM() {
         HashMap<String,MaxTempMVO> result = new HashMap<>();
@@ -121,6 +130,7 @@ public class CloudMonitoringController {
 
     @ApiOperation("浇筑监控")
     @GetMapping("/pouringMonitoring")
+    @Cacheable(value ="pouringMonitoring",key = "'1'")
     @ResponseBody
     public ApiRestResponse pouringMonitoring() {
         List<CloudMonitoringVO> maxTempMVOList = cloudMonitoringService.pouringMonitoring();

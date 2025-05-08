@@ -12,38 +12,49 @@ public class WaterPipeFlowAssessVO {
     private String startTime;
     @Excel(name = "管路数目",width = 20)
     private Integer pipeNum;
-    @Excel(name = "进口水温最大值",width = 20)
+    @Excel(name = "进口水温最大值（C°）",width = 20)
     private Double enterTempTop;
-    @Excel(name = "进口水温最小值",width = 20)
+    @Excel(name = "进口水温最小值（C°）",width = 20)
     private Double enterTempBottom;
-    @Excel(name = "进口水温平均值",width = 20)
+    @Excel(name = "进口水温平均值（C°）",width = 20)
     private Double enterTempAvg;
-    @Excel(name = "出口水温最大值",width = 20)
+    @Excel(name = "出口水温最大值（C°）",width = 20)
     private Double outTempTop;
-    @Excel(name = "出口水温最小值",width = 20)
+    @Excel(name = "出口水温最小值（C°）",width = 20)
     private Double outTempBottom;
-    @Excel(name = "出口水温平均值",width = 20)
+    @Excel(name = "出口水温平均值（C°）",width = 20)
     private Double outTempAvg;
-    @Excel(name = "进口水压最大值",width = 20)
+    @Excel(name = "进口水压最大值（MPa）",width = 20)
     private Double enterMpaTop;
-    @Excel(name = "进口水压最小值",width = 20)
+    @Excel(name = "进口水压最小值（MPa）",width = 20)
     private Double enterMpaBottom;
-    @Excel(name = "进口水压平均值",width = 20)
+    @Excel(name = "进口水压平均值（MPa）",width = 20)
     private Double enterMpaAvg;
-    @Excel(name = "出口水压最大值",width = 20)
+    @Excel(name = "出口水压最大值（MPa）",width = 20)
     private Double outMpaTop;
-    @Excel(name = "出口水压最小值",width = 20)
+    @Excel(name = "出口水压最小值（MPa）",width = 20)
     private Double outMpaBottom;
-    @Excel(name = "出口水压平均值",width = 20)
+    @Excel(name = "出口水压平均值（MPa）",width = 20)
     private Double outMpaAvg;
-    @Excel(name = "流量最大值",width = 20)
+    @Excel(name = "流量最大值（m³/d）",width = 20)
     private Double flowTop;
-    @Excel(name = "流量最小值",width = 20)
+    @Excel(name = "流量最小值（m³/d）",width = 20)
     private Double flowBottom;
-    @Excel(name = "流量平均值",width = 20)
+    @Excel(name = "流量平均值（m³/d）",width = 20)
     private Double flowAvg;
+    @Excel(name = "总通水流量（m³/d）",width = 20)
+    private Double flowCount;
     @Excel(name = "期数",width = 20)
     private String qi;
+
+    public Double getFlowCount() {
+        return flowCount;
+    }
+
+    public void setFlowCount(Double flowCount) {
+        this.flowCount = flowCount;
+    }
+
     public Integer getId() {
         return id;
     }

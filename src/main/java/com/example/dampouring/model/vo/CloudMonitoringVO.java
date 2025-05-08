@@ -4,6 +4,7 @@ public class CloudMonitoringVO {
     Integer dsName;
     Double position;
     String no;
+    String neckName;
     Integer dsStart;
     Integer dsEnd;
     String openTime;
@@ -19,7 +20,22 @@ public class CloudMonitoringVO {
     Double maxTemp;
     Double flow;
     Integer qs;
+    Double pouringNorm;
+    Double entryNorm;
+    Double portNorm;
+    Double innerMinNorm;
+    Double innerMaxNorm;
+    Double waterMinNorm;
+    Double waterMaxNorm;
 
+
+    public String getNeckName() {
+        return neckName;
+    }
+
+    public void setNeckName(String neckName) {
+        this.neckName = neckName;
+    }
 
     public Integer getDsName() {
         return dsName;
@@ -163,5 +179,61 @@ public class CloudMonitoringVO {
 
     public void setQs(Integer qs) {
         this.qs = qs;
+    }
+
+    public Double getPouringNorm() {
+        return pouringNorm;
+    }
+
+    public void setPouringNorm(Double pouringNorm) {
+        this.pouringNorm = pouringNorm;
+    }
+
+    public Double getEntryNorm() {
+        return entryNorm;
+    }
+
+    public void setEntryNorm(Double entryNorm) {
+        this.entryNorm = entryNorm;
+    }
+
+    public Double getPortNorm() {
+        return portNorm;
+    }
+
+    public void setPortNorm(Double portNorm) {
+        this.portNorm = portNorm;
+    }
+
+    public Double getInnerMinNorm() {
+        return innerMinNorm;
+    }
+
+    public void setInnerMinNorm(Double innerMinNorm) {
+        this.innerMinNorm = innerMinNorm;
+    }
+
+    public Double getInnerMaxNorm() {
+        return innerMaxNorm;
+    }
+
+    public void setInnerMaxNorm(Double innerMaxNorm) {
+        this.innerMaxNorm = innerMaxNorm;
+    }
+
+    public Double getWaterMinNorm() {
+        return waterMinNorm;
+    }
+
+    public void setWaterMinNorm(Double waterMinNorm) {
+        this.waterMinNorm = waterMinNorm;
+    }
+
+    public Double getWaterMaxNorm() {
+        return waterMaxNorm;
+    }
+
+    public void setWaterMaxNorm(Double waterMaxNorm) {
+        this.waterMaxNorm = waterMaxNorm;
     }
 }

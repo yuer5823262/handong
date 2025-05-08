@@ -18,7 +18,7 @@
     id, water_pipe_id, `time`, enter_temp, out_temp, enter_mpa, out_mpa, flow, opening,bl,qi
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from water_pipe_flow_info
     where id = #{id,jdbcType=INTEGER}
@@ -39,11 +39,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
-    insert into water_pipe_flow_info (id, water_pipe_id, `time`, 
-      enter_temp, out_temp, enter_mpa, 
+    insert into water_pipe_flow_info (id, water_pipe_id, `time`,
+      enter_temp, out_temp, enter_mpa,
       out_mpa, flow, opening,bl,qi)
-    values (#{id,jdbcType=INTEGER}, #{waterPipeId,jdbcType=INTEGER}, #{time,jdbcType=CHAR}, 
-      #{enterTemp,jdbcType=DOUBLE}, #{outTemp,jdbcType=DOUBLE}, #{enterMpa,jdbcType=DOUBLE}, 
+    values (#{id,jdbcType=INTEGER}, #{waterPipeId,jdbcType=INTEGER}, #{time,jdbcType=CHAR},
+      #{enterTemp,jdbcType=DOUBLE}, #{outTemp,jdbcType=DOUBLE}, #{enterMpa,jdbcType=DOUBLE},
       #{outMpa,jdbcType=DOUBLE}, #{flow,jdbcType=DOUBLE}, #{opening,jdbcType=DOUBLE},#{bl,jdbcType=INTEGER},#{qi,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.WaterPipeFlowInfo">
@@ -162,7 +162,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="List" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO">
+  <select id="List" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO" parameterType="java.lang.Integer">
     select
       wpi.id as id,
       s.small_sb_no as smallNo,
@@ -179,6 +179,10 @@
     from water_pipe_flow_info wpi
       left join water_pipe wp on wpi.water_pipe_id= wp.id
       left join small_storage_bin s on wp.sb_id = s.id
+    <if test="sbId != null">
+      where s.id= #{sbId}
+    </if>
+    order by wpi.time desc
   </select>
 
   <select id="selectByTime" resultType="com.example.dampouring.model.vo.WaterPipeFlowInfoVO">
@@ -309,6 +313,9 @@
       <if test="endTime != null">
         and wpi.time &lt;= #{endTime}
       </if>
+      <if test="dsName != null">
+        and s.ds_start = #{dsName}
+      </if>
       <if test="smallId != null">
         and  s.id=#{smallId}
       </if>
@@ -322,7 +329,11 @@
 
   <select id="CombinedCurves" parameterType="com.example.dampouring.query.CombinedCurvesQue" resultType="com.example.dampouring.model.vo.CombinedCurvesVO">
     SELECT
-    tb1.*, tma.avg_temp as avgTempMeasurements,
+    tb1.avgEnterTemp,
+    tb1.avgOutTemp,
+    tb1.avgFlow,
+    tma.avg_temp as avgTempMeasurements,
+    tma.time,
     tb2.avgInnerTemp
     FROM
     (
@@ -349,7 +360,16 @@
     GROUP BY
     LEFT (wpfi.time, 10)
     ) tb1
-    LEFT JOIN temp_measurements_assess tma ON tma.time = tb1.time
+    RIGHT JOIN (select * from temp_measurements_assess
+    <where>
+      <if test="startTime != null">
+        and  time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and time &lt;= #{endTime}
+      </if>
+    </where>
+    ) tma ON tma.time = tb1.time
     LEFT JOIN (
     SELECT
     LEFT (itsi.time, 10) AS time,
@@ -361,12 +381,18 @@
       <if test="sbId != null">
         and  its.sb_id = #{sbId}
       </if>
+      <if test="startTime != null">
+        and  itsi.time &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and itsi.time &lt;= #{endTime}
+      </if>
     </where>
 
     GROUP BY
     LEFT (itsi.time, 10)
-    ) tb2 ON tb1.time = tb2.time
-    ORDER BY tb1.time
+    ) tb2 ON tma.time = tb2.time
+    ORDER BY tma.time  <if test="orderType != null">#{orderType}</if>
 
   </select>
 
@@ -413,8 +439,15 @@
   </select>
 
 
-
-  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.waterPipeFlowAssess">
+  <select id="fetch_entity_ids_updated_today" resultType="java.lang.Integer">
+    SELECT DISTINCT
+      water_pipe_id
+    FROM
+      water_pipe_flow_info
+    WHERE
+      time >= LEFT (now(), 10)
+  </select>
+  <select id="timingComputing" resultType="com.example.dampouring.model.pojo.waterPipeFlowAssess" parameterType="java.lang.Integer">
     SELECT
       ls1.*, ls2.branch_num AS pipeNum,
       ls2.water_begin_time AS startTime
@@ -443,26 +476,25 @@
             LEFT JOIN water_pipe wp ON wpi.water_pipe_id = wp.id
             LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
         WHERE
-            wpi.water_pipe_id IN (
-            SELECT DISTINCT
-              water_pipe_id
-            FROM
-              water_pipe_flow_info
-            WHERE
-          LEFT (time, 10) = LEFT (now(), 10)
-      )
-    GROUP BY
-      waterPipeId,
-      wpi.qi
+          wpi.water_pipe_id = #{id}
+        GROUP BY
+          waterPipeId,
+          wpi.qi
       ) ls1
-LEFT JOIN (
-	SELECT
-		wp.id,
-		wp.branch_num,
-		wp.water_begin_time
-	FROM
-		water_pipe wp
-	LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
-) ls2 ON ls1.waterPipeId = ls2.id
+        LEFT JOIN (
+        SELECT
+          wp.id,
+          wp.branch_num,
+          wp.water_begin_time
+        FROM
+          water_pipe wp
+            LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
+      ) ls2 ON ls1.waterPipeId = ls2.id
+  </select>
+  <select id="selectFlowCountById" resultType="java.lang.Double">
+    SELECT sum(t1.flow) as flowCount from(
+                                           SELECT avg(flow)*24 as flow from water_pipe_flow_info
+                                           WHERE water_pipe_id= #{wpId} and qi = #{qi}
+                                           GROUP BY left(time,10))t1
   </select>
 </mapper>

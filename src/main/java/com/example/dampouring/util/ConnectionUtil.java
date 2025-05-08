@@ -61,8 +61,8 @@ public class ConnectionUtil {
             //关闭通道和连接(资源关闭最好用try-catch-finally语句处理)
             channel.close();
             connection.close();
-        } catch (Exception e) {
-            Constant.logger.error("MQ发送失败",e);
+        } catch (Exception ignored) {
+            ;
         }
     }
 }

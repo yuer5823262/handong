@@ -10,20 +10,22 @@ public class WaterPipeFlowInfoVO {
     private String time;
     @Excel(name = "水管编号",width = 20)
     private String waterPipeNo;
-    @Excel(name = "进口水温",width = 20)
+    @Excel(name = "进口水温(°C)",width = 20)
     private Double enterTemp;
-    @Excel(name = "出口水温",width = 20)
+    @Excel(name = "出口水温(°C)",width = 20)
     private Double outTemp;
-    @Excel(name = "进口水压",width = 20)
+    @Excel(name = "进口水压(Mpa)",width = 20)
     private Double enterMpa;
-    @Excel(name = "出口水压",width = 20)
+    @Excel(name = "出口水压(Mpa)",width = 20)
     private Double outMpa;
-    @Excel(name = "通水流量",width = 20)
+    @Excel(name = "通水流量(m³/h)",width = 20)
     private Double flow;
-    @Excel(name = "阀门开度",width = 20)
+    @Excel(name = "阀门开度(%)",width = 20)
     private Double opening;
     @Excel(name = "期数",width = 20)
     private String qi;
+    @Excel(name = "备注",width = 20)
+    private String bz;
     private Integer bl;
     public Integer getId() {
         return id;
@@ -119,6 +121,14 @@ public class WaterPipeFlowInfoVO {
 
     public void setBl(Integer bl) {
         this.bl = bl;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
     }
 
     public String toMqStr() {

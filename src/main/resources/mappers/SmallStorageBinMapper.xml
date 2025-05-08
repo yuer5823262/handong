@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.dampouring.model.pojo.SmallStorageBin">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="small_sb_no" jdbcType="VARCHAR" property="smallSbNo" />
+    <result column="neck_name" jdbcType="VARCHAR" property="neckName" />
     <result column="ds_start" jdbcType="VARCHAR" property="dsStart" />
     <result column="ds_end" jdbcType="VARCHAR" property="dsEnd" />
     <result column="elevation_start" jdbcType="DOUBLE" property="elevationStart" />
@@ -20,12 +21,12 @@
     <result column="operator" jdbcType="VARCHAR" property="operator" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, small_sb_no, ds_start, ds_end, elevation_start, elevation_end, stake_mark_up, 
-    stake_mark_down, stake_mark_left, stake_mark_right, create_time, is_alert, is_calculate, 
+    id, small_sb_no,neck_name, ds_start, ds_end, elevation_start, elevation_end, stake_mark_up,
+    stake_mark_down, stake_mark_left, stake_mark_right, create_time, is_alert, is_calculate,
     is_get_water,is_computer, `operator`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from small_storage_bin
     where id = #{id,jdbcType=INTEGER}
@@ -47,16 +48,16 @@
     </foreach>
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.SmallStorageBin">
-    insert into small_storage_bin (id, small_sb_no, ds_start, 
-      ds_end, elevation_start, elevation_end, 
-      stake_mark_up, stake_mark_down, stake_mark_left, 
-      stake_mark_right, create_time, is_alert, 
-      is_calculate, is_get_water,,is_computer `operator`
+    insert into small_storage_bin (id, small_sb_no, ds_start,
+      ds_end, elevation_start, elevation_end,
+      stake_mark_up, stake_mark_down, stake_mark_left,
+      stake_mark_right, create_time, is_alert,
+      is_calculate, is_get_water,is_computer,`operator`
       )
-    values (#{id,jdbcType=INTEGER}, #{smallSbNo,jdbcType=VARCHAR}, #{dsStart,jdbcType=VARCHAR}, 
-      #{dsEnd,jdbcType=VARCHAR}, #{elevationStart,jdbcType=DOUBLE}, #{elevationEnd,jdbcType=DOUBLE}, 
-      #{stakeMarkUp,jdbcType=VARCHAR}, #{stakeMarkDown,jdbcType=VARCHAR}, #{stakeMarkLeft,jdbcType=VARCHAR}, 
-      #{stakeMarkRight,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{isAlert,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{smallSbNo,jdbcType=VARCHAR}, #{dsStart,jdbcType=VARCHAR},
+      #{dsEnd,jdbcType=VARCHAR}, #{elevationStart,jdbcType=DOUBLE}, #{elevationEnd,jdbcType=DOUBLE},
+      #{stakeMarkUp,jdbcType=VARCHAR}, #{stakeMarkDown,jdbcType=VARCHAR}, #{stakeMarkLeft,jdbcType=VARCHAR},
+      #{stakeMarkRight,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{isAlert,jdbcType=VARCHAR},
       #{isCalculate,jdbcType=VARCHAR}, #{isGetWater,jdbcType=VARCHAR},#{isComputer,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
       )
   </insert>
@@ -68,6 +69,9 @@
       </if>
       <if test="smallSbNo != null">
         small_sb_no,
+      </if>
+      <if test="neckName != null">
+        neck_name,
       </if>
       <if test="dsStart != null">
         ds_start,
@@ -119,6 +123,9 @@
       <if test="smallSbNo != null">
         #{smallSbNo,jdbcType=VARCHAR},
       </if>
+      <if test="neckName != null">
+        #{neck_name,jdbcType=VARCHAR},
+      </if>
       <if test="dsStart != null">
         #{dsStart,jdbcType=VARCHAR},
       </if>
@@ -169,6 +176,9 @@
       <if test="smallSbNo != null">
         small_sb_no = #{smallSbNo,jdbcType=VARCHAR},
       </if>
+      <if test="neckName != null">
+        neck_name = #{neckName,jdbcType=VARCHAR},
+      </if>
       <if test="dsStart != null">
         ds_start = #{dsStart,jdbcType=VARCHAR},
       </if>
@@ -217,6 +227,7 @@
   <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SmallStorageBin">
     update small_storage_bin
     set small_sb_no = #{smallSbNo,jdbcType=VARCHAR},
+        neck_name = #{neckName,jdbcType=VARCHAR},
       ds_start = #{dsStart,jdbcType=VARCHAR},
       ds_end = #{dsEnd,jdbcType=VARCHAR},
       elevation_start = #{elevationStart,jdbcType=DOUBLE},

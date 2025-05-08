@@ -12,15 +12,15 @@ public class DailyInnerTempVO {
     private String sbNo;
     @Excel(name = "龄期",width = 20)
     private Integer age;
-    @Excel(name = "最高温度",width = 20)
+    @Excel(name = "最高温度(C°)",width = 20)
     private Double topTemp;
-    @Excel(name = "最高温度标准",width = 20)
+    @Excel(name = "最高温度标准(C°)",width = 20)
     private Double topNorm;
     @Excel(name = "是否达到温度峰值",width = 20)
     private String isFz;
     @Excel(name = "封供状态",width = 20)
     private String isFg;
-    @Excel(name = "当前温度",width = 20)
+    @Excel(name = "当前温度(C°)",width = 20)
     private Double innerTemp;
     @Excel(name = "超冷情况",width = 20)
     private String isCl;

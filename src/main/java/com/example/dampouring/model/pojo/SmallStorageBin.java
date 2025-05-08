@@ -6,6 +6,7 @@ public class SmallStorageBin {
     private Integer id;
     @Excel(name = "仓号", width = 20)
     private String smallSbNo;
+    private String neckName;
     @Excel(name = "起始分段", width = 20)
     private String dsStart;
     @Excel(name = "终止分段", width = 20)
@@ -32,6 +33,14 @@ public class SmallStorageBin {
     private String isGetWater;
     private String isComputer;
     private String operator;
+
+    public String getNeckName() {
+        return neckName;
+    }
+
+    public void setNeckName(String neckName) {
+        this.neckName = neckName;
+    }
 
     public Integer getId() {
         return id;

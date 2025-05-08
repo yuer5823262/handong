@@ -5,17 +5,17 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 public class CombinedCurvesVO {
     @Excel(name = "时间",width = 20)
     String time;
-    @Excel(name = "平均内部温度",width = 20)
+    @Excel(name = "平均内部温度（C°）",width = 20)
     Double avgInnerTemp;
-    @Excel(name = "平均进水口温度",width = 20)
+    @Excel(name = "平均进水口温度（C°）",width = 20)
     Double avgEnterTemp;
-    @Excel(name = "平均出水口温度",width = 20)
+    @Excel(name = "平均出水口温度（C°）",width = 20)
     Double avgOutTemp;
-    @Excel(name = "气温",width = 20)
+    @Excel(name = "气温（C°）",width = 20)
     Double avgTempMeasurements;
-    @Excel(name = "日温差",width = 20)
+    @Excel(name = "日温差（C°）",width = 20)
     Double diffInnerTemp;
-    @Excel(name = "平均流量",width = 20)
+    @Excel(name = "平均流量（m³/d）",width = 20)
     Double avgFlow;
 
     public String getTime() {

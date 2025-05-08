@@ -5,8 +5,6 @@ import com.example.dampouring.exception.DamPourException;
 import com.example.dampouring.exception.DampouringExceptionEnum;
 import com.example.dampouring.model.dao.InnerTempSensorInfoMapper;
 import com.example.dampouring.model.dao.InnerTempSensorMapper;
-import com.example.dampouring.model.dao.MaxTempAlertMapper;
-import com.example.dampouring.model.pojo.InnerTempSensor;
 import com.example.dampouring.model.pojo.InnerTempSensorInfo;
 import com.example.dampouring.model.request.InnerTempSensorInfoAdd;
 import com.example.dampouring.model.request.RemoteDev;
@@ -26,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.List;
 @Service
 public class InnerTempSensorServiceInfoImpl implements InnerTempSensorInfoService {
@@ -41,9 +38,9 @@ public class InnerTempSensorServiceInfoImpl implements InnerTempSensorInfoServic
     @Autowired
     StorageColdAlertService storageColdAlertService;
     @Override
-    public PageInfo orUserList(Integer pageNum, Integer pageSize) {
+    public PageInfo orUserList(Integer pageNum, Integer pageSize, Integer sbId) {
         PageHelper.startPage(pageNum, pageSize);
-        List<InnerTempSensorInfoVO> InnerTempSensorInfo = innerTempSensorInfoMapper.List();
+        List<InnerTempSensorInfoVO> InnerTempSensorInfo = innerTempSensorInfoMapper.List(sbId);
         PageInfo pageInfo = new PageInfo(InnerTempSensorInfo);
         return pageInfo;
     }
@@ -98,7 +95,7 @@ public class InnerTempSensorServiceInfoImpl implements InnerTempSensorInfoServic
 
     @Override
     public List<InnerTempSensorInfoVO> exportList() {
-        List<InnerTempSensorInfoVO> InnerTempSensorInfo = innerTempSensorInfoMapper.List();
+        List<InnerTempSensorInfoVO> InnerTempSensorInfo = innerTempSensorInfoMapper.List(null);
 
         return InnerTempSensorInfo;
     }

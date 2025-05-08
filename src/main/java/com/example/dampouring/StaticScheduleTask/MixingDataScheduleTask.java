@@ -33,7 +33,7 @@ public class MixingDataScheduleTask {
     SmartMixingResultService smartMixingResultService;
 
 
-    @Scheduled(cron="59 * * * * ?")
+//    @Scheduled(cron="59 * * * * ?")
     @Async
     public void mixingDataScheduleTask()
     {

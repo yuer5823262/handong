@@ -24,11 +24,11 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, cu_id,sb_id, wp_no, wp_type, water_begin_time, channel_no, branch_num, horizontal_spacing,
-    vertical_spacing, pipe_len, max_flow, water_density, water_specific_heat, pipe_specific_heat, 
+    vertical_spacing, pipe_len, max_flow, water_density, water_specific_heat, pipe_specific_heat,
     outer_diameter, inner_diameter, create_time, `operator`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from water_pipe
     where id = #{id,jdbcType=INTEGER}
@@ -128,17 +128,17 @@
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.WaterPipe">
     insert into water_pipe (id, cu_id,sb_id, wp_no,
-      wp_type, water_begin_time, channel_no, 
-      branch_num, horizontal_spacing, vertical_spacing, 
-      pipe_len, max_flow, water_density, 
-      water_specific_heat, pipe_specific_heat, outer_diameter, 
+      wp_type, water_begin_time, channel_no,
+      branch_num, horizontal_spacing, vertical_spacing,
+      pipe_len, max_flow, water_density,
+      water_specific_heat, pipe_specific_heat, outer_diameter,
       inner_diameter, create_time, `operator`
       )
     values (#{id,jdbcType=INTEGER}, #{cuId,jdbcType=INTEGER}, #{sbId,jdbcType=INTEGER}, #{wpNo,jdbcType=VARCHAR},
-      #{wpType,jdbcType=VARCHAR}, #{waterBeginTime,jdbcType=VARCHAR}, #{channelNo,jdbcType=INTEGER}, 
-      #{branchNum,jdbcType=INTEGER}, #{horizontalSpacing,jdbcType=DOUBLE}, #{verticalSpacing,jdbcType=DOUBLE}, 
-      #{pipeLen,jdbcType=DOUBLE}, #{maxFlow,jdbcType=DOUBLE}, #{waterDensity,jdbcType=DOUBLE}, 
-      #{waterSpecificHeat,jdbcType=DOUBLE}, #{pipeSpecificHeat,jdbcType=DOUBLE}, #{outerDiameter,jdbcType=DOUBLE}, 
+      #{wpType,jdbcType=VARCHAR}, #{waterBeginTime,jdbcType=VARCHAR}, #{channelNo,jdbcType=INTEGER},
+      #{branchNum,jdbcType=INTEGER}, #{horizontalSpacing,jdbcType=DOUBLE}, #{verticalSpacing,jdbcType=DOUBLE},
+      #{pipeLen,jdbcType=DOUBLE}, #{maxFlow,jdbcType=DOUBLE}, #{waterDensity,jdbcType=DOUBLE},
+      #{waterSpecificHeat,jdbcType=DOUBLE}, #{pipeSpecificHeat,jdbcType=DOUBLE}, #{outerDiameter,jdbcType=DOUBLE},
       #{innerDiameter,jdbcType=DOUBLE}, #{createTime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
       )
   </insert>
@@ -349,6 +349,7 @@
     select
       i.id as id,
       ssb.small_sb_no as smallNo,
+      i.sb_id as sbId,
       scs.scs_no as fkzNo,
       cb.cb_no as kzxNo,
       cu.cu_addr as cuAddr,
@@ -376,6 +377,9 @@
     <where>
       <if test="sbId != null">
         and  i.sb_id=#{sbId}
+      </if>
+      <if test="cuId != null">
+        and  i.cu_id=#{cuId}
       </if>
     </where>
 

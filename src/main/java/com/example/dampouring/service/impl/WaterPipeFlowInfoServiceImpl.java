@@ -3,8 +3,6 @@ package com.example.dampouring.service.impl;
 import com.example.dampouring.common.Constant;
 import com.example.dampouring.model.dao.WaterPipeFlowInfoMapper;
 import com.example.dampouring.model.dao.WaterPipeMapper;
-import com.example.dampouring.model.pojo.WaterColdAlert;
-import com.example.dampouring.model.pojo.WaterPipe;
 import com.example.dampouring.model.pojo.WaterPipeFlowInfo;
 import com.example.dampouring.model.vo.*;
 import com.example.dampouring.query.WaterPipeFlowAssessQue;
@@ -29,9 +27,9 @@ public class WaterPipeFlowInfoServiceImpl implements WaterPipeFlowInfoService {
     @Autowired
     WaterColdAlertService waterColdAlertService;
     @Override
-    public PageInfo orUserList(Integer pageNum, Integer pageSize) {
+    public PageInfo orUserList(Integer pageNum, Integer pageSize, Integer sbId) {
         PageHelper.startPage(pageNum, pageSize);
-        List<WaterPipeFlowInfoVO> WaterPipeFlowInfo = WaterPipeFlowInfoMapper.List();
+        List<WaterPipeFlowInfoVO> WaterPipeFlowInfo = WaterPipeFlowInfoMapper.List(sbId);
         PageInfo pageInfo = new PageInfo(WaterPipeFlowInfo);
         return pageInfo;
     }
@@ -63,7 +61,7 @@ public class WaterPipeFlowInfoServiceImpl implements WaterPipeFlowInfoService {
 
     @Override
     public List<WaterPipeFlowInfoVO> exportList() {
-        List<WaterPipeFlowInfoVO> WaterPipeFlowInfo = WaterPipeFlowInfoMapper.List();
+        List<WaterPipeFlowInfoVO> WaterPipeFlowInfo = WaterPipeFlowInfoMapper.List(null);
 
         return WaterPipeFlowInfo;
     }

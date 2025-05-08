@@ -68,7 +68,11 @@ public class AssessScheduleTask {
         Constant.print("..............................tm..............................");
     }
 
-
+//    @Scheduled(fixedRate=60000)
+    public void aaa()
+    {
+        WaterPipeFlowAssessService.timingComputing();
+    }
 
 
 }

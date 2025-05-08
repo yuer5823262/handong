@@ -9,23 +9,23 @@ public class PouringTempAssessVO {
     private String smallNo;
 
     private Integer pouringBaseId;
-    @Excel(name = "温度标准",width = 20)
+    @Excel(name = "温度标准(℃)",width = 20)
     private Double normTemp;
-    @Excel(name = "平均温度",width = 20)
+    @Excel(name = "平均温度(℃)",width = 20)
     private Double avgTemp;
-    @Excel(name = "最高温度",width = 20)
+    @Excel(name = "最高温度(℃)",width = 20)
     private Double topTemp;
-    @Excel(name = "最低温度",width = 20)
+    @Excel(name = "最低温度(℃)",width = 20)
     private Double bottomTemp;
     @Excel(name = "测量总数",width = 20)
     private Integer recordCount;
     @Excel(name = "超标次数",width = 20)
     private Integer excessiveCount;
-    @Excel(name = "超标率",width = 20)
+    @Excel(name = "超标率(%)",width = 20)
     private Integer excessivePersent;
     @Excel(name = "最大超标量",width = 20)
     private Double topExcessive;
-    @Excel(name = "最大超标率",width = 20)
+    @Excel(name = "最大超标率(%)",width = 20)
     private Integer topExcessivePersent;
 
     private Integer month;

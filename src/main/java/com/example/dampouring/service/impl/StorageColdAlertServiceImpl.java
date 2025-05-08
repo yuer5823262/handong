@@ -1,4 +1,5 @@
 package com.example.dampouring.service.impl;
+import com.example.dampouring.common.Constant;
 import com.example.dampouring.model.dao.AlertBaseMapper;
 import com.example.dampouring.model.dao.PouringBaseMapper;
 import com.example.dampouring.model.dao.StorageColdAlertMapper;
@@ -40,8 +41,7 @@ public class StorageColdAlertServiceImpl implements StorageColdAlertService {
     }
     @Override
     public List<AlertBaseVO> list(Integer type) {
-        List<AlertBaseVO> result = StorageColdAlertMapper.list(type);
-        return result;
+        return StorageColdAlertMapper.list(type);
     }
     @Override
     public void processing(Integer[] ids, String username,String type,Integer mark) {
@@ -72,39 +72,36 @@ public class StorageColdAlertServiceImpl implements StorageColdAlertService {
     @Override
     public void storageColdAlert(InnerTempSensorInfo innerTempSensorInfo,MaxTempNormVO maxTempNormVO)
     {
-        PouringBase pouringBase =  pouringBaseMapper.selectBySbId(maxTempNormVO.getSbId());
-        if (TimeUtils.getHourDifferentTime(TimeUtils.getNowTime(),pouringBase.getCloseTime()) < 72)
-        {
-            return;
-        }
-        int qs = pouringBaseService.getQS(maxTempNormVO.getSbId());
-        TempControlCurveCommon tempControlCurveCommon = tempControlCurveCommonService.selectBySbId(maxTempNormVO.getSbId());
-        Double norm =tempControlCurveCommon.getNormTargetTemp(qs) ;
+        try {
+            PouringBase pouringBase =  pouringBaseMapper.selectBySbId(maxTempNormVO.getSbId());
+            if(pouringBase.getCloseTime()==null)
+                return;
+            if (TimeUtils.getHourDifferentTime(TimeUtils.getNowTime(),pouringBase.getCloseTime()) < 72)
+            {
+                return;
+            }
+            int qs = pouringBaseService.getQS(maxTempNormVO.getSbId());
+            TempControlCurveCommon tempControlCurveCommon = tempControlCurveCommonService.selectBySbId(maxTempNormVO.getSbId());
+            if(tempControlCurveCommon==null) return;
+            Double norm =tempControlCurveCommon.getNormTargetTemp(qs) ;
 
-        if(innerTempSensorInfo.getTemp()<norm-0.5)
-        {
-//            StorageColdAlert storageColdAlert = new StorageColdAlert();
-//            storageColdAlert.setHasDispose("0");
-//            storageColdAlert.setTempCurr(innerTempSensorInfo.getTemp());
-//            storageColdAlert.setTempTarget(maxTempNormVO.getMinTemp());
-//            storageColdAlert.setSbId(maxTempNormVO.getSbId());
-//            storageColdAlert.setAlertTime(TimeUtils.getNowTime());
-//            storageColdAlert.setAlertType("超冷预警");
-//            storageColdAlert.setAlertContent("温度低于最低标准:"+maxTempNormVO.getMinTemp()+"°C,"+
-//                    "达到:"+innerTempSensorInfo.getTemp()+"°C");
-//            storageColdAlert.setColdAmount(maxTempNormVO.getMinTemp()-innerTempSensorInfo.getTemp());
-//            StorageColdAlertMapper.insertSelective(storageColdAlert);
-            AlertBase alertBase = new AlertBase();
-            alertBase.setTime(TimeUtils.getNowTime());
-            alertBase.setState(0);
-            alertBase.setTypeNo(13);
-            alertBase.setContent("温度低于最低标准:"+String.format("%.2f",norm)+"°C,"+
-                    "达到:"+String.format("%.2f",innerTempSensorInfo.getTemp())+"°C");
-            alertBase.setType("超冷预警");
-            alertBase.setPosition(maxTempNormVO.getSbNo());
-            alertBaseMapper.insertSelective(alertBase);
-            ConnectionUtil.Send(alertBase.toString());
+            if(innerTempSensorInfo.getTemp()<norm-0.5)
+            {
+                AlertBase alertBase = new AlertBase();
+                alertBase.setTime(TimeUtils.getNowTime());
+                alertBase.setState(0);
+                alertBase.setTypeNo(13);
+                alertBase.setContent("温度低于最低标准:"+String.format("%.2f",norm)+"°C,"+
+                        "达到:"+String.format("%.2f",innerTempSensorInfo.getTemp())+"°C");
+                alertBase.setType("超冷预警");
+                alertBase.setPosition(maxTempNormVO.getSbNo());
+                alertBaseMapper.insertSelective(alertBase);
+                ConnectionUtil.Send(alertBase.toString());
 
+            }
+
+        } catch (Exception e) {
+            Constant.logger.error("最低温度报警错误",e);
         }
     }
 }

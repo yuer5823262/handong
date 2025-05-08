@@ -31,4 +31,8 @@ public interface UserService {
     void update(UpdateUserReq updateUserReq);
 
     UserVO oauth2(String oauth2Result);
+
+    UserVO dataInterface();
+
+    UserVO oauth(String oauthToken);
 }

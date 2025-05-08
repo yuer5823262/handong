@@ -13,7 +13,7 @@
     id, small_sb_id, `time`, remark, `type`, `operator`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from storage_bin_exclude
     where id = #{id,jdbcType=INTEGER}
@@ -26,10 +26,10 @@
     </foreach>
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.StorageBinExclude">
-    insert into storage_bin_exclude (id, small_sb_id, `time`, 
+    insert into storage_bin_exclude (id, small_sb_id, `time`,
       remark, `type`, `operator`
       )
-    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{smallSbId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
       )
   </insert>
@@ -125,16 +125,19 @@
   <select id="selectList" resultType="com.example.dampouring.model.vo.StorageBinExcludeVO" parameterType="com.example.dampouring.query.StorageBinExcludeQue">
     select
       sbe.id as id,
-           sbe.time as time,
+        sbe.time as time,
         sbe.remark as remark,
         sbe.type as type,
         sbe.operator as operator,
         ssb.small_sb_no as smallNo
     from storage_bin_exclude sbe
-           left join small_storage_bin ssb on sbe.small_sb_id=ssb.id
+    left join small_storage_bin ssb on sbe.small_sb_id=ssb.id
     <where>
       <if test="type != null">
         and  sbe.type=#{type}
+      </if>
+      <if test="dsName != null">
+        and  ssb.ds_start=#{dsName}
       </if>
       <if test="smallId != null">
         and  sbe.small_sb_id=#{smallId}

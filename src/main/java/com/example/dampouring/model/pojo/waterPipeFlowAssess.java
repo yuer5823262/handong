@@ -38,7 +38,17 @@ public class waterPipeFlowAssess {
     private Double flowBottom;
 
     private Double flowAvg;
+    private Double flowCount;
     private String qi;
+
+    public Double getFlowCount() {
+        return flowCount;
+    }
+
+    public void setFlowCount(Double flowCount) {
+        this.flowCount = flowCount;
+    }
+
     public Integer getId() {
         return id;
     }

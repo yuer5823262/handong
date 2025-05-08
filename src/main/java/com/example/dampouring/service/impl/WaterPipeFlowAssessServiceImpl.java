@@ -42,20 +42,29 @@ public class WaterPipeFlowAssessServiceImpl implements WaterPipeFlowAssessServic
     public void timingComputing() {
         try {
             WaterPipeFlowAssessQue waterPipeFlowAssessQue = new WaterPipeFlowAssessQue();
-            List<waterPipeFlowAssess> waterPipeFlowAssessList = waterPipeFlowInfoMapper.timingComputing();
-            for(waterPipeFlowAssess waterPipeFlowAssess:waterPipeFlowAssessList){
-                waterPipeFlowAssessQue.setQs(waterPipeFlowAssess.getQi());
-                waterPipeFlowAssessQue.setWpId(waterPipeFlowAssess.getWaterPipeId());
-                List<WaterPipeFlowAssessVO> waterPipeFlowAssessVO = WaterPipeFlowAssessMapper.selectList(waterPipeFlowAssessQue);
-                if(waterPipeFlowAssessVO.size()!=0)
-                {
-                    waterPipeFlowAssess.setId(waterPipeFlowAssessVO.get(0).getId());
-                    WaterPipeFlowAssessMapper.updateByPrimaryKeySelective(waterPipeFlowAssess);
+            List<Integer> ids = waterPipeFlowInfoMapper.fetch_entity_ids_updated_today();
+            for(Integer id : ids)
+            {
+                List<waterPipeFlowAssess> waterPipeFlowAssessList = waterPipeFlowInfoMapper.timingComputing(id);
+                for(waterPipeFlowAssess waterPipeFlowAssess:waterPipeFlowAssessList){
+                    waterPipeFlowAssessQue.setQs(waterPipeFlowAssess.getQi());
+                    waterPipeFlowAssessQue.setWpId(waterPipeFlowAssess.getWaterPipeId());
+                    Double flowCount = waterPipeFlowInfoMapper.selectFlowCountById(waterPipeFlowAssess.getWaterPipeId(),waterPipeFlowAssess.getQi());
+                    waterPipeFlowAssess.setFlowCount(flowCount);
+                    List<WaterPipeFlowAssessVO> waterPipeFlowAssessVO = WaterPipeFlowAssessMapper.selectList(waterPipeFlowAssessQue);
+                    if(waterPipeFlowAssessVO.size()!=0)
+                    {
+                        waterPipeFlowAssess.setId(waterPipeFlowAssessVO.get(0).getId());
+                        WaterPipeFlowAssessMapper.updateByPrimaryKeySelective(waterPipeFlowAssess);
 
+                    }
+                    else
+                        WaterPipeFlowAssessMapper.insertSelective(waterPipeFlowAssess);
                 }
-                else
-                    WaterPipeFlowAssessMapper.insertSelective(waterPipeFlowAssess);
+                Constant.logger.info("通水评价更新成功id:"+id);
             }
+
+
         } catch (Exception e) {
             Constant.logger.error("错误:",e);
         }

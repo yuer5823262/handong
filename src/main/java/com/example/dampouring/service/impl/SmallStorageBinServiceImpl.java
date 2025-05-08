@@ -67,7 +67,6 @@ public class SmallStorageBinServiceImpl implements SmallStorageBinService {
         copyUtils.copyPropertiesIgnoreNull(updateSmallStorageBinReq,smallStorageBin);
         checkReqDate(smallStorageBin.getDsStart(),smallStorageBin.getDsEnd(),
                 smallStorageBin.getElevationStart(),smallStorageBin.getElevationEnd(),null);
-        smallStorageBin.setBigSbNoByDs();
         int count = smallStorageBinMapper.updateByPrimaryKeySelective(smallStorageBin);
         if (count == 0){
             throw new DamPourException(DampouringExceptionEnum.UPDATE_FAILED);

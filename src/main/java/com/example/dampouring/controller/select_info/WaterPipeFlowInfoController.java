@@ -42,8 +42,8 @@ public class WaterPipeFlowInfoController {
     @GetMapping("/list")
     @ResponseBody
     public ApiRestResponse listWaterPipeFlowInfo(@RequestParam Integer pageNum,
-                                                  @RequestParam Integer pageSize) {
-        PageInfo pageInfo = waterPipeFlowInfoService.orUserList(pageNum, pageSize);
+                                                  @RequestParam Integer pageSize,@RequestParam Integer sbId) {
+        PageInfo pageInfo = waterPipeFlowInfoService.orUserList(pageNum, pageSize,sbId);
         return ApiRestResponse.success(pageInfo);
     }
 

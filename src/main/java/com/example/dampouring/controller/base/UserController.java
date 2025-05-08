@@ -3,6 +3,8 @@ package com.example.dampouring.controller.base;
 import com.example.dampouring.annotation.SecurityParameter;
 import com.example.dampouring.common.ApiRestResponse;
 import com.example.dampouring.common.Constant;
+import com.example.dampouring.exception.DamPourException;
+import com.example.dampouring.exception.DampouringExceptionEnum;
 import com.example.dampouring.model.dao.DamPourLogMapper;
 import com.example.dampouring.model.pojo.UserTable;
 import com.example.dampouring.model.request.RegisterUserReq;
@@ -18,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -79,6 +82,22 @@ public class UserController {
         BeanUtils.copyProperties(user,userVO);
         userVO.setToken(JwtUtils.getToken(user));
         return ApiRestResponse.success(userVO);
+    }
+
+    @GetMapping("/login/dataInterFaceToken")
+    @ResponseBody
+    public ApiRestResponse dataInterFace(){
+
+        return ApiRestResponse.success(userService.dataInterface());
+
+    }
+
+    @GetMapping("/login/oauth")
+    @ResponseBody
+    public ApiRestResponse auth(String token){
+
+        return ApiRestResponse.success(userService.oauth(token));
+
     }
 
     @PostMapping("/user/update")

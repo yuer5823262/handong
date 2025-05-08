@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import java.util.List;
 
 public interface WaterPipeFlowInfoService {
-    PageInfo orUserList(Integer pageNum, Integer pageSize);
+    PageInfo orUserList(Integer pageNum, Integer pageSize, Integer sbId);
     PageInfo orUserSelect(WaterPipeFlowInfoQue WaterPipeFlowInfoQue);
 
     PageInfo assess(WaterPipeFlowAssessQue waterPipeFlowAssessQue);

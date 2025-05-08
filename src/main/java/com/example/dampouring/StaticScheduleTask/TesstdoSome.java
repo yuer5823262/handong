@@ -71,41 +71,48 @@ public class TesstdoSome {
     InsulationSensorInfoMapper insulationSensorInfoMapper;
     @Autowired
     InsulationSensorMapper insulationSensorMapper;
+
     public void getInnerVal(ControllerUnitValueVO controllerUnitValueVO)
     {
         Integer c = 0;
         List<Double> valueList = controllerUnitValueVO.getValueList();
-        try {
+
             List<InnerTempSensorVO> innerTempSensorList = innerTempSensorMapper.selectListByCuId(controllerUnitValueVO.getId());
             for(InnerTempSensorVO innerTempSensor: innerTempSensorList)
             {
-                c = innerTempSensor.getChannel()-1;
-                Constant.print(controllerUnitValueVO.getCuType()+" "+controllerUnitValueVO.getCuAddr()+" "+"值列表:"+valueList+"-------进入循环test-----");
-                if(valueList.size()>c&&
-                        valueList.get(c)!=100)
-                {
-                    InnerTempSensorInfo innerTempSensorInfo = new InnerTempSensorInfo();
-                    innerTempSensorInfo.setTemp(valueList.get(c));
-                    innerTempSensorInfo.setTime(controllerUnitValueVO.getTime());
-                    innerTempSensorInfo.setInnerTempSensorId(innerTempSensor.getId());
-                    MaxTempNormVO maxTempNormVO = MaxTempAlertMapper.normInfo(innerTempSensorInfo.getInnerTempSensorId());
-                    if(maxTempNormVO!=null)
-                        innerTempSensorInfo.setNorm(maxTempNormVO.getMaxTemp());
-                    innerTempSensorInfoMapper.insertSelective(innerTempSensorInfo);
-                    Constant.print(innerTempSensor.getSmallNo()+"下测控地址为"+controllerUnitValueVO.getCuAddr()+
-                            ",通道号为"+innerTempSensor.getChannel()+",编号为"+innerTempSensor.getTempNo()+
-                            "的内部温度计获取到温度数据:"+valueList.get(c));
-                    if (maxTempNormVO==null) continue;
-                    if(innerTempSensor.getCuAddr().charAt(0)=='1'&&maxTempNormVO!=null)
+                try {
+                    c = innerTempSensor.getChannel()-1;
+                    if(c < 0) continue;
+                    if(valueList.size()>c&&
+                            valueList.get(c)!=100)
                     {
-                        maxTempAlertService.maxTempAlert(innerTempSensorInfo,maxTempNormVO);
-//                        storageColdAlertService.storageColdAlert(innerTempSensorInfo,maxTempNormVO);
-                    }
+                        InnerTempSensorInfo innerTempSensorInfo = new InnerTempSensorInfo();
+                        innerTempSensorInfo.setTemp(valueList.get(c));
+                        innerTempSensorInfo.setTime(controllerUnitValueVO.getTime());
+                        innerTempSensorInfo.setInnerTempSensorId(innerTempSensor.getId());
+                        MaxTempNormVO maxTempNormVO = MaxTempAlertMapper.normInfo(innerTempSensorInfo.getInnerTempSensorId());
+                        if(maxTempNormVO!=null)
+                            innerTempSensorInfo.setNorm(maxTempNormVO.getMaxTemp());
+                        if(innerTempSensorInfo.getTemp() <-2 || innerTempSensorInfo.getTemp()>60) {
+                            innerTempSensorInfo.setTemp(null);
+                        }
+                        innerTempSensorInfoMapper.insertSelective(innerTempSensorInfo);
+                        Constant.print(innerTempSensor.getSmallNo()+"下测控地址为"+controllerUnitValueVO.getCuAddr()+
+                                ",通道号为"+innerTempSensor.getChannel()+",编号为"+innerTempSensor.getTempNo()+
+                                "的内部温度计获取到温度数据:"+valueList.get(c));
+                        if (maxTempNormVO==null) continue;
+                        if(innerTempSensor.getCuAddr().charAt(0)=='1')
+                        {
+                            maxTempAlertService.maxTempAlert(innerTempSensorInfo,maxTempNormVO);
+                            storageColdAlertService.storageColdAlert(innerTempSensorInfo,maxTempNormVO);
+                        }
+
+                     }
+                } catch (Exception e) {
+                    Constant.logger.error("错误",e);
                 }
             }
-        } catch (Exception e) {
-            Constant.logger.error("错误",e);
-        }
+
     }
 
 
@@ -126,7 +133,7 @@ public class TesstdoSome {
                     insulationSensorInfo.setTime(controllerUnitValueVO.getTime());
                     insulationSensorInfo.setSensorId(insulationSensor.getId());
                     insulationSensorInfoMapper.insertSelective(insulationSensorInfo);
-                    Constant.print(insulationSensor.getDsNo()+"分段下测控地址为"+controllerUnitValueVO.getCuAddr()+
+                    Constant.print(insulationSensor.getDsNo()+"坝段下测控地址为"+controllerUnitValueVO.getCuAddr()+
                             ",通道号为"+insulationSensor.getChanel()+",编号为"+insulationSensor.getTempNo()+
                             "的表面保温温度计获取到温度数据:"+valueList.get(c));
                 }
@@ -174,10 +181,10 @@ public class TesstdoSome {
                 Constant.print(tempGradometer.getSmallNo()+"仓下测控地址为"+controllerUnitValueVO.getCuAddr()+
                         ",通道号为"+tempGradometer.getChannel()+",编号为"+tempGradometer.getTgmName()+
                         "的温度梯度仪获取到温度数据:"+tempGradometerInfo.getTempListStr());
-//                if(tempGradometer.getCuAddr().charAt(0)=='1')
-//                {
-//                    tempGradAlertService.TempGradTempAlert(tempGradometerInfo);
-//                }
+                if(tempGradometer.getCuAddr().charAt(0)=='1')
+                {
+                    tempGradAlertService.TempGradTempAlert(tempGradometerInfo);
+                }
 
             }
         } catch (Exception e) {
@@ -196,6 +203,8 @@ public class TesstdoSome {
                 TempMeasurements tempMeasurements = new TempMeasurements();
                 tempMeasurements.setTemperature(valueList.get(airTempSensor.getChannel()-1));
                 tempMeasurements.setDate(controllerUnitValueVO.getTime());
+                if(tempMeasurements.getTemperature() <-30 || tempMeasurements.getTemperature()>50)
+                    return;
                 tempMeasurementsMapper.insertSelective(tempMeasurements);
                 Constant.print("测控地址为"+controllerUnitValueVO.getCuAddr()+
                         ",通道号为"+airTempSensor.getChannel()+
@@ -271,42 +280,44 @@ public class TesstdoSome {
     {
         Integer c = 0;
         List<Double> valueList = controllerUnitValueVO.getValueList();
-        try {
+
             List<WaterTempSensor> waterTempSensorList = waterTempSensorMapper.selectListByCuId(controllerUnitValueVO.getId());
             for(WaterTempSensor waterTempSensor: waterTempSensorList)
             {
-                List<WaterPipeVO> waterPipeList = waterPipeMapper.selectBySmallId(waterTempSensor.getSbId());
-                for(WaterPipeVO waterPipe:waterPipeList)
-                {
-                    WaterPipeFlowInfoByTimeAndWpIdQue waterPipeFlowInfoByTimeAndWpIdQue = new WaterPipeFlowInfoByTimeAndWpIdQue();
-                    waterPipeFlowInfoByTimeAndWpIdQue.setTime(controllerUnitValueVO.getTime());
-                    waterPipeFlowInfoByTimeAndWpIdQue.setWpId(waterPipe.getId());
-                    WaterPipeFlowInfo waterPipeFlowInfo = waterPipeFlowInfoMapper.selectByTimeAndWpId(waterPipeFlowInfoByTimeAndWpIdQue);
-                    if(waterPipeFlowInfo==null) continue;
-                    c = waterTempSensor.getEnterChannel()-1;
-                    if(valueList.size()>c&&
-                            valueList.get(c)!=100)
+                try {
+                    List<WaterPipeVO> waterPipeList = waterPipeMapper.selectBySmallId(waterTempSensor.getSbId());
+                    for(WaterPipeVO waterPipe:waterPipeList)
                     {
-                        waterPipeFlowInfo.setEnterTemp(valueList.get(c));
+                        WaterPipeFlowInfoByTimeAndWpIdQue waterPipeFlowInfoByTimeAndWpIdQue = new WaterPipeFlowInfoByTimeAndWpIdQue();
+                        waterPipeFlowInfoByTimeAndWpIdQue.setTime(controllerUnitValueVO.getTime());
+                        waterPipeFlowInfoByTimeAndWpIdQue.setWpId(waterPipe.getId());
+                        WaterPipeFlowInfo waterPipeFlowInfo = waterPipeFlowInfoMapper.selectByTimeAndWpId(waterPipeFlowInfoByTimeAndWpIdQue);
+                        if(waterPipeFlowInfo==null) continue;
+                        c = waterTempSensor.getEnterChannel()-1;
+                        if(valueList.size()>c&&
+                                valueList.get(c)!=100 && valueList.get(c)>=-2 && valueList.get(c)<=30)
+                        {
+                            waterPipeFlowInfo.setEnterTemp(valueList.get(c));
+                        }
+                        c = waterTempSensor.getExitChannel()-1;
+                        if(valueList.size()>c&&
+                                valueList.get(c)!=100 && valueList.get(c)>=-2 && valueList.get(c)<=30)
+                        {
+                            waterPipeFlowInfo.setOutTemp(valueList.get(c));
+                        }
+                        waterPipeFlowInfo.setTemp();
+                        waterPipeFlowInfoMapper.updateByPrimaryKeySelective(waterPipeFlowInfo);
+                        Constant.print(waterPipe.getSmallNo()+"仓下测控地址为"+controllerUnitValueVO.getCuAddr()+
+                                ",进口通道号为"+waterTempSensor.getEnterChannel()+",出口通道号为"+waterTempSensor.getExitChannel()+
+                                "水温温度计获取到温度数据:"+waterPipeFlowInfo.getEnterTemp()+" "+waterPipeFlowInfo.getOutTemp());
+
                     }
-                    c = waterTempSensor.getExitChannel()-1;
-                    if(valueList.size()>c&&
-                            valueList.get(c)!=100)
-                    {
-                        waterPipeFlowInfo.setOutTemp(valueList.get(c));
-                    }
-                    waterPipeFlowInfo.setTemp();
-                    waterPipeFlowInfoMapper.updateByPrimaryKeySelective(waterPipeFlowInfo);
-                    Constant.print(waterPipe.getSmallNo()+"仓下测控地址为"+controllerUnitValueVO.getCuAddr()+
-                            ",进口通道号为"+waterTempSensor.getEnterChannel()+",出口通道号为"+waterTempSensor.getExitChannel()+
-                            "水温温度计获取到温度数据:"+waterPipeFlowInfo.getEnterTemp()+" "+waterPipeFlowInfo.getOutTemp());
-                    waterColdAlertService.WaterColdAlert(waterPipeFlowInfo);
+                } catch (Exception e) {
+                    Constant.logger.error("错误:",e);
                 }
 
             }
-        } catch (Exception e) {
-            Constant.logger.error("错误:",e);
-        }
+
 
     }
 
@@ -333,7 +344,8 @@ public class TesstdoSome {
                         Double val = valueList.get(c);
                         if(val<=4||val>20) val = 0.;
                         else val = (val-4)/16;
-                        waterPipeFlowInfo.setEnterMpa(val);
+                        if(val >=0 && val<=2)
+                            waterPipeFlowInfo.setEnterMpa(val);
                     }
                     c = waterPressureSensor.getExitChannelNo()-1;
                     if(valueList.size()>c&&
@@ -342,7 +354,8 @@ public class TesstdoSome {
                         Double val = valueList.get(c);
                         if(val<=4||val>20) val = 0.;
                         else val = (val-4)/16;
-                        waterPipeFlowInfo.setOutMpa(val);
+                        if(val >=0 && val<=2)
+                            waterPipeFlowInfo.setOutMpa(val);
                     }
                     waterPipeFlowInfo.setMpa();
                     Constant.print(waterPipe.getSmallNo()+"仓下测控地址为"+controllerUnitValueVO.getCuAddr()+
@@ -360,7 +373,7 @@ public class TesstdoSome {
 
     public void getFlowVal(ControllerUnitValueVO controllerUnitValueVO)
     {
-        Integer c = 0;
+        int c = 0;
         List<Double> valueList = controllerUnitValueVO.getValueList();
         try {
             List<WaterPipeVO> waterPipeList = waterPipeMapper.selectListByCuId(controllerUnitValueVO.getId());
@@ -379,13 +392,22 @@ public class TesstdoSome {
                     if(val<=4&&val>=3.9) val = 0.;
                     else if(val<=20&&val>4) val= (val-4)*10/16;
                     else val=null;
-                    if(val != null)
-                        waterPipeFlowInfo.setFlow(val/waterPipe.getBranchNum());
+                    if(val != null && val >=0 && val<=8)
+                    {
+                        val = val/waterPipe.getBranchNum();
+                        if(val<=0.05) val = 0.;
+                        waterPipeFlowInfo.setFlow(val);
+                    }
+
                     val = valueList.get(c+valueList.size()/2);
                     if(val<=4||val>20) val = 0.;
                     else val = (val-4)*100/16;
                     waterPipeFlowInfo.setOpening(val);
                     equipmentAlertService.pipeAlert(valueList.get(c),waterPipe.getSbId());
+                }
+                if(waterPipeFlowInfo.getFlow()!=null && waterPipeFlowInfo.getFlow()>8)
+                {
+                    waterPipeFlowInfo.setFlow(null);
                 }
                 waterPipeFlowInfoMapper.updateByPrimaryKeySelective(waterPipeFlowInfo);
                 Constant.print(waterPipe.getSmallNo()+"仓下测控地址为"+controllerUnitValueVO.getCuAddr()+
@@ -427,17 +449,26 @@ public class TesstdoSome {
         TempMeasurements tempMeasurements = new TempMeasurements();
         tempMeasurements.setTemperature(controllerUnitValueVO.getValueList().get(0));
         tempMeasurements.setDate(controllerUnitValueVO.getTime());
+        if(tempMeasurements.getTemperature() <-30 || tempMeasurements.getTemperature()>50)
+            return;
         tempMeasurementsMapper.insertSelective(tempMeasurements);
     }
 
 
     @Async("doSomethingExecutor")
-    public void SunGetRadiationValue(String time,Double Instantaneous,Double DailyAccumulated)
+    public void SunGetRadiationValue(String time,Double Instantaneous,Double DailyAccumulated,
+                                     Double humidity, Double wind, Double wind2,Double wind10,int WindDire,Double temp)
     {
         SolarRadiantHeatInfo solarRadiantHeatInfo = new SolarRadiantHeatInfo();
         solarRadiantHeatInfo.setDate(time);
         solarRadiantHeatInfo.setAggregateVal(DailyAccumulated);
         solarRadiantHeatInfo.setMomentVal(Instantaneous);
+        solarRadiantHeatInfo.setHumidity(humidity);
+        solarRadiantHeatInfo.setWind(wind);
+        solarRadiantHeatInfo.setWind2(wind2);
+        solarRadiantHeatInfo.setWind10(wind10);
+        solarRadiantHeatInfo.setDirection(WindDire);
+        solarRadiantHeatInfo.setTemp(temp);
         solarRadiantHeatInfoMapper.insertSelective(solarRadiantHeatInfo);
     }
 

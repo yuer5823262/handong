@@ -6,6 +6,7 @@ import com.example.dampouring.model.vo.*;
 import com.example.dampouring.query.DamTempQue;
 import com.example.dampouring.query.InnerTempSensorInfoQue;
 import com.example.dampouring.query.TopTempAssessQue;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface InnerTempSensorInfoMapper {
 
     List<TopTempAssess> timingComputing();
 
-    List<InnerTempSensorInfoVO> List();
+    List<InnerTempSensorInfoVO> List(@Param("sbId") Integer sbId);
 
     List<InnerTempSensorInfoVO> selectList(InnerTempSensorInfoQue innerTempSensorInfoQue);
 

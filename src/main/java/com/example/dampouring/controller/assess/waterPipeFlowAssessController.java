@@ -50,11 +50,11 @@ public class waterPipeFlowAssessController {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
         List<WaterPipeFlowAssessVO> memberList = WaterPipeFlowAssessService.exportList();
-        ExportParams params = new ExportParams("出机口温度评价", "出机口温度评价", ExcelType.XSSF);
+        ExportParams params = new ExportParams("通水信息评价", "通水信息评价", ExcelType.XSSF);
         map.put(NormalExcelConstants.DATA_LIST, memberList);
         map.put(NormalExcelConstants.CLASS, WaterPipeFlowAssessVO.class);
         map.put(NormalExcelConstants.PARAMS, params);
-        map.put(NormalExcelConstants.FILE_NAME, "出机口温度评价");
+        map.put(NormalExcelConstants.FILE_NAME, "通水信息评价");
         PoiBaseView.render(map, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
     }
 }

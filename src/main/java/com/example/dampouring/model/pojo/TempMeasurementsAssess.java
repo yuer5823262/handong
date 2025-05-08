@@ -6,15 +6,15 @@ public class TempMeasurementsAssess {
     private Integer id;
     @Excel(name = "时间",width = 20)
     private String time;
-    @Excel(name = "最高温度",width = 20)
+    @Excel(name = "最高温度（℃）",width = 20)
     private Double topTemp;
-    @Excel(name = "最低温度",width = 20)
+    @Excel(name = "最低温度（℃）",width = 20)
     private Double bottomTemp;
-    @Excel(name = "平均温度",width = 20)
+    @Excel(name = "平均温度（℃）",width = 20)
     private Double avgTemp;
-    @Excel(name = "日温差",width = 20)
+    @Excel(name = "日温差（℃）",width = 20)
     private Double differenceTemp;
-    @Excel(name = "温度骤降",width = 20)
+    @Excel(name = "温度骤降（℃）",width = 20)
     private Double lessTemp;
 
     public Integer getId() {

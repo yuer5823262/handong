@@ -14,7 +14,7 @@
     id, inner_temp_sensor_id, `time`, avgtemp,`temp`,norm,bl
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from inner_temp_sensor_info
     where id = #{id,jdbcType=INTEGER}
@@ -111,7 +111,7 @@
   </update>
 
 
-  <select id="List" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
+  <select id="List" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO" parameterType="java.lang.Integer">
     select
       itf.id as id,
       itf.time as time,
@@ -127,6 +127,10 @@
       left join small_storage_bin s on it.sb_id = s.id
       left join pouring_base p on s.id=p.small_sb_id
       left join beton b on p.beton_id = b.id
+    <if test="sbId != null">
+      where  s.id =#{sbId}
+    </if>
+    order by itf.time desc
   </select>
 
   <select id="selectList" parameterType="com.example.dampouring.query.InnerTempSensorInfoQue" resultType="com.example.dampouring.model.vo.InnerTempSensorInfoVO">
@@ -155,6 +159,9 @@
     <if test="smallId != null">
       and  s.id =#{smallId}
     </if>
+      <if test="dsName != null">
+        and  s.ds_start =#{dsName}
+      </if>
     <if test="innerTempId != null">
       and itf.inner_temp_sensor_id = #{innerTempId}
     </if>
@@ -283,75 +290,61 @@
   </select>
 
   <select id="timingComputing" resultType="com.example.dampouring.model.pojo.TopTempAssess">
-    SELECT
-      itsId,
-      topTemp,
-      topAvgTemp,
-      pouringBaseId,
-      topTempTime,
-      normTemp,
-
-      IF (
-              topAvgTemp >= normTemp,
-              "是",
-              "否"
-        ) AS isExcessive,
-
-      IF (
-              topAvgTemp >= normTemp,
-              topAvgTemp - normTemp,
-              0
-        ) AS excessive
+    SELECT DISTINCT
+      t1.pouringBaseId,
+      t2.itsId,
+      t2.topTemp,
+      t1.topAvgTemp,
+      t1.topTempTime,
+      t1.normTemp,
+      IF
+        ( t1.topAvgTemp >= t1.normTemp, "是", "否" ) AS isExcessive,
+      IF
+        ( t1.topAvgTemp >= t1.normTemp, t1.topAvgTemp - t1.normTemp, 0 ) AS excessive
     FROM
       (
-        SELECT
-          max(itf.temp) AS topTemp,
-          max(itf.avgtemp) AS topAvgTemp,
-          p.id AS pouringBaseId
+        SELECT DISTINCT
+          itf.time AS topTempTime,
+          itf.avgtemp AS topAvgTemp,
+          p.id AS pouringBaseId,
+          itf.norm AS normTemp
         FROM
           inner_temp_sensor_info itf
             LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
             LEFT JOIN small_storage_bin s ON it.sb_id = s.id
             LEFT JOIN pouring_base p ON p.small_sb_id = s.id
         WHERE
-            itf.inner_temp_sensor_id IN (
-            SELECT DISTINCT
-              inner_temp_sensor_id
-            FROM
-              inner_temp_sensor_info
-            WHERE
-          LEFT (time, 10) = LEFT (now(), 10)
-      )
-    GROUP BY
-      pouringBaseId
-      ) linshi,
-	(
-		SELECT
-			itf.inner_temp_sensor_id AS itsId,
-			itf.time AS topTempTime,
-			itf.avgtemp AS avgtemp,
-			itf.temp AS temp,
-			p.id AS pouringBaseId1,
-			itf.norm AS normTemp
-		FROM
-			inner_temp_sensor_info itf
-		LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
-		LEFT JOIN small_storage_bin s ON it.sb_id = s.id
-		LEFT JOIN pouring_base p ON p.small_sb_id = s.id
-		WHERE
-			itf.inner_temp_sensor_id IN (
-				SELECT DISTINCT
-					inner_temp_sensor_id
-				FROM
-					inner_temp_sensor_info
-				WHERE
-					LEFT (time, 10) = LEFT (now(), 10)
-			)
-	) linshi2
-    WHERE
-      linshi.pouringBaseId = linshi2.pouringBaseId1
-      AND linshi.topAvgTemp = linshi2.avgtemp
-      AND linshi.topTemp = linshi2.temp
+          time >= LEFT ( now(), 10 )
+          AND ( p.id, itf.avgtemp ) IN (
+          SELECT
+            p.id AS pouringBaseId,
+            max( itf.avgtemp ) AS topAvgTemp
+          FROM
+            inner_temp_sensor_info itf
+              LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+              LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+              LEFT JOIN pouring_base p ON p.small_sb_id = s.id
+          WHERE
+            itf.time >= LEFT ( now(), 10 )
+          GROUP BY
+            pouringBaseId
+        )
+      ) t1
+        LEFT JOIN (
+        SELECT
+          it.id as itsId,
+          p.id AS pouringBaseId,
+          max( itf.temp ) AS topTemp
+        FROM
+          inner_temp_sensor_info itf
+            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+            LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+            LEFT JOIN pouring_base p ON p.small_sb_id = s.id
+        WHERE
+          itf.time >= LEFT ( now(), 10 )
+        GROUP BY
+          pouringBaseId
+      ) t2 on t2.pouringBaseId = t1.pouringBaseId
   </select>
 
   <select id="damTemp" parameterType="com.example.dampouring.query.DamTempQue" resultType="com.example.dampouring.model.vo.DamTempVO">

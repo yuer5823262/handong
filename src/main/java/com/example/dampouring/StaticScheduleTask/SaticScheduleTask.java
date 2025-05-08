@@ -69,18 +69,43 @@ public class SaticScheduleTask implements SchedulingConfigurer {
         nextTime.setTime(nextTime.getTime()+10000);
     }
 //    @Scheduled(cron = "0 */10 * * * ?")
+//    public void  SunGetRadiationValue() {
+//        List<SolarRadioMeter> solarRadioMeterList = solarRadioMeterMapper.selectList();
+//        if(solarRadioMeterList.size()==0)
+//            return;
+//        double Instantaneous[]={-1};
+//        double DailyAccumulated[]={-1};
+//        short sunP = Constant.DllUTILS.Sun_GetRadiationValue(solarRadioMeterList.get(0).getEquipmentNo().byteValue(),Instantaneous,DailyAccumulated,timeOut);
+//        Constant.print("太阳辐射热读取状态p:"+sunP);
+//        if(sunP!=0) return;
+//        Constant.print("太阳辐射热读取值："+Instantaneous[0]+" "+DailyAccumulated[0]);
+//        tesstdoSome.SunGetRadiationValue(TimeUtils.getNowTime(),Instantaneous[0],DailyAccumulated[0]);
+//    }
     public void  SunGetRadiationValue() {
         List<SolarRadioMeter> solarRadioMeterList = solarRadioMeterMapper.selectList();
-//        short p  = solarRadioMeterList.get(0).getSerialNo().shortValue();
-//        Constant.DllUTILS.C_CommOpen(p);
-        double Instantaneous[]={-1};
-        double DailyAccumulated[]={-1};
-        short sunP = Constant.DllUTILS.Sun_GetRadiationValue(solarRadioMeterList.get(0).getEquipmentNo().byteValue(),Instantaneous,DailyAccumulated,timeOut);
+        if(solarRadioMeterList.size()==0)
+            return;
+        Constant.DllUTILS.OpenSerialPort((short)solarRadioMeterList.get(0).getSerialNo().intValue());
+        double[] Instantaneous ={-1};
+        double[] DailyAccumulated ={-1};
+
+        double[] humidity ={-1};
+        double[] wind ={-1};
+
+        double[] wind2 ={-1};
+        double[] wind10 ={-1};
+
+        int[] WindDire ={-1};
+        double[] temp ={-1};
+        short sunP = Constant.DllUTILS.ZS_Radiation(solarRadioMeterList.get(0).getEquipmentNo().byteValue(),Instantaneous,DailyAccumulated,timeOut);
+        short sunP1 = Constant.DllUTILS.ZS_Weather(solarRadioMeterList.get(0).getEquipmentNo().byteValue(),
+                temp,humidity,WindDire,wind,wind2,wind10,timeOut);
         Constant.print("太阳辐射热读取状态p:"+sunP);
         if(sunP!=0) return;
         Constant.print("太阳辐射热读取值："+Instantaneous[0]+" "+DailyAccumulated[0]);
-        tesstdoSome.SunGetRadiationValue(TimeUtils.getNowTime(),Instantaneous[0],DailyAccumulated[0]);
-//        Constant.DllUTILS.C_CommClose();
+        tesstdoSome.SunGetRadiationValue(TimeUtils.getNowTime(),Instantaneous[0],DailyAccumulated[0],humidity[0],wind[0],wind2[0],wind10[0],WindDire[0],temp[0]);
+        Constant.DllUTILS.CloseSerialPort();
+        //        Constant.DllUTILS.C_CommClose();
     }
 
 //    @Scheduled(cron = "0 */3 * * * ?")
@@ -88,12 +113,19 @@ public class SaticScheduleTask implements SchedulingConfigurer {
     @Async
     public void getControlUnitValue(){
         if(Constant.pSta!=0) return;
+        try {
+            innerTempSensorService.updateChannelAll();
+            waterTempSensorService.updateChannelAll();
+        } catch (Exception e) {
+            Constant.logger.error("采集时，更新通道失败",e);
+        }
+
         String time = TimeUtils.getNowTime();
 //        short temp;
 //        temp = Constant.DllUTILS.C_CommOpen(p);
 //        Constant.print("打开端口:"+p+" temp:"+temp);
 //        if(temp!=0) return;
-        SunGetRadiationValue();
+        //SunGetRadiationValue();
         short temp=0;
         long startTime = System.currentTimeMillis();
         waterPipeFlowInfoService.insertByComputing(time);
@@ -120,15 +152,14 @@ public class SaticScheduleTask implements SchedulingConfigurer {
             }
         }
         long endTime = System.currentTimeMillis();
-//        temp = Constant.DllUTILS.C_CommClose();
         Constant.print("本轮数据采集结束,用时:"+((endTime-startTime)/1000)+"秒");
         waterPipeFlowInfoService.deleteEmpty(time);
         try {
+            Thread.sleep(5000);
             innerTempSensorInfoService.timeAvgTemp(time);
         } catch (Exception e) {
-            Constant.logger.error("错误:",e);
+            Constant.logger.error("平均温度计算错误:",e);
         }
-//        layerTdiffAlertService.layerTdiffAlert(time);
         smartMixingResultService.SmartMixingResultCalculate();
         if(tdMark==0)
             equipmentAlertService.TDequipmentAlert();
@@ -144,27 +175,30 @@ public class SaticScheduleTask implements SchedulingConfigurer {
         short temp = 1;
         String cuType = controllerUnitValueVO.getCuType();
         String cuAddr = controllerUnitValueVO.getCuAddr();
+        int cuAddrInt = Integer.parseInt(cuAddr);
+        byte cuAddrByte = (byte) cuAddrInt;
         Integer valCount = 0;
         double[] valueList = {0,0,0,0,0,0,0,0,0,0};
         double[] valueList1 = {0,0,0,0,0,0,0,0,0,0};
         if(cuType.equals("内部温度")||cuType.equals("拌合温度"))
         {
-            temp= Constant.DllUTILS.LNT_ReadTemperatureValue(Byte.parseByte(cuAddr),
+            temp= Constant.DllUTILS.LNT_ReadTemperatureValue(cuAddrByte,
                     1,10,valueList,timeOut,cTimes);
             if(temp==0)
             {
-                Constant.DllUTILS.LNT_ReadTemperatureValue(Byte.parseByte(cuAddr),
+                Constant.DllUTILS.LNT_ReadTemperatureValue(cuAddrByte,
                         11,10,valueList1,timeOut,cTimes);
             }
             valCount=10;
         }
+
         else if(cuType.equals("测控装置"))
         {
-            temp = Constant.DllUTILS.LNT_ReadInIValue(Byte.parseByte(cuAddr),
+            temp = Constant.DllUTILS.LNT_ReadInIValue(cuAddrByte,
                     1,4,valueList,timeOut,cTimes);
             if(temp==0)
             {
-                Constant.DllUTILS.LNT_ReadOutIValue(Byte.parseByte(cuAddr),
+                Constant.DllUTILS.LNT_ReadOutIValue(cuAddrByte,
                         1,4,valueList1,timeOut,cTimes);
             }
             valCount=4;
@@ -186,32 +220,34 @@ public class SaticScheduleTask implements SchedulingConfigurer {
         return temp;
     }
 //    @Scheduled(fixedRate=60000)
-    public void testSen(){
-        String time = TimeUtils.getNowTime();
-        ControllerUnitValueVO controllerUnitValueVO = new ControllerUnitValueVO();
-        controllerUnitValueVO.setCuAddr("2");
-        controllerUnitValueVO.setId(8);
-        controllerUnitValueVO.setCuType("内部温度");
-        controllerUnitValueVO.setTime(time);
-
-        double[] valueList1 = {26,24,23,22,21,25,21,24,25,26,26,24,23,22,21,25,21,24,25,26};
-        for(double value:valueList1)
-        {
-            if(value!=0) controllerUnitValueVO.addValueList(value);
-            else break;;
-        }
-        tesstdoSome.doSomething(controllerUnitValueVO);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Constant.logger.error("错误:",e);
-        }
-        try {
-            innerTempSensorInfoService.timeAvgTemp(time);
-        } catch (Exception e) {
-            Constant.logger.error("错误:",e);
-        }
-    }
+//    public void testSen(){
+//        String time = TimeUtils.getNowTime();
+//        ControllerUnitValueVO controllerUnitValueVO = new ControllerUnitValueVO();
+//        controllerUnitValueVO.setCuAddr("18");
+//        controllerUnitValueVO.setId(6);
+//        controllerUnitValueVO.setCuType("内部温度");
+//        controllerUnitValueVO.setTime(time);
+//
+//        double[] valueList1 = {15.93, 15.93, 15.93, 15.93,15.93, 15.93, 15.93, 15.93, 15.93, 15.93, 15.93, 15.93, 15.93, 15.93, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0};
+//        for(double value:valueList1)
+//        {
+//            controllerUnitValueVO.addValueList(value);
+//        }
+//        //readControllerUnitValue(controllerUnitValueVO);
+//        tesstdoSome.doSomething(controllerUnitValueVO);
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            Constant.logger.error("错误:",e);
+//        }
+//        try {
+//            innerTempSensorInfoService.timeAvgTemp(time);
+//        } catch (Exception e) {
+//            Constant.logger.error("错误:",e);
+//        }
+//        innerTempSensorInfoService.timeAvgTemp(time);
+//    }
 //    @Autowired
 //    SmartScheduleTask smartScheduleTask;
 //    @Scheduled(fixedRate=600000)

@@ -15,12 +15,12 @@ public class PouringBaseVO {
     private String coverTime;
     @Excel(name = "温控曲线号",width = 20)
     private Integer tempControlId;
-    @Excel(name = "工程量",width = 20)
+    @Excel(name = "工程量(m³)",width = 20)
     private Double workAmount;
     @Excel(name = "混凝土标号",width = 20)
     private String markNumber;
     private Integer materialNo;
-    @Excel(name = "设计浇筑温度",width = 20)
+    @Excel(name = "设计浇筑温度(C°)",width = 20)
     private Double designPouringTemp;
     @Excel(name = "中冷开始时间",width = 20)
     private String interCoolingStartTime;
@@ -30,9 +30,9 @@ public class PouringBaseVO {
     private String closureGroutTime;
     @Excel(name = "仓面保温",width = 20)
     private String faceKeepWarm;
-    @Excel(name = "浇筑历时",width = 20)
+    @Excel(name = "浇筑历时(h)",width = 20)
     private Double pouringTime;
-    @Excel(name = "浇筑强度",width = 20)
+    @Excel(name = "浇筑强度(m³/h)",width = 20)
     private Double pouringStrength;
     @Excel(name = "Bata号",width = 20)
     private Integer bataNo;

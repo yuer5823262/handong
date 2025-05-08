@@ -6,6 +6,16 @@ public class CombinedCurvesQue {
     Integer sbId;
     String startTime;
     String endTime;
+    String orderType;
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
     public Integer getPageNum() {
         return pageNum;
     }

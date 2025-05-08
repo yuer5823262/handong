@@ -92,7 +92,7 @@ public class SwFollowCurveServiceImpl implements SwFollowCurveService {
         {
             double dl = swFollowCurve.getMbFlow()*1.6*waterPipe.getBranchNum()+4;
             Constant.print(swFollowCurve.getSbNo()+" "+waterPipe.getWpNo()+"目标流量:"+swFollowCurve.getMbFlow()+",设置电流逼近参数.......电流:"+dl);
-            short p = Constant.DllUTILS.LNT_SetElecNearAimI(Byte.parseByte(waterPipe.getCuAddr()),
+            short p = Constant.DllUTILS.LNT_SetElecNearAimI((byte)Integer.parseInt(waterPipe.getCuAddr()),
                     waterPipe.getChannelNo().byteValue(),dl,Constant.timeout);
             if(p==0)
             {

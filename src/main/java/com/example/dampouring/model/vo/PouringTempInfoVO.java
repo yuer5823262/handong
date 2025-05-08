@@ -8,9 +8,9 @@ public class PouringTempInfoVO {
     private String smallNo;
     @Excel(name = "时间", width = 20)
     private String time;
-    @Excel(name = "温度", width = 20)
+    @Excel(name = "温度(℃)", width = 20)
     private Double temperature;
-    @Excel(name = "温度标准", width = 20)
+    @Excel(name = "温度标准(℃)", width = 20)
     private Double norm;
     @Excel(name = "混凝土标号", width = 20)
     private String betonNo;

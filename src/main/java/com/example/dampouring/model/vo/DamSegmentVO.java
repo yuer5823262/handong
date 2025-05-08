@@ -6,17 +6,17 @@ public class DamSegmentVO {
 
 
     private String dsNo;
-    @Excel(name = "分段名称")
+    @Excel(name = "坝段名称")
     private String dsName;
     @Excel(name = "所属标段")
     private String bsName;
     @Excel(name = "承建单位")
     private String contractor;
-    @Excel(name = "起始高程")
+    @Excel(name = "起始高程(m)")
     private Double elevationStart;
-    @Excel(name = "终止高程")
+    @Excel(name = "终止高程(m)")
     private Double elevationEnd;
-    @Excel(name = "分段高")
+    @Excel(name = "坝段高(m)")
     private Double height;
     @Excel(name = "桩号上")
     private Double stakeMarkUp;

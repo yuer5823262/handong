@@ -5,14 +5,20 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="moment_val" jdbcType="DOUBLE" property="momentVal" />
     <result column="aggregate_val" jdbcType="DOUBLE" property="aggregateVal" />
+    <result column="humidity" jdbcType="DOUBLE" property="humidity" />
+    <result column="wind" jdbcType="DOUBLE" property="wind" />
+    <result column="wind2" jdbcType="DOUBLE" property="wind2" />
+    <result column="wind10" jdbcType="DOUBLE" property="wind10" />
+    <result column="direction" jdbcType="DOUBLE" property="direction" />
+    <result column="temp" jdbcType="DOUBLE" property="temp" />
     <result column="date" jdbcType="VARCHAR" property="date" />
     <result column="bl" jdbcType="INTEGER" property="bl" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, moment_val, aggregate_val, `date`,bl
+    id, moment_val, aggregate_val,humidity,wind,wind2,wind10,direction,temp, `date`,bl
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from solar_radiant_heat_info
     where id = #{id,jdbcType=INTEGER}
@@ -22,10 +28,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
-    insert into solar_radiant_heat_info (id, moment_val, aggregate_val, 
-      `date`,bl)
-    values (#{id,jdbcType=INTEGER}, #{momentVal,jdbcType=DOUBLE}, #{aggregateVal,jdbcType=DOUBLE}, 
-      #{date,jdbcType=VARCHAR},#{bl,jdbcType=INTEGER})
+    insert into solar_radiant_heat_info (id, moment_val, aggregate_val,humidity,wind,wind2,wind10,direction,temp,
+                                         `date`,bl)
+    values (#{id,jdbcType=INTEGER}, #{momentVal,jdbcType=DOUBLE}, #{aggregateVal,jdbcType=DOUBLE}, #{humidity,jdbcType=DOUBLE}, #{wind,jdbcType=DOUBLE}
+             , #{wind2,jdbcType=DOUBLE}, #{wind10,jdbcType=DOUBLE}, #{direction,jdbcType=DOUBLE}, #{temp,jdbcType=DOUBLE},
+            #{date,jdbcType=VARCHAR},#{bl,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
     insert into solar_radiant_heat_info
@@ -39,6 +46,25 @@
       <if test="aggregateVal != null">
         aggregate_val,
       </if>
+      <if test="humidity != null">
+        humidity,
+      </if>
+      <if test="wind != null">
+        wind,
+      </if>
+      <if test="wind2 != null">
+        wind2,
+      </if>
+      <if test="wind10 != null">
+        wind10,
+      </if>
+      <if test="direction != null">
+        direction,
+      </if>
+      <if test="temp != null">
+        temp,
+      </if>
+
       <if test="date != null">
         `date`,
       </if>
@@ -56,6 +82,26 @@
       <if test="aggregateVal != null">
         #{aggregateVal,jdbcType=DOUBLE},
       </if>
+
+      <if test="humidity != null">
+        #{humidity,jdbcType=DOUBLE},
+      </if>
+      <if test="wind != null">
+        #{wind,jdbcType=DOUBLE},
+      </if>
+      <if test="wind2 != null">
+        #{wind2,jdbcType=DOUBLE},
+      </if>
+      <if test="wind10 != null">
+        #{wind10,jdbcType=DOUBLE},
+      </if>
+      <if test="direction != null">
+        #{direction,jdbcType=DOUBLE},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=DOUBLE},
+      </if>
+
       <if test="date != null">
         #{date,jdbcType=VARCHAR},
       </if>
@@ -82,8 +128,8 @@
   <update id="updateByPrimaryKey" parameterType="com.example.dampouring.model.pojo.SolarRadiantHeatInfo">
     update solar_radiant_heat_info
     set moment_val = #{momentVal,jdbcType=DOUBLE},
-      aggregate_val = #{aggregateVal,jdbcType=DOUBLE},
-      `date` = #{date,jdbcType=VARCHAR}
+        aggregate_val = #{aggregateVal,jdbcType=DOUBLE},
+        `date` = #{date,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="List" resultMap="BaseResultMap">
@@ -97,12 +143,12 @@
     <include refid="Base_Column_List"></include>
     from solar_radiant_heat_info
     <where>
-    <if test="startTime != null">
-      date &gt;=#{startTime}
-    </if>
-    <if test="endTime != null">
-    and date &lt;= #{endTime}
-    </if>
+      <if test="startTime != null">
+        date &gt;=#{startTime}
+      </if>
+      <if test="endTime != null">
+        and date &lt;= #{endTime}
+      </if>
     </where>
     order by date desc
   </select>

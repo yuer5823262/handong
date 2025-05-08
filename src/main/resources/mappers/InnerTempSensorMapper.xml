@@ -226,7 +226,12 @@
            LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
     where its.cu_id = #{cuId} and  TRIM(its.channel)!='' and ssb.is_calculate='1'
   </select>
-
+  <select id="selectByTempAddr" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from inner_temp_sensor
+    where temp_addr = #{addr,jdbcType=VARCHAR}
+  </select>
 
   <select id="selectByTempNo" parameterType="java.lang.String" resultMap="BaseResultMap">
   select

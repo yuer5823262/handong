@@ -36,7 +36,7 @@ public class PouringBaseServiceImpl implements PouringBaseService {
         checkSbId(addPouringBaseReq.getSmallSbId());
         PouringBase pouringBase = new PouringBase();
         BeanUtils.copyProperties(addPouringBaseReq,pouringBase);
-        checkOpenTime(pouringBase);
+        //checkOpenTime(pouringBase);
         pouringBase.setOperator(userName);
         pouringBase.setCreateTime(TimeUtils.getNowTime());
         pouringBase.setBataNo(0);
@@ -66,7 +66,7 @@ public class PouringBaseServiceImpl implements PouringBaseService {
             faceDiapauseAlertService.upFaceDiapauseAlert(pouringBase);
         }
         copyUtils.copyPropertiesIgnoreNull(updatePouringBaseReq,pouringBase);
-        checkOpenTime(pouringBase);
+        //checkOpenTime(pouringBase);
         pouringBase.setPouringTimeByOCTime();
         pouringBase.setPouringStrengthBy();
 
@@ -150,9 +150,9 @@ public class PouringBaseServiceImpl implements PouringBaseService {
     @Override
     public Integer getQS(Integer sbId) {
         PouringBase pouringBase = pouringBaseMapper.selectBySbId(sbId);
-        if(pouringBase == null) return 0;
-        if(pouringBase.getInterCoolingStartTime().isEmpty()) return 1;
-        if(pouringBase.getSecondCoolingStartTime().isEmpty()) return 2;
+        if(pouringBase == null ) return 0;
+        if(pouringBase.getInterCoolingStartTime()==null || pouringBase.getInterCoolingStartTime().compareTo(TimeUtils.getNowTime()) > 0) return 1;
+        if(pouringBase.getSecondCoolingStartTime()==null || pouringBase.getSecondCoolingStartTime().compareTo(TimeUtils.getNowTime()) > 0) return 2;
         return 3;
     }
 }

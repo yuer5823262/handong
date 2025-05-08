@@ -83,6 +83,15 @@
                 LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
     </select>
 
+    <select id="pouringProgress" resultType="com.example.dampouring.model.vo.PouringProgressVO">
+        SELECT ssb.ds_start as dsName,count(0) as endCount from pouring_base pb
+        LEFT JOIN small_storage_bin ssb
+        on pb.small_sb_id=ssb.id
+        WHERE ssb.ds_start &lt;=3 and pb.close_time &lt;= now()
+        GROUP BY ssb.ds_start
+    </select>
+
+
     <select id="processCompliance" resultType="com.example.dampouring.model.vo.ProcessComplianceVO">
         SELECT * from
         (SELECT "出机口温度" as typeName,t1.accountability,t2.violation from
@@ -103,65 +112,65 @@
 
     <select id="pouringMonitoring" resultType="com.example.dampouring.model.vo.CloudMonitoringVO">
         SELECT DISTINCT
-        ds.ds_name AS dsName,
-        (
-        ssb.elevation_end - ds.elevation_start
-        ) / (
-        ds.elevation_end - ds.elevation_start
-        ) AS position,
-        ssb.small_sb_no AS NO,
-        ssb.elevation_start AS elevationStart,
-        ssb.elevation_end AS elevationEnd,
-        ssb.ds_start AS dsStart,
-        ssb.ds_end AS dsEnd,
-        tb3.innerTemp,
-        tb3.time AS innerTime,
-        pba.avg_temp AS pouringTemp,
-        emta.avg_temp AS emtTemp,
-        ita.avg_temp AS itaTemp,
-        tta.top_avg_temp AS maxTemp,
-        flow.flow AS flow,
-        flow.time AS flowTime,
-        pb.open_time AS openTime,
-        pb.close_time AS endTime,
+            ds.ds_name AS dsName,
+            (
+                ssb.elevation_end - ds.elevation_start
+                ) / (
+                ds.elevation_end - ds.elevation_start
+                ) AS position,
+            ssb.small_sb_no AS NO,
+            ssb.neck_name AS neckName,
+            ssb.elevation_start AS elevationStart,
+            ssb.elevation_end AS elevationEnd,
+            ssb.ds_start AS dsStart,
+            ssb.ds_end AS dsEnd,
+            tb3.innerTemp,
+            tb3.time AS innerTime,
+            pba.avg_temp AS pouringTemp,
+            emta.avg_temp AS emtTemp,
+            ita.avg_temp AS itaTemp,
+            tta.top_avg_temp AS maxTemp,
+            flow.flow AS flow,
+            flow.time AS flowTime,
+            pb.open_time AS openTime,
+            pb.close_time AS endTime,
 
-        IF (
-        sbe.id IS NOT NULL,
-        4,
-
-        IF (
-        wp.water_begin_time > now(),
-        0,
-
-        IF (
-        pb.inter_cooling_start_time > now(),
-        1,
-
-        IF (
-        pb.second_cooling_start_time > now(),
-        2,
-        3
-        )
-        )
-        )
-        ) AS qs
+            IF
+                (
+                    sbe.id IS NOT NULL,
+                    4,
+                    IF
+                        (
+                                pb.inter_cooling_start_time &lt; now(),
+                                IF
+                                    ( pb.second_cooling_start_time &lt; now(), IF ( pb.closure_grout_time &lt; now(), 5, 3 ), 2 ),
+                                1
+                        )) AS qs,
+            stn.pouring_temp as pouringNorm,
+            stn.entry_temp as entryNorm,
+            stn.port_temp as portNorm,
+            stn.min_temp as innerMinNorm,
+            stn.max_temp as innerMaxNorm,
+            stn.flow_temp_min as waterMinNorm,
+            stn.flow_temp as waterMaxNorm
         FROM
-        dam_segment ds
-        LEFT JOIN small_storage_bin ssb ON ssb.ds_start &lt;= ds.ds_name
-        AND ssb.ds_end >= ds.ds_name
-        LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
-        LEFT JOIN water_pipe wp ON wp.sb_id = ssb.id
-        LEFT JOIN storage_bin_exclude sbe ON sbe.small_sb_id = ssb.id
-        AND type = 'noColl'
-        LEFT JOIN newest_inner_temp tb3 ON tb3.sbId = ssb.id
-        LEFT JOIN pouring_temp_assess pba ON pba.pouring_base_id = pb.id
-        LEFT JOIN export_machine_temp_assess emta ON emta.pouring_base_id = pb.id
-        LEFT JOIN inbound_temp_assess ita ON ita.pouring_base_id = pb.id
-        LEFT JOIN top_temp_assess tta ON tta.pouring_base_id = pb.id
-        LEFT JOIN newest_flow_info flow ON flow.sbId = ssb.id
+            dam_segment ds
+                LEFT JOIN small_storage_bin ssb ON ssb.ds_start &lt;= ds.ds_name
+                AND ssb.ds_end >= ds.ds_name
+                LEFT JOIN pouring_base pb ON pb.small_sb_id = ssb.id
+                LEFT JOIN water_pipe wp ON wp.sb_id = ssb.id
+                LEFT JOIN storage_bin_exclude sbe ON sbe.small_sb_id = ssb.id
+                AND type = 'noColl'
+                LEFT JOIN newest_inner_temp tb3 ON tb3.sbId = ssb.id
+                LEFT JOIN pouring_temp_assess pba ON pba.pouring_base_id = pb.id
+                LEFT JOIN export_machine_temp_assess emta ON emta.pouring_base_id = pb.id
+                LEFT JOIN inbound_temp_assess ita ON ita.pouring_base_id = pb.id
+                LEFT JOIN top_temp_assess tta ON tta.pouring_base_id = pb.id
+                LEFT JOIN newest_flow_info flow ON flow.sbId = ssb.id
+                LEFT JOIN sb_temp_norm stn on stn.sb_id = ssb.id
         ORDER BY
-        ds.ds_name,
-        ssb.elevation_start
+            ds.ds_name,
+            ssb.elevation_start
     </select>
     <select id="alertCount" resultType="com.example.dampouring.model.vo.AlertCountVO">
         SELECT type_no as typeNo,count(0) as count from alert_base
@@ -182,39 +191,38 @@
                         SELECT
                             s.id AS pointId,
                             itf.time AS time,
-					itf.avgtemp AS curValue,
-					itf.norm AS standardValue,
-					s.small_sb_no AS pointName,
-					TIMESTAMPDIFF(DAY, p.close_time, now()) AS age
+                            itf.avgtemp AS curValue,
+                            itf.norm AS standardValue,
+                            s.small_sb_no AS pointName,
+                            TIMESTAMPDIFF(DAY, p.close_time, now()) AS age
                         FROM
                             inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
-                            LEFT JOIN small_storage_bin s ON it.sb_id = s.id
-                            LEFT JOIN pouring_base p ON s.id = p.small_sb_id
+                                LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                                LEFT JOIN pouring_base p ON s.id = p.small_sb_id
                         WHERE
-                            s.id = #{sbId,jdbcType=INTEGER}
+                            time >= LEFT ( now(), 10 ) and s.id = #{sbId,jdbcType=INTEGER}
                     ) t1
                         RIGHT JOIN (
                         SELECT
                             max(time) AS time,
-				min(temp) AS minVal,
-				max(temp) AS maxVal,
-				s.small_sb_no AS smallNo
+                            min(temp) AS minVal,
+                            max(temp) AS maxVal,
+                            s.small_sb_no AS smallNo
                         FROM
                             inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
-                            LEFT JOIN small_storage_bin s ON it.sb_id = s.id
+                                LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                LEFT JOIN small_storage_bin s ON it.sb_id = s.id
                         WHERE
-                            LEFT (time, 10) = LEFT (now(), 10)
+                            time >= LEFT (now(), 10)
                           AND s.id = #{sbId,jdbcType=INTEGER}
                     ) t2 ON t1.pointName = t2.smallNo
                         AND t1.time = t2.time
-                    LIMIT 1
+                LIMIT 1
             ) t1 LEFT JOIN
             (
                 SELECT
-                    tb1.sbNo AS sbNo,
-                    tb1.flow AS waterFlow,
+                    avg(tb1.flow) AS waterFlow,
                     tb1.sbId AS sbId
                 FROM
                     (
@@ -234,7 +242,7 @@
                                         FROM
                                             water_pipe_flow_info
                                         WHERE
-                                            to_days(time) = to_days(now())
+                                            time >= LEFT ( now(), 10 )
                                         GROUP BY
                                             water_pipe_id
                                     ) t2
@@ -246,59 +254,55 @@
                                 LEFT JOIN small_storage_bin s ON wp.sb_id = s.id
                         WHERE
                             s.id = #{sbId,jdbcType=INTEGER}
-                            LIMIT 1
                     ) tb1
+                GROUP BY tb1.sbId
             ) t2 ON 1
-            LEFT JOIN
+                 LEFT JOIN
             (
                 SELECT
                     t2.temp - t1.temp as coolingRate
                 FROM
                     (
-                        SELECT DISTINCT
+                        SELECT
                             LEFT (itf.time, 10) time,
                             itf.avgtemp AS temp
                         FROM
                             inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
                         WHERE
                             it.sb_id = #{sbId,jdbcType=INTEGER}
-                          AND TO_DAYS(itf.time) = TO_DAYS(NOW())
-                          AND itf.time IN (
+                          AND itf.time = (
                             SELECT
-                            max(itf.time) AS time
+                                max(itf.time) AS time
                             FROM
-                            inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                inner_temp_sensor_info itf
+                                    LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
                             WHERE
-                            it.sb_id = #{sbId,jdbcType=INTEGER}
-                          AND TO_DAYS(itf.time) = TO_DAYS(NOW())
-                            GROUP BY
-                            LEFT (itf.time, 10)
-                            )
+                                it.sb_id = #{sbId,jdbcType=INTEGER}
+                              AND itf.time > CURRENT_DATE()
+                        )
+                        limit 1
                     ) t1,
                     (
-                        SELECT DISTINCT
+                        SELECT
                             LEFT (itf.time, 10) time,
                             itf.avgtemp AS temp
                         FROM
                             inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
                         WHERE
                             it.sb_id = #{sbId,jdbcType=INTEGER}
-                          AND TO_DAYS(itf.time) = TO_DAYS(NOW()) - 1
-                          AND itf.time IN (
+                          AND itf.time = (
                             SELECT
-                            max(itf.time) AS time
+                                max(itf.time) AS time
                             FROM
-                            inner_temp_sensor_info itf
-                            LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
+                                inner_temp_sensor_info itf
+                                    LEFT JOIN inner_temp_sensor it ON itf.inner_temp_sensor_id = it.id
                             WHERE
-                            it.sb_id = #{sbId,jdbcType=INTEGER}
-                          AND TO_DAYS(itf.time) = TO_DAYS(NOW()) - 1
-                            GROUP BY
-                            LEFT (itf.time, 10)
-                            )
+                                it.sb_id = #{sbId,jdbcType=INTEGER}
+                              AND itf.time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) and itf.time &lt; CURRENT_DATE()
+                        )
+                        LIMIT 1
                     ) t2
             ) t3 ON 1
 
@@ -478,89 +482,56 @@
 
     <select id="maxTempM" resultType="com.example.dampouring.model.vo.MaxTempMVO">
         SELECT
-        *
+            *
         FROM
-        (
+            (
+                SELECT
+                    avg( temp ) AS meanValue,
+                    cast( sum( norm > temp ) / count( 0 ) * 100 AS signed ) AS passPercent,
+                    sqrt( sum(( temp - norm ) *( temp - norm )) ) AS standardDeviation
+                FROM
+                    (
+                        SELECT
+                            ssb.id AS small_sb_no,
+                            tta.top_temp_time as time,
+                            tta.top_avg_temp AS temp,
+                            tta.norm_temp AS norm
+                        FROM
+                            top_temp_assess tta
+                                LEFT JOIN pouring_base pb ON pb.id = tta.pouring_base_id
+                                LEFT JOIN small_storage_bin ssb ON ssb.id = pb.small_sb_id
+                        WHERE
+                            pb.close_time &lt;= now()
+                          AND ssb.ds_start &lt;28
+                    ) t1
+            ) tb1 UNION ALL
         SELECT
-        avg(temp) AS meanValue,
-        cast(
-        sum(norm > temp) / count(0) * 100 AS signed
-        ) AS passPercent,
-        sqrt(
-        sum((temp - norm) *(temp - norm))
-        ) AS standardDeviation
+            *
         FROM
-        (
-        SELECT
-        t1.small_sb_no,
-        max(t1.temp) AS temp,
-        max(t1.norm) AS norm
-        FROM
-        (
-        SELECT
-        its.sb_id AS small_sb_no,
-        itsi.time,
-        avg(itsi.temp) AS temp,
-        max(itsi.norm) AS norm
-        FROM
-        inner_temp_sensor_info itsi
-        LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
-        LEFT JOIN pouring_base pb ON pb.small_sb_id = its.sb_id
-        LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
-        WHERE
-            pb.close_time &lt;= now() and ssb.ds_start&lt;28
-        GROUP BY
-        its.sb_id,
-        itsi.time
-        ) t1
-        GROUP BY
-        t1.small_sb_no
-        ) t1
-        ) tb1
-        UNION ALL
-        SELECT
-        *
-        FROM
-        (
-        SELECT
-        avg(temp) AS meanValue,
-        cast(
-        sum(norm > temp) / count(small_sb_no) * 100 AS signed
-        ) AS passPercent,
-        sqrt(
-        sum((temp - norm) *(temp - norm))
-        ) AS standardDeviation
-        FROM
-        (
-        SELECT
-        t1.small_sb_no,
-        max(t1.temp) AS temp,
-        max(t1.norm) AS norm
-        FROM
-        (
-        SELECT
-        its.sb_id AS small_sb_no,
-        itsi.time,
-        avg(itsi.temp) AS temp,
-        max(itsi.norm) AS norm
-        FROM
-        inner_temp_sensor_info itsi
-        LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
-        LEFT JOIN pouring_base pb ON pb.small_sb_id = its.sb_id
-        LEFT JOIN small_storage_bin ssb on ssb.id = its.sb_id
-        WHERE
-        pb.close_time &lt;= now() and ssb.ds_start&lt;28
-        AND PERIOD_DIFF(
-        date_format(now(), '%Y%m'),
-        date_format(itsi.time, '%Y%m')
-        ) = 1
-        GROUP BY
-        its.sb_id,
-        itsi.time
-        ) t1
-        GROUP BY
-        t1.small_sb_no
-        ) t1
-        ) tb2
+            (
+                SELECT
+                    avg( temp ) AS meanValue,
+                    cast( sum( norm > temp ) / count( small_sb_no ) * 100 AS signed ) AS passPercent,
+                    sqrt( sum(( temp - norm ) *( temp - norm )) ) AS standardDeviation
+                FROM
+                    (
+                        SELECT
+                            its.sb_id AS small_sb_no,
+                            itsi.TIME,
+                            max( itsi.avgtemp ) AS temp,
+                            max( itsi.norm ) AS norm
+                        FROM
+                            inner_temp_sensor_info itsi
+                                LEFT JOIN inner_temp_sensor its ON itsi.inner_temp_sensor_id = its.id
+                                LEFT JOIN pouring_base pb ON pb.small_sb_id = its.sb_id
+                                LEFT JOIN small_storage_bin ssb ON ssb.id = its.sb_id
+                        WHERE
+                            pb.close_time &lt;= now()
+                          AND ssb.ds_start &lt;28
+                          AND itsi.TIME > cast(DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m') as char) and itsi.TIME &lt; cast(DATE_FORMAT(now(), '%Y-%m') as char)
+                        GROUP BY
+                            its.sb_id
+                    ) t1
+            ) tb2
     </select>
 </mapper>

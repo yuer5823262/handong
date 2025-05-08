@@ -4,7 +4,7 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 
 public class InsulationSensorInfoVO {
     private Integer id;
-    @Excel(name = "分段",width = 20)
+    @Excel(name = "坝段",width = 20)
     private Integer dsNo;
     @Excel(name = "温度计编号",width = 20)
     private String tempNo;

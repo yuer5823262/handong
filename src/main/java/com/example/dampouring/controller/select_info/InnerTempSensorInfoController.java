@@ -58,8 +58,8 @@ public class InnerTempSensorInfoController {
     @GetMapping("/list")
     @ResponseBody
     public ApiRestResponse listInnerTempSensorInfo(@RequestParam Integer pageNum,
-                                               @RequestParam Integer pageSize) {
-        PageInfo pageInfo = innerTempSensorInfoService.orUserList(pageNum, pageSize);
+                                               @RequestParam Integer pageSize,@RequestParam Integer sbId) {
+        PageInfo pageInfo = innerTempSensorInfoService.orUserList(pageNum, pageSize,sbId);
         return ApiRestResponse.success(pageInfo);
     }
     @PostMapping("/add")

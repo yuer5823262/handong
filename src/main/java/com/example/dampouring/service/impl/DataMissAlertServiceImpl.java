@@ -89,41 +89,35 @@ public class DataMissAlertServiceImpl implements DataMissAlertService {
 //            DataMissAlertMapper.insertSelective(dataMissAlert);
 //        }
 //    }
-    public void alert(DataMissAlertQue dataMissAlertQue)
+public void alert(DataMissAlertQue dataMissAlertQue)
+{
+    List<AlertBase> alertBaseList = alertBaseMapper.selectDataMissAlert(dataMissAlertQue);
+
+    if(alertBaseList.size()==0)
     {
-        AlertBase temp = alertBaseMapper.selectDataMissAlert(dataMissAlertQue);
-        if(temp==null)
-        {
-            AlertBase dataMissAlert = new AlertBase();
-            if(dataMissAlertQue.getSbNo()!=null)
-                dataMissAlert.setPosition(dataMissAlertQue.getSbNo());
-            dataMissAlert.setState(0);
-            dataMissAlert.setTypeNo(2);
-            dataMissAlert.setTime(TimeUtils.getNowTime());
-            dataMissAlert.setType(dataMissAlertQue.getType());
-            dataMissAlert.setContent(dataMissAlertQue.getType()+"信息缺失1天");
-            alertBaseMapper.insertSelective(dataMissAlert);
-            ConnectionUtil.Send(dataMissAlert.toString());
-//            DataMissAlert dataMissAlert = new DataMissAlert();
-//            if(dataMissAlertQue.getSbId()!=null)
-//                dataMissAlert.setSbId(dataMissAlertQue.getSbId());
-//            dataMissAlert.setHasDispose("0");
-//            dataMissAlert.setAlertTime(TimeUtils.getNowTime());
-//            dataMissAlert.setMissDays(1);
-//            dataMissAlert.setMissType(dataMissAlertQue.getType());
-//            dataMissAlert.setAlertContent(dataMissAlertQue.getType()+"信息缺失1天");
-//            DataMissAlertMapper.insertSelective(dataMissAlert);
-        }
-        else
-        {
-            String content = temp.getContent();
-            Integer missDays = DatUtils.getInt(content).get(0);
-            missDays++;
-            temp.setContent(dataMissAlertQue.getType()+"信息缺失"+missDays+"天");
-            temp.setTime(TimeUtils.getNowTime());
-            alertBaseMapper.updateByPrimaryKeySelective(temp);
-        }
+        AlertBase dataMissAlert = new AlertBase();
+        if(dataMissAlertQue.getSbNo()!=null)
+            dataMissAlert.setPosition(dataMissAlertQue.getSbNo());
+        dataMissAlert.setState(0);
+        dataMissAlert.setTypeNo(2);
+        dataMissAlert.setTime(TimeUtils.getNowTime());
+        dataMissAlert.setType(dataMissAlertQue.getType());
+        dataMissAlert.setContent(dataMissAlertQue.getType()+"信息缺失1天");
+        alertBaseMapper.insertSelective(dataMissAlert);
+        ConnectionUtil.Send(dataMissAlert.toString());
+
     }
+    else
+    {
+        AlertBase temp = alertBaseList.get(0);
+        String content = temp.getContent();
+        Integer missDays = DatUtils.getInt(content).get(0);
+        missDays++;
+        temp.setContent(dataMissAlertQue.getType()+"信息缺失"+missDays+"天");
+        temp.setTime(TimeUtils.getNowTime());
+        alertBaseMapper.updateByPrimaryKeySelective(temp);
+    }
+}
     @Override
     public void dataMissAlert() {
         List<DataCountVO> dataCountVOList = alertBaseMapper.todayDataCount();

@@ -125,6 +125,8 @@ public class WaterTempSensorServiceImpl implements WaterTempSensorService {
     {
         if(Constant.pSta!=0) return null;
         ControlUnit controlUnit=controlUnitMapper.selectByPrimaryKey(waterTempSensor.getCuId());
+        if(controlUnit==null) return null;
+
         List<String> addr = new ArrayList<>();
         if(t==1)
         {

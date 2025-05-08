@@ -10,22 +10,32 @@ public class DailyPourTempVO {
     private String sbNo;
     @Excel(name = "巡查时间",width = 20)
     private String time;
-    @Excel(name = "环境温度",width = 20)
+    @Excel(name = "龄期",width = 20)
+    private Integer age;
+    @Excel(name = "内部温度",width = 20)
+    private Double innerTemp;
+    @Excel(name = "内部温度时间",width = 20)
+    private String innerTime;
+    @Excel(name = "降温速率",width = 20)
+    private Double coolingRate;
+    @Excel(name = "环境温度(℃)",width = 20)
     private Double temp;
-    @Excel(name = "出机口温度",width = 20)
+    @Excel(name = "出机口温度(℃)",width = 20)
     private Double exTemp;
-    @Excel(name = "入仓温度",width = 20)
+    @Excel(name = "入仓温度(℃)",width = 20)
     private Double inTemp;
-    @Excel(name = "浇筑温度",width = 20)
+    @Excel(name = "浇筑温度(℃)",width = 20)
     private Double pourTemp;
-    @Excel(name = "运输温升",width = 20)
+    @Excel(name = "运输温升(℃)",width = 20)
     private Double transTempUp;
-    @Excel(name = "仓面温升",width = 20)
+    @Excel(name = "仓面温升(℃)",width = 20)
     private Double surfaceTempUp;
     @Excel(name = "是否满足设计要求",width = 20)
     private String isHg;
     @Excel(name = "备注",width = 20)
     private String mark;
+
+
 
     public Integer getId() {
         return id;
@@ -121,5 +131,37 @@ public class DailyPourTempVO {
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getInnerTemp() {
+        return innerTemp;
+    }
+
+    public void setInnerTemp(Double innerTemp) {
+        this.innerTemp = innerTemp;
+    }
+
+    public String getInnerTime() {
+        return innerTime;
+    }
+
+    public void setInnerTime(String innerTime) {
+        this.innerTime = innerTime;
+    }
+
+    public Double getCoolingRate() {
+        return coolingRate;
+    }
+
+    public void setCoolingRate(Double coolingRate) {
+        this.coolingRate = coolingRate;
     }
 }
